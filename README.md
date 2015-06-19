@@ -3,7 +3,7 @@ phpdac5
 /* 
  * phpdac5
  *
- *   Copyright (C) 2012  Alexiou Vassilis, ste.net
+ *   2012  Alexiou Vassilis, stereobit.networlds
  *
  *   This library is free software; you can redistribute it and/or
  *   modify it under the terms of the GNU Library General Public
