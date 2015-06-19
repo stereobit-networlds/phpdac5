@@ -1,0 +1,31 @@
+How to Resize Image Dynamically in PHP
+By Viral Patel on May 4, 2012
+
+
+
+http://viralpatel.net/blogs/resize-image-dynamically-php/
+
+Today almost every website you visit show content in form of thumbnails. Thumbnails are nothing but images displayed next to the content. Be it News website or a blog, displaying images next to content is key to appeal user. Even our blog shows images as thumbnails on home page.
+A prerequisites to show Thumbnail in a webpage is that thumbnail must be small enough. So that many thumbnails can be loaded as fast as possible. Hence almost every website resize the image to create small thumbnails.
+So how to do this on the fly? How to resize an Image dynamically in PHP?
+There is an extremely useful PHP library called timthumb which comes very handy. It’s just a simple PHP script that you need to download and put in some folder under your website. And then simply call it with appropriate arguments.
+Download timthumb.php and put under any folder.
+Upload this script timthumb.php though FTP to your web hosting. Put it under a directory /script.
+Just call timthumb.php with appropriate arguments, For example:
+<img src="/script/timthumb.php?src=/some/path/myimage.png&w=100&h=80"
+    alt="resized image" />
+And that’s all!!
+One thing worth noting here is that this library will create a folder cache in the directory where timthumb.php script resides. This folder will cache the resized image for better performance.
+You can refer following table for different parameters and its meaning.
+Parameter	Values	Meaning
+src	source	url to image	Tells TimThumb which image to resize
+w	width	the width to resize to	Remove the width to scale proportionally (will then need the height)
+h	height	the height to resize to	Remove the height to scale proportionally (will then need the width)
+q	quality	0 – 100	Compression quality. The higher the number the nicer the image will look. I wouldn’t recommend going any higher than about 95 else the image will get too large
+a	alignment	c, t, l, r, b, tl, tr, bl, br	Crop alignment. c = center, t = top, b = bottom, r = right, l = left. The positions can be joined to create diagonal positions
+zc	zoom / crop	0, 1, 2, 3	Change the cropping and scaling settings
+f	filters	too many to mention	Let’s you apply image filters to change the resized picture. For instance you can change brightness/ contrast or even blur the image
+s	sharpen		Apply a sharpen filter to the image, makes scaled down images look a little crisper
+cc	canvas colour	hexadecimal colour value (#ffffff)	Change background colour. Most used when changing the zoom and crop settings, which in turn can add borders to the image.
+ct	canvas transparency	true (1)	Use transparency and ignore background colour
+Hope this is useful for you 
