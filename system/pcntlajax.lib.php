@@ -10,9 +10,9 @@ class pcntlajax extends pcntl {
 
    var $ajax_var;
 
-   function __construct($code=null,$auto=null,$locales=null,$css=null,$page=null) { 
+   function __construct($code=null,$preprocess=null,$locales=null,$css=null,$page=null) { 
 
-	  parent::__construct($code,$auto,$locales,$css,$page);	
+	  parent::__construct($code,$preprocess,$locales,$css,$page);	
 	  
 	  //indicates whenever this class will behave like ajax responder	
 	  //or as common pcntl request.
@@ -29,7 +29,6 @@ class pcntlajax extends pcntl {
 	    //$params = @parse_ini_file($this->remoteapp."/".$this->file_name.".conf");
 		$fp = $this->fp;//$params['fp'];
 		$lan = $this->lan;//$params['lan'];
-		$cl = $this->cl;//$params['cl'];
 		$cl = $this->cl;//$params['cl'];
 		$theme = $this->theme;//$params['theme'];
 		SetSessionParam('REMOTEAPPSITE',$this->remoteapp);//save 1st call with !APP arg
@@ -102,6 +101,8 @@ class pcntlajax extends pcntl {
 	  if (paramload('SHELL','debug')) 
 	    echo "\nTime elapsed: ",$this->getthemicrotime() - $this->mytime, " seconds<br>"; 	  
 	      
+	  echo "<!-- phpdac5 :" .($this->getthemicrotime() - $this->mytime) . "-->";	  
+	  
 	  controller::__destruct();   
    }   
 }

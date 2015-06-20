@@ -41,7 +41,6 @@ class pcntl extends controller {
    var $myaction,$my_excluded_action;
    var $grx;
    var $css,$languange,$theme;
-   var $preprocess;
    var $js;
    var $agent;
    var $code;
@@ -56,7 +55,7 @@ class pcntl extends controller {
    var $map;
    var $sysauth;
    var $local_security;
-   var $preprocessor;   
+   var $preprocessor, $preprocess;      
 
    function __construct($code=null,$preprocess=null,$locales=null,$css=null,$page=null) { 
 
@@ -64,9 +63,9 @@ class pcntl extends controller {
       //session.cache_limiter specifies cache control method to use for session pages (none/nocache/private/private_no_expire/public). 
       //session_cache_limiter('nocache'); //private_no_expire//'nocache');
   
- 
-      session_start();  
-	  
+  
+      session_start();  //-----------------------------------------------------
+
 	  $this->local_security = array();
    
       //echo ">>",$_SERVER['QUERY_STRING'];
@@ -152,6 +151,8 @@ class pcntl extends controller {
 	  $this->theme = (getTheme() ? getTheme() : paramload('SHELL','deftheme'));//$this->setINIParams();	  
 	  if ($this->theme) setTheme($this->theme);	  
 	  
+	  //$this->css = $this->getCSS();		  	  
+	  //echo $this->theme;
 	  //languange pre-selection
       $this->languange = (getlocal() ? getlocal() : 0);//paramload('SHELL','dlang'));
 	  if ($this->languange) setlocal($this->languange);	 //0 LANGUNAGE CNANGE NOT CORECTLY
@@ -160,12 +161,13 @@ class pcntl extends controller {
 	    echo "\nconstruct elapsed: ",$this->getthemicrotime() - $xtime, " seconds<br>"; 	   	  
 	  
 	  //CCPP preprocessor
-	  $this->preprocess = $preprocess;  	  
+	  $this->preprocess = $preprocess; 	  
 	 
       //dispacth or redirect...
 	  //$this->myaction = $this->_getqueue(); 	//moved in init after compile!!!!
 
-      $this->_loadapp($code);  
+      $this->_loadapp($code);
+  
    }
 
    
@@ -229,7 +231,7 @@ class pcntl extends controller {
    }
   
    protected function _loadinifiles() {
-
+   
       if (is_readable("config.ini")) {//in root	   
 	    $config = @parse_ini_file("config.ini",1);
 	    $myconfig = @parse_ini_file("myconfig.txt",1);			
@@ -258,10 +260,10 @@ class pcntl extends controller {
         $theme = @parse_ini_file("../maptheme.ini",1);  	
 	  else
         die("Configuration error, maptheme.ini not exist!");		
-      
+  
       SetGlobal('config',$config);
-      SetGlobal('theme',$theme);   
-	  
+      SetGlobal('theme',$theme); 
+
 	  $this->preprocessor = new CCPP($config);	  
    }   
    
@@ -288,8 +290,20 @@ class pcntl extends controller {
       
 	  $this->pre_render($theme,$lan,$cl,$fp);
 	  
-	  //RENDER......		  	  
-
+	  
+	  //RENDER......	  	  
+	  
+	/*  if ((defined('FRONTPAGE_DPC')) && (isset($fp))) {//call theme xgi page
+	  	  
+        $ftime = $this->getthemicrotime();	  
+	    $cfp = new frontpage($fp,0);
+	    $ret .= $cfp->render($this->data);
+	    unset($cfp);			
+		
+        if ($this->debug) echo "\nfrontpage elapsed: ",$this->getthemicrotime() - $ftime, " seconds<br>";			  
+	  }
+	  else {//call the html page*///----------------------------------------------------
+	  
 	    $appi = (isset($this->map)? $this->map:$this->remoteapp);
 	    //echo $appi;
 		//if splash && no action && no secont time
@@ -301,8 +315,7 @@ class pcntl extends controller {
 	       $sfp = new splash($fp,null,$appi);
 	       //$ret = $sfp->render();
 		   echo $sfp->render();
-	       unset($sfp);		   
-	   
+	       unset($sfp);		   		   
 		   //die();
 	    }	  
 	    else {
@@ -319,8 +332,8 @@ class pcntl extends controller {
 	      $ret .= $hfp->render($this->data);
 	      unset($hfp);
 		}
+	  //}-----------------------
 	  
-
 	  if ($this->debug) 
 	    echo "\naction elapsed: ",$this->getthemicrotime() - $atime, " seconds<br>"; 	    
 	  
@@ -399,7 +412,7 @@ class pcntl extends controller {
    
    
    //overwrite..
-   private function compile($code='',$preprocess=0) { 
+   private function compile($code='', $preprocess=0) {   
    
         if ($preprocess==true) {
 			//PREPROCESSOR TASKS
@@ -538,7 +551,7 @@ class pcntl extends controller {
 		}
 		
 	    return ($dpcmods); //return the array of included dpcs 
-   }    
+   } 
    
    function execute_dpc_code($code) {
    
@@ -567,7 +580,7 @@ class pcntl extends controller {
 	  $t = new ktimer;
 	  
 	  $t->start('compile',1);		  
-      $modules = $this->compile($code,$this->preprocess);   
+      $modules = $this->compile($code); //include and load project file's dpc lib,ext,dpc'  
 	  $t->stop('compile');
 	  if ($this->debug) echo "compile " , $t->value('compile');	  	  
 	
@@ -968,6 +981,10 @@ class pcntl extends controller {
 	  	 
    }       
    
+   protected function footers() {
+     echo   "\n</BODY>\n</HTML>";
+   }
+   
    protected function redirect($url) {
    
 	 //save virtual post (if any)
@@ -1174,6 +1191,41 @@ class pcntl extends controller {
 	 }
    }   
    
+ 	//override to load dpc from priv dirs
+	protected function set_include($dpc,$type,$myargdpc=null) {
+      global $__DPC,$__DPCSEC,$__DPCMEM,$__ACTIONS,$__EVENTS,$__LOCALE,$__PARSECOM,
+             $__BROWSECOM,$__BROWSEACT,$__PRIORITY,$__QUEUE,$__DPCATTR,$__DPCPROC;	  
+
+	  global $activeDPC,$info,$xerror,$GRX,$argdpc; 	//IMPORTANT GLOBALS!!!  
+	
+	  //echo $dpc,"\n";
+      $argdpc = _DPCPATH_;//paramload('DIRECTIVES','dpc_type');
+	  	 
+	  if ($this->shm) {
+	    if (GetGlobal('__USERAGENT')=='HTML')
+	      $includer = "phpdac5://127.0.0.1:19123/" . str_replace(".","/",trim($dpc)) . "." . $type . ".php";
+		else
+		  $includer = "phpdac://" . str_replace(".","/",trim($dpc)) . "." . $type . ".php";  
+	  }	
+	  else {
+	    $_argdpc = $myargdpc?paramload('SHELL','urlpath').$myargdpc:$argdpc;
+		//echo $_argdpc,'<>';
+	    $includer = $_argdpc . "/" . str_replace(".","/",trim($dpc)) . "." . $type . ".php";
+	  }	
+	  
+	  try {
+	    require($includer);	//REQUIRE NOT REQUIRE ONCE DUE TO RE-INIT DPC	
+	  }
+	  catch (Exception $e) {
+         echo 'Caught exception: ',  $e->getMessage(), "\n";
+      }
+	  
+	  //update local table
+      $parts = explode(".",trim($dpc)); 
+	  $class = strtoupper($parts[1]).'_DPC';	  
+      $this->make_local_table($class);	  
+	}     
+   
    protected function create_log() {
 
 	      $srv = $this->agent . "|" . 
@@ -1205,6 +1257,8 @@ class pcntl extends controller {
 	  if (paramload('SHELL','debug')) 
 	    echo "\nTime elapsed: ",$this->getthemicrotime() - $this->mytime, " seconds<br>"; 	  
 	      
+	  echo "<!-- phpdac5 :" .($this->getthemicrotime() - $this->mytime) . "-->";	  
+	  
 	  controller::__destruct();   
    }
    

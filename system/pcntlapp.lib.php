@@ -33,7 +33,7 @@ class pcntl extends controller {
    var $myaction,$my_excluded_action;
    var $grx;
    var $css,$languange,$theme;
-   var $preprocess;
+   var $auto;
    var $js;
    var $agent;
    var $code;
@@ -47,17 +47,16 @@ class pcntl extends controller {
    var $inpath;
    var $map;
    var $sysauth;
-   var $preprocessor;
+   var $preprocessor, $preprocess;  
 
    function __construct($code=null,$preprocess=null,$locales=null,$css=null,$page=null) { 
 
       // CACHE CONTROL 
       //session.cache_limiter specifies cache control method to use for session pages (none/nocache/private/private_no_expire/public). 
       //session_cache_limiter('nocache'); //private_no_expire//'nocache');
-  	  
+  
       session_start(); 
 
-   
       //echo ">>",$_SERVER['QUERY_STRING'];
 	  $this->remoteapp = null;   
 	  $this->map = null;	
@@ -131,6 +130,8 @@ class pcntl extends controller {
 	  $this->theme = (getTheme() ? getTheme() : paramload('SHELL','deftheme'));//$this->setINIParams();	  
 	  if ($this->theme) setTheme($this->theme);	  
 	  
+	  //$this->css = $this->getCSS();		  	  
+	  //echo $this->theme;
 	  //languange pre-selection
       $this->languange = (getlocal() ? getlocal() : paramload('SHELL','dlang'));
 	  if ($this->languange) setlocal($this->languange);	  
@@ -139,7 +140,7 @@ class pcntl extends controller {
 	    echo "\nconstruct elapsed: ",$this->getthemicrotime() - $xtime, " seconds<br>"; 	   	  
 	  
 	  //CCPP preprocessor
-	  $this->preprocess = $preprocess;  	  
+	  $this->preprocess = $preprocess; 	  
 	 
       //dispacth or redirect...
 	  //$this->myaction = $this->_getqueue(); 	//moved in init after compile!!!!
@@ -204,7 +205,7 @@ class pcntl extends controller {
         $theme = @parse_ini_file("../maptheme.ini",1);  	
 	  else
         die("Configuration error, maptheme.ini not exist!");		
-      
+
 		
       SetGlobal('config',$config);
       SetGlobal('theme',$theme);
@@ -215,9 +216,24 @@ class pcntl extends controller {
    public function render($theme=null,$lan=null,$cl=null,$fp=null,$xmlns=null) {      
    
       $atime = $this->getthemicrotime();  
-
-	  $this->theme = ($theme ? $theme : paramload('SHELL','deftheme'));
-	  $theme = $this->theme;  	  
+	  
+	  /*if (isset($this->remoteapp)) {
+	    //loaded at construct
+	    //$params = @parse_ini_file($this->remoteapp."/".$this->file_name.".conf");
+		$fp = $this->fp;//$params['fp'];
+		$lan = $this->lan;//$params['lan'];
+		$cl = $this->cl;//$params['cl'];
+		$theme = $this->theme;//$params['theme'];
+		SetSessionParam('REMOTEAPPSITE',$this->remoteapp);//save 1st call with !APP arg
+		//echo GetSessionParam('REMOTEAPPSITE');
+		//print_r($_SESSION);
+	  }
+	  else {//used by reset to parent root....11.../////??????????????
+	  */
+	    $this->theme = ($theme ? $theme : paramload('SHELL','deftheme'));
+	    $theme = $this->theme;  
+		//echo $theme;
+	  //}		  
       
 	  $this->pre_render($theme,$lan,$cl,$fp);
 	  
@@ -343,8 +359,8 @@ class pcntl extends controller {
    }
    
    
-    //overwrite..
-    private function compile($code='',$preprocess=0) { 
+   //overwrite..
+   private function compile($code='', $preprocess=0) {   
    
         if ($preprocess==true) {
 			//PREPROCESSOR TASKS
@@ -483,7 +499,7 @@ class pcntl extends controller {
 		}
 		
 	    return ($dpcmods); //return the array of included dpcs 
-    }   
+   }    
    
    //overwrite
    public function init($code) {      
@@ -492,7 +508,7 @@ class pcntl extends controller {
 	  $t = new ktimer;
 	  
 	  $t->start('compile',1);		  
-      $modules = $this->compile($code,$this->preprocess); 
+      $modules = $this->compile($code); //include and load project file's dpc lib,ext,dpc'  
 	  $t->stop('compile');
 	  if ($this->debug) echo "compile " , $t->value('compile');	  	  
 	
@@ -1059,6 +1075,8 @@ class pcntl extends controller {
 	  if (paramload('SHELL','debug')) 
 	    echo "\nTime elapsed: ",$this->getthemicrotime() - $this->mytime, " seconds<br>"; 	  
 	      
+	  //echo "<!-- phpdac5 :" .($this->getthemicrotime() - $this->mytime) . "-->";	  
+	  		  
 	  controller::__destruct();   
    }
    

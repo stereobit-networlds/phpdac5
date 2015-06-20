@@ -8,7 +8,7 @@ define(_APPNAME_,$environment['appname']);
 define(_APPPATH_,$environment['apppath']);
 define(_DPCTYPE_,$environment['dpctype']);
 define(_PRJPATH_,$environment['prjpath']);
-define(_DPCPATH_,_APPPATH_.$environment['dpcpath']);//echo _APPPATH_;
+define(_DPCPATH_,_APPPATH_.$environment['dpcpath']);//echo _DPCPATH_;
 define(_ISAPP_,$environment['app']);
 
 //echo _DPCPATH_; print_r($environment); echo getcwd();
@@ -41,7 +41,6 @@ class pcntl extends controller {
    var $myaction,$my_excluded_action;
    var $grx;
    var $css,$languange,$theme;
-   var $preprocess;
    var $js;
    var $agent;
    var $code;
@@ -56,7 +55,7 @@ class pcntl extends controller {
    var $map;
    var $sysauth;
    var $local_security;
-   var $preprocessor;
+   var $preprocessor, $preprocess;   
 
    function __construct($code=null,$preprocess=null,$locales=null,$css=null,$page=null) { 
 
@@ -64,6 +63,7 @@ class pcntl extends controller {
       //session.cache_limiter specifies cache control method to use for session pages (none/nocache/private/private_no_expire/public). 
       //session_cache_limiter('nocache'); //private_no_expire//'nocache');
   
+ 
       session_start(); 
 	  
 	  $this->local_security = array();
@@ -151,19 +151,23 @@ class pcntl extends controller {
 	  $this->theme = (getTheme() ? getTheme() : paramload('SHELL','deftheme'));//$this->setINIParams();	  
 	  if ($this->theme) setTheme($this->theme);	  
 	  
+	  //$this->css = $this->getCSS();		  	  
+	  //echo $this->theme;
 	  //languange pre-selection
-      $this->languange = (getlocal() ? getlocal() : 0);//paramload('SHELL','dlang'));
-	  if ($this->languange) setlocal($this->languange);	 //0 LANGUNAGE CNANGE NOT CORECTLY
+      $this->languange = $locales ? $locales :(getlocal() ? getlocal() : 0);//paramload('SHELL','dlang'));
+	  if ($this->languange) //manual set
+	    setlocal($this->languange);	 
 	        
       if ($this->debug) 
-	    echo "<br/>construct elapsed: ",$this->getthemicrotime() - $xtime, " seconds<br>"; 	   	  
+	    echo "\nconstruct elapsed: ",$this->getthemicrotime() - $xtime, " seconds<br>"; 	   	  
 	  
 	  //CCPP preprocessor
-	  $this->preprocess = $preprocess;  	  
+	  $this->preprocess = $preprocess;   	  
 	 
       //dispacth or redirect...
 	  //$this->myaction = $this->_getqueue(); 	//moved in init after compile!!!!
-      $this->_loadapp($code);	  
+      $this->_loadapp($code);
+	  
    }
 
    
@@ -214,7 +218,7 @@ class pcntl extends controller {
 	      $this->event($this->my_excluded_action);	 
 	    else
           $this->event($this->myaction);	 
-	    if ($this->debug) echo "<br/>event elapsed: ",$this->getthemicrotime() - $etime, " seconds<br>"; 		 	
+	    if ($this->debug) echo "\nevent elapsed: ",$this->getthemicrotime() - $etime, " seconds<br>"; 		 	
 	  } 
 	  else {//get file of code
 	    $initst = GetGlobal('initst');
@@ -228,15 +232,15 @@ class pcntl extends controller {
    protected function _loadinifiles() {
 	  
       if (is_readable("config.ini")) {//in root	   
-	    $_config = @parse_ini_file("config.ini",1);
+	    $config = @parse_ini_file("config.ini",1);
 	    $myconfig = @parse_ini_file("myconfig.txt",1);			
 	  }	
 	  elseif (is_readable("cp/config.ini")) {//in cp
-        $_config = @parse_ini_file("cp/config.ini",1);  
+        $config = @parse_ini_file("cp/config.ini",1);  
 	    $myconfig = @parse_ini_file("cp/myconfig.txt",1);		
 	  }	
 	  elseif (is_readable("../config.ini")) {//in subdir in cp
-        $_config = @parse_ini_file("../config.ini",1);  	
+        $config = @parse_ini_file("../config.ini",1);  	
 	    $myconfig = @parse_ini_file("../myconfig.txt",1);	
 	
 	  }	
@@ -245,10 +249,8 @@ class pcntl extends controller {
 
 	  //extra conf
       if (!empty($myconfig))
-	    $config = array_merge($_config, $myconfig); 			
-        //$config = $myconfig + $_config;
-	  //print_r($_config['SHCUSTOMERS']);
-	  
+        $config = array_merge($config, $myconfig); 			
+		
       if (is_readable("maptheme.ini")) //in root	  
 	    $theme = @parse_ini_file("maptheme.ini",1); 
 	  elseif (is_readable("cp/maptheme.ini")) //in cp
@@ -257,12 +259,16 @@ class pcntl extends controller {
         $theme = @parse_ini_file("../maptheme.ini",1);  	
 	  else
         die("Configuration error, maptheme.ini not exist!");		
-      
+
 		
       SetGlobal('config',$config);
-      SetGlobal('theme',$theme);
-
-	  $this->preprocessor = new CCPP($config);	  
+      SetGlobal('theme',$theme);   
+	  
+	  //echo '<pre>';
+	  //print_r($config);
+	  //echo '</pre>';
+	  
+	  $this->preprocessor = new CCPP($config);
    }   
    
    public function render($theme=null,$lan=null,$cl=null,$fp=null,$xmlns=null) {      
@@ -298,7 +304,7 @@ class pcntl extends controller {
 	    $ret .= $cfp->render($this->data);
 	    unset($cfp);			
 		
-        if ($this->debug) echo "<br/>frontpage elapsed: ",$this->getthemicrotime() - $ftime, " seconds<br>";			  
+        if ($this->debug) echo "\nfrontpage elapsed: ",$this->getthemicrotime() - $ftime, " seconds<br>";			  
 	  }
 	  else {//call the html page
 	  
@@ -331,9 +337,13 @@ class pcntl extends controller {
 	      unset($hfp);
 		}
 	  }
+	  
+	  //footers moved here for other type (xml) returning
+	  //not by default printit at destruct
+	  //NOT NEED && (!$GLOBALS['DIE']))
 
 	  if ($this->debug) 
-	    echo "<br/>action elapsed: ",$this->getthemicrotime() - $atime, " seconds<br>"; 	    
+	    echo "\naction elapsed: ",$this->getthemicrotime() - $atime, " seconds<br>"; 	    
 	  
 	  //echo $_SERVER["HTTP_AUTHORIZATION"];
 	  //echo '|',GetSessionParam('authmethod'),':',GetSessionParam('authverify'),'>';  
@@ -355,7 +365,7 @@ class pcntl extends controller {
 	    //echo 'NO SUPERCACHED';
 	    $ret = $this->render($theme,$lan,$cl,$fp);	
 	  }	
-      if ($this->debug) echo "<br/>supercache elapsed: ",$this->getthemicrotime() - $supertime, " seconds<br>";			  
+      if ($this->debug) echo "\nsupercache elapsed: ",$this->getthemicrotime() - $supertime, " seconds<br>";			  
 	  
 	  return ($ret);
    }
@@ -378,26 +388,8 @@ class pcntl extends controller {
       //change theme manual
       if (isset($theme)) 
 	    setTheme($theme);
-	  //change languange per domain
-	  if ((!GetSessionParam("locale")) && ($iplan = arrayload('SHELL','iplan'))) { 
-	  
-	      $ipool = arrayload('SHELL','ip'); //print_r($ipool);
-		  
-          if (in_array($_SERVER['HTTP_HOST'],$ipool)) {
-		    foreach ($ipool as $id=>$domain) {
-			   if ($domain==$_SERVER['HTTP_HOST']) {
-			      $lan_id = $iplan[$id];
-                  setlocal($lan_id);
-				  echo '>',$lan_id;
-				  break;
-			   }
-			}   
-		  }	
-          elseif (isset($lan)) 
-	        setlocal($lan);
-			
-	  }	//change languange	
-	  elseif (isset($lan)) 
+	  //change languange
+	  if (isset($lan)) 
 	    setlocal($lan);
 	  //change client
 	  if (isset($cl)) {
@@ -567,7 +559,7 @@ class pcntl extends controller {
 		}
 		
 	    return ($dpcmods); //return the array of included dpcs 
-   }   
+   }    
    
    function execute_dpc_code($code) {
    
@@ -595,9 +587,8 @@ class pcntl extends controller {
       //ACCELERATE modules reading...
 	  $t = new ktimer;
 	  
-	  $t->start('compile',1);	
-	  
-      $modules = $this->compile($code,$this->preprocess); 
+	  $t->start('compile',1);		  
+      $modules = $this->compile($code); //include and load project file's dpc lib,ext,dpc'  
 	  $t->stop('compile');
 	  if ($this->debug) echo "compile " , $t->value('compile');	  	  
 	
@@ -608,7 +599,6 @@ class pcntl extends controller {
 	  echo "postcode " , $t->value('postcode');	  */
 	  
 	  //INCLUDE FIRST
-	  if (!empty($modules)) {
 	  $t->start('include');		  
 	  foreach  ($modules as $id=>$dpc) {
 	  
@@ -628,7 +618,7 @@ class pcntl extends controller {
 	  }
 	  $t->stop('include');
 	  if ($this->debug) echo "include " , $t->value('include');	 	   	 
-      }
+   
        //ACCELERATE attributes reading...NO REASON.....
 	 /*
 	  $t->start('attr');	  
@@ -963,6 +953,10 @@ class pcntl extends controller {
 	  	 
    }       
    
+   protected function footers() {
+     echo   "\n</BODY>\n</HTML>";
+   }
+   
    protected function redirect($url) {
    
 	 //save virtual post (if any)
@@ -1191,11 +1185,8 @@ class pcntl extends controller {
 	    $includer = $_argdpc . "/" . str_replace(".","/",trim($dpc)) . "." . $type . ".php";
 	  }	
 	  
-	  try { 
-	    //echo $includer;
-		//$preprocess_includer = $this->preprocessor->execute($includer);
-	    //require($preprocess_includer);	//REQUIRE NOT REQUIRE ONCE DUE TO RE-INIT DPC	
-		require($includer);
+	  try {
+	    require($includer);	//REQUIRE NOT REQUIRE ONCE DUE TO RE-INIT DPC	
 	  }
 	  catch (Exception $e) {
          echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -1238,7 +1229,9 @@ class pcntl extends controller {
 	  
 	  if (paramload('SHELL','debug')) 
 	    echo "\nTime elapsed: ",$this->getthemicrotime() - $this->mytime, " seconds<br>"; 	  
-	      
+	  
+      echo "<!-- phpdac5 :" .($this->getthemicrotime() - $this->mytime) . "-->";	  
+	  
 	  controller::__destruct();   
    }
    
