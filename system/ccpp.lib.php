@@ -93,6 +93,8 @@ class CCPP
         );
         $this->_prepareCache();
         $this->_predefineMacros();
+		
+		$this->_configMacros($config); /*pass conf vars as macros*/
     }
     
     protected function _prepareCache()
@@ -155,6 +157,29 @@ class CCPP
         if (strpos($uOS, 'BSD') !== false)
             $this->macros += array('UNIX' => 1);
     }
+	
+    protected function _configMacros($config=null)
+    {   
+	    $phpdac_macros = array();
+		
+	    //print_r($config);
+		foreach ($config as $section=>$table) {
+		    $sec = strtoupper($section);
+			foreach ($table as $var=>$val) {
+			    $variable = 'CONF_'.$sec.'_'.strtoupper($var);
+			    //echo $variable . '=' . $val.'<br/>';
+			   
+			    if ($val)
+					$phpdac_macros[$variable] = is_numeric($val) ? $val : $this->_protector_quote($val); 
+			}
+		}
+		
+		if (!empty($phpdac_macros))
+			$this->macros += $phpdac_macros;
+			
+		//$this->macros += @parse_ini_file("cp/myconfig.txt",1);	
+    }	
+	
     // Options getters and setters
     public function setOption($name, $value) {$this->options[$name] = $value;}
     public function getOption($name = null)
@@ -610,7 +635,7 @@ class CCPP
     }
     protected function _protector_quote($string) // Not utilized
     {
-        return '"'.addcslashes($string).'"'; // C  style
+        return '"'.addcslashes($string, '"').'"'; // C  style
     }
     protected function _protector_escapeSingleQuote($string)
     {
