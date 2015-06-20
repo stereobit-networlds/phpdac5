@@ -421,7 +421,7 @@ class pcntl extends controller {
    
    //overwrite..
    private function compile($code='', $preprocess=0) {   
-   
+        //echo $this->preprocess,$preprocess,'>';
         if ($preprocess==true) {
 			//PREPROCESSOR TASKS
 			$code = $this->preprocessor->execute($code, 0, true);
@@ -588,7 +588,7 @@ class pcntl extends controller {
 	  $t = new ktimer;
 	  
 	  $t->start('compile',1);		  
-      $modules = $this->compile($code); //include and load project file's dpc lib,ext,dpc'  
+      $modules = $this->compile($code, $this->preprocess); //include and load project file's dpc lib,ext,dpc'  
 	  $t->stop('compile');
 	  if ($this->debug) echo "compile " , $t->value('compile');	  	  
 	
