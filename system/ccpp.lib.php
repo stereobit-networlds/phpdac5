@@ -69,7 +69,7 @@ class CCPP
     protected $_cache_formats = array();
     
     //Constructor
-    public function __construct()
+    public function __construct($config=null)
     {
         $this->options += array(
             //Translation
@@ -172,7 +172,7 @@ class CCPP
         return '';
     }
     
-    public function execute($filename, $offset = 0)
+    public function execute($filename, $offset = 0, $isString=false)
     {
         if ($this->options['execute.method'] == 'include') {
             //tmpname()
@@ -180,11 +180,64 @@ class CCPP
             exit (1);
         }
         else { 
-            $evalCode = $this->parseFilename($filename, $offset);
-            $evalCode = '?>' . $evalCode . ((substr($evalCode, -2) == '?>')?'<?php ':'');
-            return eval($evalCode);
+		    if ($isString==true) {
+			    $scode = '<?'. PHP_EOL .$filename . PHP_EOL .'?>'; //without php tags there is not preprocess
+				$evalCode = $this->parseString($scode, $offset);
+				/*$evalCode = '?>' . $evalCode . ((substr($evalCode, -2) == '?>')?'<?php ':'');*/
+				//return eval($evalCode); //test view
+				return $evalCode;
+			}	
+			else {	
+				$evalCode = $this->parseFilename($filename, $offset);
+				$evalCode = '?>' . $evalCode . ((substr($evalCode, -2) == '?>')?'<?php ':'');
+				return eval($evalCode);
+			}	
         }
     }
+	
+	public function compileString($string, $offset = 0)
+	{
+	    if ($file = explode("\n",$string)) { 
+			//clean code by nulls and commends and hold it as array
+			foreach ($file as $num=>$line) {
+			
+			  if ($trimedline = trim($line)) {
+			    
+			    $strparts = explode(' ',$trimedline);
+			  
+				if (substr_compare($trimedline, '/',0,1)==0) {
+					//echo $trimedline."<br>";				
+				} 
+				elseif (substr_compare($trimedline, '#',0,1)==0) {
+					$lines[] = $trimedline;					
+                }
+				elseif (substr_compare($trimedline, '<',0,1)==0) { //<?php
+					$lines[] = $trimedline;					
+                }
+				elseif (substr_compare($trimedline, '?',0,1)==0) { //?/>
+					$lines[] = $trimedline;					
+                }				
+                elseif (in_array($strparts[0], array('system','use','super','include','instance','load_extension','security','member','dpccode','phpcode','private','public')))
+                    //$lines[] = "echo '$trimedline'; "; //test view 	
+					$lines[] = $trimedline; 	
+				else
+				    $lines[] = $trimedline;
+			  }
+			}
+			//print_r($lines);
+			$code = implode(PHP_EOL, $lines);		
+	    }
+
+        return ($code);		
+	}
+	
+    public function parseString($string, $offset = 0)
+    {
+        //Fetch string contents
+        $code = $this->compileString(substr($string, $offset));
+        return $this->parse($code);
+    }
+	 
     public function parseFilename($filename, $offset = 0)
     {
         //Fetch file contents

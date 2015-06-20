@@ -30,6 +30,7 @@ class pcntlajax extends pcntl {
 		$fp = $this->fp;//$params['fp'];
 		$lan = $this->lan;//$params['lan'];
 		$cl = $this->cl;//$params['cl'];
+		$cl = $this->cl;//$params['cl'];
 		$theme = $this->theme;//$params['theme'];
 		SetSessionParam('REMOTEAPPSITE',$this->remoteapp);//save 1st call with !APP arg
 		//echo GetSessionParam('REMOTEAPPSITE');
@@ -51,10 +52,6 @@ class pcntlajax extends pcntl {
 	    unset($hfp);	  
 	  }
 	  else {//common pcntl response
-	  
-	    if ($this->auto) {//after action to handle js loaded in action
-	      $this->headers();
-	    } 
 	  	  
 	    $appi = (isset($this->map)? $this->map:$this->remoteapp);
 	    //echo $appi;
@@ -64,12 +61,10 @@ class pcntlajax extends pcntl {
 		   SetSessionParam('SPLASH','yes');
 		   //echo 'splash!';
 		   
-		   if (!$this->auto) $this->headers();//anyway show header
 	       $sfp = new splash($fp,null,$appi);
 	       //$ret = $sfp->render();
 		   echo $sfp->render();
-	       unset($sfp);		   
-		   if (!$this->auto) $this->footers();//anyway show footer		   
+	       unset($sfp);		   		   
 		   //die();
 	    }	  
 	    else {
@@ -86,10 +81,7 @@ class pcntlajax extends pcntl {
 	      $ret .= $hfp->render($this->data);
 	      unset($hfp);
 		}	  
-	  }
-	  
-	  //moved from destructor
-      if ((!$this->ajax_var) && ($this->auto)) $this->footers();	  
+	  }  
 	  
 	  if ($this->debug) 
 	    echo "\naction elapsed: ",$this->getthemicrotime() - $atime, " seconds<br>"; 	    
@@ -100,8 +92,6 @@ class pcntlajax extends pcntl {
    //overwrite
    function __destruct() {
    
-      //if ((!$this->ajax_var) && ($this->auto)) $this->footers(); //MOVED TO RENDER
-	  
 	  //////////////////////////////////////////////////////////////////////
 	  //update log files
 	  if (((defined('LOG_DPC')) && (seclevel('LOG_DPC',$this->userLevelID)))) {
