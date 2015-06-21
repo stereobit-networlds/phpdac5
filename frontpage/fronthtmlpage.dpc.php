@@ -67,6 +67,8 @@ class fronthtmlpage {
 	var $language, $isolanguage;
 	
 	var $anel, $anel_signin;
+	var $template, $cptemplate;
+	var $preprocess;
 	 
 	function fronthtmlpage($file=null,$runasuser=null,$runasapp=null) {	
 	
@@ -182,8 +184,12 @@ class fronthtmlpage {
 		
 		self::$staticpath = paramload('SHELL','urlpath');
 		
-		$this->BASE_URL = $this->baseURL();
-		$this->MC_TEMPLATE = remote_paramload('FRONTHTMLPAGE','template',$this->prpath); 
+		$this->template = remote_paramload('FRONTHTMLPAGE','template',$this->prpath);
+		$this->cptemplate = remote_paramload('FRONTHTMLPAGE','cptemplate',$this->prpath);
+		
+		$this->BASE_URL = $this->baseURL(); //echo $_SERVER[REQUEST_URI];
+		$this->MC_TEMPLATE = strstr($_SERVER[REQUEST_URI], 'cp/') ? //is in cp
+							 $this->cptemplate : $this->template; 
 		$this->MC_ROOT = $this->mcRoot($this->MC_TEMPLATE);
 		$this->MC_DEBUG = remote_paramload('FRONTHTMLPAGE','debug',$this->prpath);
 		$this->MC_CURRENT_PAGE = null;
@@ -196,6 +202,10 @@ class fronthtmlpage {
 
         $this->anel = remote_paramload('FRONTHTMLPAGE','anel',$this->prpath); 		
 		$this->anel_signin = remote_paramload('FRONTHTMLPAGE','anelsignin',$this->prpath); 		
+		
+		//problem returning part (outside html body)
+		$this->preprocess = 0;//GetGlobal('controller')->calldpc_var('pcntl.preprosess');
+		
 	}	
 	
     function render($actiondata) { 	
@@ -244,6 +254,8 @@ class fronthtmlpage {
 	  
 	    if ($this->anel) 
 		    $htmldata = $this->anel_panel(); //anel angular js
+		elseif ($this->cptemplate)
+			$htmldata = $this->cpanel_iframe();
 		elseif ($this->dhtml)
 		    $htmldata = $this->fullpage_iframe();//ifwindows();
 		else
@@ -982,30 +994,93 @@ EOF;
     <center>You will be redirected to the new cp location automatically in 1 second. </center>
   </body>
 </html>
-		
-		
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<!--html xmlns="http://www.w3.org/1999/xhtml" lang="EN"> 
-<head> 
-<meta http-equiv="Content-Type" content="text/html; charset=$encoding" />
-<title>{$this->urltitle} - Modify Page ($turl)</title> 
-<style type="text/css">
-    body { margin: 0; overflow: hidden; }
-   .mainframe { position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;  }
-</style>
-</head> 
-<body> 
-<div class="mainframe">
-<iframe id="mainFrame" name="mainFrame" src="$mainframe_url" frameborder="0" marginheight="0" marginwidth="0" width="100%" height="100%" scrolling="auto"></iframe> 
-</div>
-</body> 
-</html-->
 
 EOF;
 	   
 	   return ($fp);
 	}
 	
+	//cpanel template iframe win
+    function cpanel_iframe($query=null) {
+	    $encoding = $this->charset;
+		$is_oversized = $this->app_is_oversized();
+		$is_cpwizard = $this->app_cp_wizard();
+		$is_cropwiz = (GetSessionParam('LOGIN')=='yes') ? $this->app_crop_wizard() : null;
+		
+		if (is_array($_GET)) {
+		  foreach ($_GET as $i=>$t) {
+		    if ( ($i!='pcntladmin') && ($i!='action') ) //??action //bypass pcntladmin=.. param for repoladn same url...
+		      $newquery .= '&'.$i.'='.$t;
+	      }
+		}
+		else 
+		  $newquery = '&t=';		  
+		  
+	    $query = $query?$query:$newquery;
+        $turl = urldecode(decode(GetReq('turl')));			
+		$mc_page = $this->mc_parse_editurl($turl);		
+        $this->MC_CURRENT_PAGE = $mc_page;		
+		$file2edit = $this->MC_TEMPLATE ? $mc_page : strtolower($this->argument).$this->htmlext;
+		
+		//save params
+		@file_put_contents('cp/.turl',urlencode(base64_encode($turl)),LOCK_EX);
+		@file_put_contents('cp/.htmlfile',urlencode(base64_encode($file2edit)),LOCK_EX);
+		
+		if (GetSessionParam('LOGIN')=='yes') {
+			if (($this->argument) && ($this->edithtml)) {
+				//edit html...
+				if ($is_cpwizard)
+				    $mainframe_url = "http://".$this->url;
+				elseif ($is_cropwiz)	
+					$mainframe_url = $turl; //$this->url;					
+				else
+				    $mainframe_url = $is_oversized ?
+				                     $this->self_addspace(true) : 
+				                     "cp/cpmhtmleditor.php?cke4=1&encoding=".$encoding."&htmlfile=" . urlencode(base64_encode($file2edit));
+		    }						 
+			else {
+                if ($is_cpwizard)
+				    $mainframe_url = "http://".$this->url;
+				elseif ($is_cropwiz)	
+					$mainframe_url = $turl; 					
+				else			
+				    $mainframe_url = $is_oversized ?
+				                     $this->self_addspace(true) : 
+						    		 "cp/cp.php?editmode=1&encoding=".$encoding."&turl=" . urlencode(base64_encode($turl));
+			}					 
+		}  
+		else { 
+		    if ($is_cpwizard)
+				$mainframe_url = "http://".$this->url;
+			else
+			    $mainframe_url = $is_oversized ?
+				                 $this->self_addspace(true) : 
+							     "cp/cplogin.php"; //cp/cpside.html
+	  	}
+		
+		$fp = <<<EOF
+ 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN"> 
+<head> 
+<title>{$this->urltitle} - Modify Page ($turl)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=$encoding" />   
+	<style type="text/css">
+		body { margin: 0; overflow: hidden; }
+		.mainframe { position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;  }
+	</style>
+</head> 
+<body> 
+<div class="mainframe">
+<iframe id="mainFrame" name="mainFrame" src="$mainframe_url" frameborder="0" marginheight="0" marginwidth="0" width="100%" height="100%" scrolling="auto"></iframe> 
+</div>
+</body> 
+</html>
+
+EOF;
+	   
+	   return ($fp);
+	}
 	
 	function app_cp_wizard() {
 	    $wizfile = $this->prpath . 'cpwizard.ini';
@@ -1490,8 +1565,21 @@ EOF;
 				
 			//echo 'INCLUDE_PART:'.$pathname;
 			if (is_readable($pathname)) {
-				$contents = @file_get_contents($pathname);
+						
+				//$contents = @file_get_contents($pathname);
 				
+				if ($this->preprocess)  {
+					//CCPP preprocessor task
+					$preprocessor = new CCPP(GetGlobal('config'));				
+	
+					//$contents = $preprocessor->execute($pathname);
+					//$contents = $preprocessor->execute($contents, 0, true);
+					$contents = $preprocessor->execute($pathname, 0, false, true);
+					unset ($preprocessor);
+				}
+				else
+				    $contents = @file_get_contents($pathname);
+					
 				//replace content args
 				if (!empty($arguments)) {
 					preg_match_all($pattern,$contents,$matches);
@@ -1546,7 +1634,15 @@ EOF;
 				
 			//echo 'INCLUDE_PART:'.$pathname;
 			if (is_readable($pathname)) {
-				$contents = @file_get_contents($pathname);
+			
+				if ($this->preprocess) {
+					//CCPP preprocessor task
+					$preprocessor = new CCPP(GetGlobal('config'));				
+					$contents = $preprocessor->execute($pathname, 0, false, true);
+					unset ($preprocessor);
+				}
+				else
+					$contents = @file_get_contents($pathname);
 				
 				//replace content args
 				if (!empty($arguments)) {
@@ -1626,9 +1722,13 @@ EOF;
 	    $pageid = $id ? $id : (GetReq('id') ? GetReq('id') : GetReq('cat'));
 		$mc_page = GetReq('t') ? GetReq('t') : (isset($_GET['mc_page']) ? $_GET['mc_page'] : $defpage);
 		$force_page = GetReq('t') ? GetReq('t') : $_GET['mc_page'];
-		$mctmpl = $tmplname ? $tmplname : $this->MC_TEMPLATE;
 		
-		if ($this->MC_TEMPLATE) {
+		//override due to cptemplate
+		$MC_TEMPLATE = $this->template; 
+				
+		$mctmpl = $tmplname ? $tmplname : $MC_TEMPLATE;
+		
+		if ($MC_TEMPLATE) {
 		
 			$sSQL = 'select mcname from wftmpl where ';
 			$sSQL.= ($pageid) ? 'mcid=' . '"' . $pageid . '" ' : 'mcid=' . '"' . $mc_page . '" ';
@@ -1652,9 +1752,13 @@ EOF;
 	public function mcSavePage($id=null,$mcpage=null,$tmplname=null) {
 	    if ((!$id) || (!$mcpage)) return;
 	    $db = GetGlobal('db');
-		$mctmpl = $tmplname ? $tmplname : $this->MC_TEMPLATE;
 		
-		if ($this->MC_TEMPLATE) {
+		//override due to cptemplate
+		$MC_TEMPLATE = $this->template; 		
+		
+		$mctmpl = $tmplname ? $tmplname : $MC_TEMPLATE;
+		
+		if ($MC_TEMPLATE) {
 		
 			$sSQL = 'select mcname from wftmpl where ';
 			$sSQL.= 'mcid=' . '"' . $id . '" ';
@@ -1704,7 +1808,12 @@ EOF;
 	    $urlpagename = $url ? $url : 'index.php';
 	    $path = $path ? $path : null;
 		$ext = $ext ? $ext : 'php';
-		$bpath = $this->prpath.$this->htmlpage."/".$this->MC_TEMPLATE.'/'.$path;
+		
+		//override due to cptemplate
+		$MC_TEMPLATE = $this->template; 
+		
+		$bpath = $this->prpath.$this->htmlpage."/".$MC_TEMPLATE.'/'.$path;
+		
 	    $mydir = dir($bpath);
 		while ($fileread = $mydir->read ()) { 
 			if (($fileread!='.') && ($fileread!='..')) {
