@@ -65,6 +65,8 @@ class fronthtmlpage {
 	static $staticpath;
 	var $BASE_URL, $MC_ROOT, $MC_TEMPLATE, $MC_DEBUG, $MC_CURRENT_PAGE;
 	var $language, $isolanguage;
+	
+	var $anel, $anel_signin;
 	 
 	function fronthtmlpage($file=null,$runasuser=null,$runasapp=null) {	
 	
@@ -190,7 +192,10 @@ class fronthtmlpage {
 		$this->language = $lans[getlocal()];		
 		$isolans = arrayload('SHELL','isolangs');
 		$this->isolanguage = $isolans[getlocal()];
-		//echo $this->isolanguage,'>';		
+		//echo $this->isolanguage,'>';
+
+        $this->anel = remote_paramload('FRONTHTMLPAGE','anel',$this->prpath); 		
+		$this->anel_signin = remote_paramload('FRONTHTMLPAGE','anelsignin',$this->prpath); 		
 	}	
 	
     function render($actiondata) { 	
@@ -236,7 +241,10 @@ class fronthtmlpage {
 	  //echo $this->htmlfile;
 	  if ($admin) { //echo 'zzzzz';
 	  //  $this->htmlfile = $this->adminview; //override
-	    if ($this->dhtml)
+	  
+	    if ($this->anel) 
+		    $htmldata = $this->anel_panel(); //anel angular js
+		elseif ($this->dhtml)
 		    $htmldata = $this->fullpage_iframe();//ifwindows();
 		else
 	        $htmldata = $this->frameset();
@@ -932,6 +940,71 @@ $js_wizard
 EOF;
         return ($fp);		
     }
+	
+	function anel_panel($query=null) {
+	    $encoding = $this->charset;
+		$is_oversized = $this->app_is_oversized();
+		$is_cpwizard = $this->app_cp_wizard();
+		$is_cropwiz = (GetSessionParam('LOGIN')=='yes') ? $this->app_crop_wizard() : null;
+		
+		if (is_array($_GET)) {
+		  foreach ($_GET as $i=>$t) {
+		    if ( ($i!='pcntladmin') && ($i!='action') ) //??action //bypass pcntladmin=.. param for repoladn same url...
+		      $newquery .= '&'.$i.'='.$t;
+	      }
+		}
+		else 
+		  $newquery = '&t=';		  
+		  
+	    $query = $query?$query:$newquery;
+        $turl = urldecode(decode(GetReq('turl')));			
+		$mc_page = $this->mc_parse_editurl($turl);		
+        $this->MC_CURRENT_PAGE = $mc_page;		
+		$file2edit = $this->MC_TEMPLATE ? $mc_page : strtolower($this->argument).$this->htmlext;
+		
+		//save params
+		@file_put_contents('cp/.turl',urlencode(base64_encode($turl)),LOCK_EX);
+		@file_put_contents('cp/.htmlfile',urlencode(base64_encode($file2edit)),LOCK_EX);
+		
+	    //#/access/signin
+		$mainframe_url = 'http://' . $this->url . str_replace('.','#',$this->anel);
+        /*$mainframe_url.= (GetSessionParam('LOGIN')=='yes') ?
+	                     str_replace('.','#',$this->anel) : 
+						 str_replace('.','#',$this->anel_signin);*/		
+			
+		$fp = <<<EOF
+<html>
+  <head>
+    <title>IU Webmaster redirect</title>
+    <META http-equiv="refresh" content="0;URL=$mainframe_url">
+  </head>
+  <body bgcolor="#ffffff">
+    <center>You will be redirected to the new cp location automatically in 1 second. </center>
+  </body>
+</html>
+		
+		
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<!--html xmlns="http://www.w3.org/1999/xhtml" lang="EN"> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=$encoding" />
+<title>{$this->urltitle} - Modify Page ($turl)</title> 
+<style type="text/css">
+    body { margin: 0; overflow: hidden; }
+   .mainframe { position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;  }
+</style>
+</head> 
+<body> 
+<div class="mainframe">
+<iframe id="mainFrame" name="mainFrame" src="$mainframe_url" frameborder="0" marginheight="0" marginwidth="0" width="100%" height="100%" scrolling="auto"></iframe> 
+</div>
+</body> 
+</html-->
+
+EOF;
+	   
+	   return ($fp);
+	}
 	
 	
 	function app_cp_wizard() {
@@ -1664,7 +1737,6 @@ EOF;
 		return ($ret ? $ret : '_loc_');
 	}
 	
-	
 	//UTF-8
 	
 	public function strutf2iso($string=null,$encoding='ISO-8859-7') {
@@ -1687,8 +1759,7 @@ EOF;
 		$ret = md5($string);
 		//echo 'target:'.$ret.'<br/>';
 		return ($ret);	
-	}
-	
+	}	
 };
 }
 ?>
