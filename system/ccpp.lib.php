@@ -182,7 +182,15 @@ class CCPP
     }	
 	
 	protected function _varMacros()
-	{   //session
+	{   
+	    //cookies
+	    foreach ($_COOKIES as $var=>$val) {
+			$variable = 'COOKIE_'.strtoupper($var);
+			$cookies_macros[$variable] = is_numeric($val) ? $val : $this->_protector_quote($val);
+	    }
+		if (!empty($cookies_macros))
+			$this->macros += $cookies_macros;	
+	    //session
 	    foreach ($_SESSION as $var=>$val) {
 			$variable = 'SES_'.strtoupper($var);
 			$session_macros[$variable] = is_numeric($val) ? $val : $this->_protector_quote($val);

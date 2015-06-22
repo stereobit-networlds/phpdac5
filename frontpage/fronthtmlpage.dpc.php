@@ -1055,7 +1055,7 @@ EOF;
 			else
 			    $mainframe_url = $is_oversized ?
 				                 $this->self_addspace(true) : 
-							     "cp/cplogin.php"; //cp/cpside.html
+							     "cp/cp.php";//"cp/cpside.html";
 	  	}
 		
 		$fp = <<<EOF

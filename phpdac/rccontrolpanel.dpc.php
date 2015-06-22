@@ -146,7 +146,7 @@ class rccontrolpanel {
 	var $environment, $url, $murl, $urlpath;
 	var $dhtml, $tools;
 	var $has_eshop, $htmlfolder, $htmlext;
-	var $appkey;
+	var $appkey, $awstats_url;
 		
 	function rccontrolpanel() {
 		
@@ -199,8 +199,16 @@ class rccontrolpanel {
 		//$this->has_eshop = remote_paramload('ESHOP','code',$this->prpath);		
 		
 		//edit html files
-		$this->htmlfolder  = remote_paramload('FRONTHTMLPAGE','path',$this->prpath);
+		$htmltemplate  = remote_paramload('FRONTHTMLPAGE','template',$this->prpath);
 		$this->htmlext  = remote_paramload('FRONTHTMLPAGE','htmlext',$this->prpath);
+		$this->htmlfolder  = remote_paramload('FRONTHTMLPAGE','path',$this->prpath) .
+		                     ($htmltemplate ? '/'. $htmltemplate : null);
+		//awstats cp window
+        //$url = "cgi-bin/awstats.pl?config=".str_replace('www.','',$_ENV["HTTP_HOST"])."&framename=mainright#top";			   
+		//get last murl element = site.stereobit.gr 
+		$awurl = remote_paramload('RCAWSTATS','file',$this->prpath);
+		$this->awstats_url = $awurl ? $awurl :
+		                     ((!empty($this->murl)) ? array_pop($this->murl) : str_replace('www.','',$_ENV["HTTP_HOST"]));		
 		
 		$this->appkey = new appkey();
 	}
@@ -600,10 +608,7 @@ window.setTimeout(\"neu()\",$mytimeout);
 			   case 'menu'      : $text=null; break; //bypass
 
 		       case 'awstats'   : //$text = "<a href='cgi-bin/awstats.php'>Awstats</a>";
-                               //$url = "cgi-bin/awstats.pl?config=".str_replace('www.','',$_ENV["HTTP_HOST"])."&framename=mainright#top";			   
-							   //get last murl element = site.stereobit.gr 
-							   $awstats_url = (!empty($this->murl)) ? array_pop($this->murl) : str_replace('www.','',$_ENV["HTTP_HOST"]);
-							   $url = "cgi-bin/awstats.pl?config=". $awstats_url ."&framename=mainright#top";
+							   $url = "cgi-bin/awstats.pl?config=". $this->awstats_url ."&framename=mainright#top";
 					           $text .= "<IFRAME SRC=\"$url\" TITLE=\"awstats\" WIDTH=100% HEIGHT=400>
 										<!-- Alternate content for non-supporting browsers -->
 										<H2>Awstats</H2>
@@ -2804,6 +2809,7 @@ EOF;
 				return (false);		 
 
 			//$ret .= 'Filter:'.$filter;  
+			//echo $sourcedir;
 			$mydir = dir($sourcedir);
 			while ($fileread = $mydir->read ()) { 
 	
