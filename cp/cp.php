@@ -20,7 +20,8 @@ include gui.form;
 /load_extension http_class refby _HTTPCL_; 
 
 /---------------------------------load all and create after dpc objects
-public frontpage.fronthtmlpage;
+/public frontpage.fronthtmlpage;
+private frontpage.fronthtmlpage /cgi-bin;
 /public jqgrid.mygrid;
 public gui.ajax;
 public mail.smtpmail;
@@ -36,5 +37,14 @@ public phpdac.rcconfig;
 private phpdac.rccontrolpanel /cgi-bin;
 ',1);
 $lan = getlocal();
-echo $page->render(null,$lan,null,'cp_em.html');
+$cptemplate = GetGlobal('controller')->calldpc_method('rcserver.paramload use FRONTHTMLPAGE+cptemplate');
+//echo $cptemplate,'>';
+
+if ($cptemplate) {
+  $mc_page = 'dashboard';
+  //$mc_page = GetGlobal('controller')->calldpc_method('frontpage.mcSelectPage use index+home++1');
+  echo $page->render(null,getlocal(), null, $cptemplate.'/index.php');
+}
+else
+  echo $page->render(null,$lan,null,'cp_em.html');
 ?>
