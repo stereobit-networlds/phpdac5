@@ -1055,7 +1055,8 @@ EOF;
 			else
 			    $mainframe_url = $is_oversized ?
 				                 $this->self_addspace(true) : 
-							     "cp/cp.php";//"cp/cpside.html";
+							     "cp/cp.php?editmode=1&encoding=".$encoding."&turl=" . urlencode(base64_encode($turl));
+								 //"cp/cpside.html";
 	  	}
 		
 		$fp = <<<EOF

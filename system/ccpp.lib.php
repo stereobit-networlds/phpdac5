@@ -184,23 +184,23 @@ class CCPP
 	protected function _varMacros()
 	{   
 	    //cookies
-	    foreach ($_COOKIES as $var=>$val) {
+	    foreach ($_COOKIE as $var=>$val) {
 			$variable = 'COOKIE_'.strtoupper($var);
-			$cookies_macros[$variable] = is_numeric($val) ? $val : $this->_protector_quote($val);
+			$cookies_macros[$variable] = (is_array($val)) ? 1 : (is_numeric($val) ? $val : $this->_protector_quote($val));
 	    }
 		if (!empty($cookies_macros))
 			$this->macros += $cookies_macros;	
 	    //session
 	    foreach ($_SESSION as $var=>$val) {
 			$variable = 'SES_'.strtoupper($var);
-			$session_macros[$variable] = is_numeric($val) ? $val : $this->_protector_quote($val);
+			$session_macros[$variable] = (is_array($val)) ? 1 : (is_numeric($val) ? $val : $this->_protector_quote($val));
 	    }
 		if (!empty($session_macros))
 			$this->macros += $session_macros;
         //globals
-	    foreach ($_GLOBALS as $var=>$val) {
+	    foreach ($GLOBALS as $var=>$val) {
 			$variable = 'GLOBAL_'.strtoupper($var);
-			$globals_macros[$variable] = is_numeric($val) ? $val : $this->_protector_quote($val);
+			$globals_macros[$variable] = (is_array($val)) ? 1 : (is_numeric($val) ? $val : $this->_protector_quote($val));
 	    }
 		if (!empty($globals_macros))
 			$this->macros += $globals_macros;

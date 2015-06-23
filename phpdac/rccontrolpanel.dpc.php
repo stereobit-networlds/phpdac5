@@ -132,6 +132,9 @@ $__LOCALE['RCCONTROLPANEL_DPC'][164]='_genkey;Gen key;Δημιουργία κλ�
 $__LOCALE['RCCONTROLPANEL_DPC'][165]='_validatekey;Validate key;Έλεγχος κλειδιού';
 $__LOCALE['RCCONTROLPANEL_DPC'][166]='_desendnewsletters;Uninstall newsletter feature;Απεγκατάσταση μαζικών αποστολών e-mails';
 $__LOCALE['RCCONTROLPANEL_DPC'][167]='_newsletters;Newsletter feature installed;Αποστολή e-mails εγκατεστημένο';
+$__LOCALE['RCCONTROLPANEL_DPC'][168]='_year;Year;Έτος';
+$__LOCALE['RCCONTROLPANEL_DPC'][169]='_month;Month;Μήνας';
+$__LOCALE['RCCONTROLPANEL_DPC'][170]='_more;More...;Περισσότερα...';
 
 class rccontrolpanel {
 
@@ -147,6 +150,7 @@ class rccontrolpanel {
 	var $dhtml, $tools;
 	var $has_eshop, $htmlfolder, $htmlext;
 	var $appkey, $awstats_url;
+	var $cptemplate, $stats, $cpStats;
 		
 	function rccontrolpanel() {
 		
@@ -211,6 +215,9 @@ class rccontrolpanel {
 		                     ((!empty($this->murl)) ? array_pop($this->murl) : str_replace('www.','',$_ENV["HTTP_HOST"]));		
 		
 		$this->appkey = new appkey();
+		$this->cptemplate = remote_paramload('FRONTHTMLPAGE','cptemplate',$this->prpath);
+		$this->stats = array();
+		$this->cpStats = false;
 	}
 	 	
     function event($sAction) {    	  
@@ -257,13 +264,15 @@ class rccontrolpanel {
 		                     break;	
 							 
 		 case "cp"          :
-		 default         	:
-		                     if (GetSessionParam('LOGIN')=='yes') { 
-		                      $this->javascript();	
-		                      $this->read_directory($this->path);//echo $this->path;
+		 default         	:if ($this->cptemplate) {
+								$this->set_addons_list();
+		                     }
+                             elseif (GetSessionParam('LOGIN')=='yes') { 
+								$this->javascript();	
+								$this->read_directory($this->path);//echo $this->path;
 							  
-							  //$this->load_graph_objects();
-							  $this->set_addons_list();
+								//$this->load_graph_objects();
+								$this->set_addons_list();
 							 }
 		                     break;				 
        } 
@@ -312,7 +321,14 @@ class rccontrolpanel {
 								break;										  
 		  	    
 			case "cp"          :	
-			default            : $out .= $this->controlpanel(4,3,$this->editmode); 
+			default            : if ($this->cptemplate) {
+			                        //echo 'a'; //not always executed but ony ehwn in dashboard
+									if ((GetReq('t')=='cp')||(!GetReq('t')))
+										$out .= $this->templatepanel(); 
+										$this->cpStats = $this->isStats();
+								 }	
+			                     else
+									$out .= $this->controlpanel(4,3,$this->editmode); 
 			  
 		 } 		 		  
 	  }  
@@ -589,7 +605,7 @@ window.setTimeout(\"neu()\",$mytimeout);
       return ($chart);	
     }
   
-    protected function _show_addons() {  
+    protected function _show_addons($template=false) {  
       $winh = 'SHOW';
 	
       if (!empty($this->environment)) {    
@@ -642,7 +658,7 @@ window.setTimeout(\"neu()\",$mytimeout);
       return ($addons);	
     }
   
-    protected function _show_addon_tools($icons=null) {
+    protected function _show_addon_tools($icons=null, $template=false) {
 
       $seclevid = GetSessionParam('ADMINSecID');   
       //print_r($this->environment);
@@ -798,6 +814,7 @@ window.setTimeout(\"neu()\",$mytimeout);
 		   //echo '<br/>',$tool,$seclevid,'>';
 		}
         elseif ($ison>0) {//disabled tool..enable it, if local privilege is on
+		   //echo $mytool.'<br/>';
 		   switch ($mytool) {
 		       case 'google_addwords'  : if ($e1 = $this->call_wizard_url('google_addwords'))
 											$text = "<a href='$e1'>Enable addwords</a>"; 
@@ -914,27 +931,50 @@ window.setTimeout(\"neu()\",$mytimeout);
         //else disabled tool...		
 		
 		if ($text) {
-				  
-		  if (($icons) && ($icon_on == true)) {
-		     $tool_url = $text ? ($e1 ? $e1 : "help/$mytool/") : null;
-		     $ic[] = $this->icon("images/$mytool.png",$tool_url,$text,4);
-		  }
-		  else {
-		    $mtitle = localize('_'.$mytool, getlocal());
-		    $win1 = new window2($mtitle,$text,null,1,null,'HIDE',null,1);
-            $wtools .= $win1->render();
-            unset ($win1);
+		  if ($template) {
+		    //echo $text,'<br/>';
+		    $tool_url = $text ? ($e1 ? $e1 : "help/$mytool/") : null;
+			$this->stats['Addons']['url'][] = $tool_url;
+			$this->stats['Addons']['href'][] = $text;
+			$_more = localize('_more',getlocal());
+		    $ao = '<div class="msg-time-chat">
+                        <a class="message-img" href="'.$tool_url.'"><img alt="" src="images/'.$mytool.'.png" class="avatar"></a>
+                        <div class="message-body msg-in">
+                            <span class="arrow"></span>
+                            <div class="text">
+                                <p>'.$text.'</p>
+								<!--p class="attribution"><a href="/help/'.$mytool.'/">'.$_more.'</a> at 1:55pm, 13th April 2013</p-->
+                            </div>
+                        </div>
+                   </div>';
+			$this->stats['Addons']['html'] .= $ao;
+          }
+          else {		  
+			if (($icons) && ($icon_on == true)) {
+				$tool_url = $text ? ($e1 ? $e1 : "help/$mytool/") : null;
+				$ic[] = $this->icon("images/$mytool.png",$tool_url,$text,4);
+			}
+			else {
+				$mtitle = localize('_'.$mytool, getlocal());
+				$win1 = new window2($mtitle,$text,null,1,null,'HIDE',null,1);
+				$wtools .= $win1->render();
+				unset ($win1);
+			}	
 		  }	
 		}		
       }	//foreach	
 	  }//if
 	
-	  if (($icons)&&(!empty($ic))) {
-	    $wtools .= $this->show_iconstable($ic,localize('_addons', getlocal()),4); 
+	  if ($template) {
+		return true;
 	  }
-	  //edit photo if id or cat is selected
-	  $wtools .= $this->change_photo_shortcut();
-
+	  else {
+		if (($icons)&&(!empty($ic))) {
+			$wtools .= $this->show_iconstable($ic,localize('_addons', getlocal()),4); 
+		}
+		//edit photo if id or cat is selected
+		$wtools .= $this->change_photo_shortcut();
+      }
       return ($wtools);	
     }	
   
@@ -1013,7 +1053,7 @@ window.setTimeout(\"neu()\",$mytimeout);
 		return ($out);	
     }
   
-    protected function _show_update_tools() {   
+    protected function _show_update_tools($template=false) {   
         $text = 'update';
 		$u = null;
 		//check for time limited services
@@ -1022,7 +1062,20 @@ window.setTimeout(\"neu()\",$mytimeout);
                 $module = $section .'_DPC';
 				$mod = localize($module, getlocal());
 				$update_key_url = $this->call_wizard_url('addkey');//, true);	//is upgrade			
-				$u .= "<h3><a href='$update_key_url'>" . date("F d Y H:i:s.") . "&nbsp;".$mod."&nbsp;".$exp_text."</a></h3>";
+				if ($template) {
+				    $this->stats['Update']['url'][] = $update_key_url;
+					$this->stats['Update']['href'][] = $exp_text;
+					$html = '<li>
+                                <span class="label label-warning"><i class="icon-bell"></i></span>
+                                    <span><a href="'.$update_key_url.'">'.$exp_text.'</a></span>
+                                    <div class="pull-right">
+                                        <span class="small italic ">'.date("F d Y H:i:s.").'</span>
+                                    </div>
+                             </li>';
+					$this->stats['Update']['html'] .= $html;		 
+				}
+				else
+				  $u .= "<h3><a href='$update_key_url'>" . date("F d Y H:i:s.") . "&nbsp;".$mod."&nbsp;".$exp_text."</a></h3>";
 			}
 		}		
 		
@@ -1031,7 +1084,20 @@ window.setTimeout(\"neu()\",$mytimeout);
 		    foreach ($dpc2copy as $d=>$dpc) {
 				//automated dpc update
 				$update_dpc_url = $this->call_wizard_url('dpcmod');//, true);	//is upgrade			
-				$u .= "<h3><a href='$update_dpc_url'>" . date("F d Y H:i:s.") . "&nbsp;".$dpc."</a></h3>";
+				if ($template) {
+					$this->stats['Update']['url'][] = $update_dpc_url;
+					$this->stats['Update']['href'][] = $dpc;
+					$html = '<li>
+                                <span class="label label-success"><i class="icon-bullhorn"></i></span>
+                                    <span><a href="'.$update_dpc_url.'">'.$dpc.'</a></span>
+                                    <div class="pull-right">
+                                        <span class="small italic ">'.date("F d Y H:i:s.").'</span>
+                                    </div>
+                             </li>';
+					$this->stats['Update']['html'] .= $html;
+				}
+				else
+					$u .= "<h3><a href='$update_dpc_url'>" . date("F d Y H:i:s.") . "&nbsp;".$dpc."</a></h3>";
 			}	
 		}
 		
@@ -1040,7 +1106,20 @@ window.setTimeout(\"neu()\",$mytimeout);
 		    foreach ($phpdac2copy as $p=>$dac) {
 				//automated dpc update
 				$update_dac_url = $this->call_wizard_url('dacpage');//, true);	//is upgrade			
-				$u .= "<h3><a href='$update_dac_url'>" . date("F d Y H:i:s.") . "&nbsp;".$dac."</a></h3>";
+				if ($template) {
+					$this->stats['Update']['url'][] = $update_dac_url;
+					$this->stats['Update']['href'][] = $dac;
+					$html = '<li>
+                                <span class="label label-important"><i class="icon-bullhorn"></i></span>
+                                    <span><a href="'.$update_dac_url.'">'.$dac.'</a></span>
+                                    <div class="pull-right">
+                                        <span class="small italic ">'.date("F d Y H:i:s.").'</span>
+                                    </div>
+                             </li>';
+					$this->stats['Update']['html'] .= $html;				
+				}
+				else
+					$u .= "<h3><a href='$update_dac_url'>" . date("F d Y H:i:s.") . "&nbsp;".$dac."</a></h3>";
 			}	
 		}	
 		
@@ -1048,7 +1127,20 @@ window.setTimeout(\"neu()\",$mytimeout);
 		if ($this->free_space() < (100*1024*1024)) { //get more in MB..100MB
 		    //automated add space
 		    $update_url = $this->call_wizard_url('addspace');//, true);	//is upgrade			
-			$u .= "<h3><a href='$update_url'>" . date("F d Y H:i:s.") . "&nbsp;".localize('_addspace', getlocal())."</a></h3>";
+			if ($template) {
+					$this->stats['Update']['url'][] = localize('_addspace', getlocal());
+					$this->stats['Update']['href'][] = $update_url;
+					$html = '<li>
+                                <span class="label label-important"><i class=" icon-bug"></i></span>
+                                    <span><a href="'.$update_url.'">'.localize('_addspace', getlocal()).'</a></span>
+                                    <div class="pull-right">
+                                        <span class="small italic ">'.date("F d Y H:i:s.").'</span>
+                                    </div>
+                             </li>';
+					$this->stats['Update']['html'] .= $html;			
+			}
+			else
+				$u .= "<h3><a href='$update_url'>" . date("F d Y H:i:s.") . "&nbsp;".localize('_addspace', getlocal())."</a></h3>";
 		}
 		
 	    $updates = $this->read_update_directory();
@@ -1057,18 +1149,36 @@ window.setTimeout(\"neu()\",$mytimeout);
 		    foreach ($updates as $update=>$udatecreated) {
 			    //$u .= $udatecreated . '&nbsp;';
 				
-                $update_url = $this->call_wizard_url($update, true);				
-				$u .= "<h3><a href='$update_url'>" . date("F d Y H:i:s.", $udatecreated) . "&nbsp;".str_replace('_',' ',strtoupper($update))."</a></h3>";
+                $update_url = $this->call_wizard_url($update, true);
+				if ($template) {
+					$this->stats['Update']['url'][] = str_replace('_',' ',strtoupper($update));
+					$this->stats['Update']['href'][] = $update_url;
+					$html = '<li>
+                                <span class="label label-warning"><i class="icon-bullhorn"></i></span>
+                                    <span><a href="'.$update_url.'">'.str_replace('_',' ',strtoupper($update)).'</a></span>
+                                    <div class="pull-right">
+                                        <span class="small italic ">'.date("F d Y H:i:s.", $udatecreated).'</span>
+                                    </div>
+                             </li>';
+					$this->stats['Update']['html'] .= $html;				
+				}
+				else				
+					$u .= "<h3><a href='$update_url'>" . date("F d Y H:i:s.", $udatecreated) . "&nbsp;".str_replace('_',' ',strtoupper($update))."</a></h3>";
 			}	
 		}
-	   
-		if ($u) {
-		    $mtitle = localize('_update', getlocal());
-		    $win1 = new window2($mtitle,$u,null,1,null,'SHOW',null,1);
-            $utools .= $win1->render();
-            unset ($win1);
-		}		   
-	   return ($utools);
+
+		if ($template) {
+			return true;
+		}
+		else {		
+			if ($u) {
+				$mtitle = localize('_update', getlocal());
+				$win1 = new window2($mtitle,$u,null,1,null,'SHOW',null,1);
+				$utools .= $win1->render();
+				unset ($win1);
+			}		   
+			return ($utools);
+		}	
     }
    
     protected function _show_tweets_rss($username=null) {
@@ -2244,8 +2354,67 @@ EOF;
 	  return ($size);
     }
   
-    protected function select_timeline($year=null,$month=null,$nodropdown=false) {
+    public function select_timeline($year=null,$month=null,$nodropdown=false,$template=false) {
 	
+	  if ($template) {
+	  
+		for ($y=2010;$y<=intval(date('Y'));$y++) {
+		    $yearsli .= '<li>'. seturl('t=cp&month='.$month.'&year='.$y.'&editmode=1&turl='.GetReq('turl'),$y) .'</li>';
+		}
+		
+		for ($m=1;$m<=12;$m++) {
+		    $mm = sprintf('%02d',$m);
+		    $monthsli .= '<li>' . seturl('t=cp&month='.$mm.'&year='.$year.'&editmode=1&turl='.GetReq('turl'),$mm) .'</li>';
+		}	  
+	  
+	    $_dashboard = localize('_dashboard',getlocal()); 
+		$_year = localize('_year',getlocal());
+		$_month = localize('_month',getlocal());
+	    $navbar = ' <div class="bs-docs-example">
+                                <h4>'.$_dashboard.'</h4>
+                                <div class="navbar">
+                                    <div class="navbar-inner">
+                                        <div class="container">
+                                            <a data-target=".navbar-responsive-collapse" data-toggle="collapse" class="btn btn-navbar">
+                                                <span class="icon-bar"></span>
+                                                <span class="icon-bar"></span>
+                                                <span class="icon-bar"></span>
+                                            </a>
+                                            <a href="#" class="brand">'.$year.' '.$month.'</a>
+                                            <div class="nav-collapse collapse navbar-responsive-collapse">
+                                                <ul class="nav">
+                                                    <!--li class="active"><a href="#">Home</a></li>
+                                                    <li><a href="#">Link</a></li>
+                                                    <li><a href="#">Link</a></li-->													
+                                                </ul>
+                                                <!--form action="" class="navbar-search pull-left">
+                                                    <input type="text" placeholder="Search" class="search-query input-medium">
+                                                </form-->
+                                                <ul class="nav pull-right">
+                                                    <li class="dropdown">
+                                                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">'.$_year.' <b class="caret"></b></a>
+                                                        <ul class="dropdown-menu">'.
+                                                            $yearsli .
+                                                        '</ul>
+                                                    </li>
+													<li class="divider-vertical"></li>
+                                                    <li class="dropdown">
+                                                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">'.$_month.' <b class="caret"></b></a>
+                                                        <ul class="dropdown-menu">'.
+                                                            $monthsli .
+                                                        '</ul>
+                                                    </li>												
+                                                    <!--li><a href="#">Link</a></li-->
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>';
+		$this->stats['Timeline']['value'] = $navbar;					
+		return true;
+	  }
+	  else {
 	  if ($nodropdown) {
         $ret = "<p><b>Year ($year):|";
 		
@@ -2301,146 +2470,205 @@ EOF;
 <input type=\"submit\" value=\" OK \" />
 </form>
 ";	
-
+  
       return ($form);
+	  }
     }
   
-    function site_stats() {
+    function site_stats($tokensout=false) {
 		$db = GetGlobal('db'); 
         $year = GetParam('year') ? GetParam('year') : date('Y'); //null;
 	    $month = GetParam('month') ? GetParam('month') : date('m');//null;		
+		$path = $this->application_path;
+				
+		$tok = $tokensout ? true : ($this->cptemplate ? true : false); 
+		
 		if (GetReq('id')) //item selected..bypass ????
 		    return null; 
+		
+        if (!$tok)		
+			$ret .= $this->select_timeline($year,$month,1);
+        else 
+		    $this->select_timeline($year,$month,1,true);
 			
-		$ret .= $this->select_timeline($year,$month,1);//,true);//???? 
-		//$ret .= "<hr>";
-		
-        $path = $this->application_path;
-
-		$ret_a = $this->free_space(true, $year, $month);
-		
-		$win1 = new window2(localize("_MENU1",getlocal()),$ret_a,null,1,null,'HIDE',null,1);
-	    $ret .= $win1->render();
-		unset ($win1);	
+		if (!$tok) {
+			$ret_a = $this->free_space(true, $year, $month);
+			$win1 = new window2(localize("_MENU1",getlocal()),$ret_a,null,1,null,'HIDE',null,1);
+			$ret .= $win1->render();
+			unset ($win1);				
+		}	
+		else	
+			$this->free_space(true, $year, $month, true);	
 		
 		//if $total_size > ..50MB ...goto upgrade.....
 		
         if (defined('RCKATEGORIES_DPC')) { //???	
 		    $tbl_b = array();
             $sSQL = "select count(id) from users";
-			$res = $db->Execute($sSQL,2);	         
-			$ret_b .= '<br>Total users:'.$res->fields[0];
-            $tbl_b[] = $this->icon("images/file_icon.png",'cpuser.php','Users:'.$res->fields[0],4);			
+			$res = $db->Execute($sSQL,2);
+            if (!$tok) {			
+				$ret_b .= '<br>Total users:'.$res->fields[0];
+				$tbl_b[] = $this->icon("images/file_icon.png",'cpuser.php','Users:'.$res->fields[0],4);			
+			}	
+			else
+                $this->stats['Users']['value'] = $res->fields[0];			
 			
             $sSQL = "select count(id) from users where subscribe=1";
-			$res = $db->Execute($sSQL,2);	         
-			$ret_b .= '<br>Total subscribers:'.$res->fields[0];	
-            $tbl_b[] = $this->icon("images/file_icon.png",'cpsubscribers.php','Subscribers:'.$res->fields[0],4);				
+			$res = $db->Execute($sSQL,2);	
+			if (!$tok) {			
+				$ret_b .= '<br>Total subscribers:'.$res->fields[0];	
+				$tbl_b[] = $this->icon("images/file_icon.png",'cpsubscribers.php','Subscribers:'.$res->fields[0],4);				
+			}	
+			else
+                $this->stats['Users']['Subscribers'] = $res->fields[0];
 			
             $sSQL = "select count(id) from customers";
-			$res = $db->Execute($sSQL,2);	         
-			$ret_b .= '<br>Total customers:'.$res->fields[0];
-            $tbl_b[] = $this->icon("images/file_icon.png",'cpcustomers.php','Customers:'.$res->fields[0],4);				
-
+			$res = $db->Execute($sSQL,2);	
+			if (!$tok) {			
+				$ret_b .= '<br>Total customers:'.$res->fields[0];
+				$tbl_b[] = $this->icon("images/file_icon.png",'cpcustomers.php','Customers:'.$res->fields[0],4);				
+            }
+			else
+                $this->stats['Users']['custromers'] = $res->fields[0];			
+			
             $sSQL = "select count(id) from ulists";
-			$res = $db->Execute($sSQL,2);	         
-			$ret_b .= '<br>Total mails in lists:'.$res->fields[0];
-            $tbl_b[] = $this->icon("images/file_icon.png",'cpsubscibers.php?t=cpviewsubsqueue','Mail queue:'.$res->fields[0],4);				
+			$res = $db->Execute($sSQL,2);	
+			if (!$tok) {			
+				$ret_b .= '<br>Total mails in lists:'.$res->fields[0];
+				$tbl_b[] = $this->icon("images/file_icon.png",'cpsubscibers.php?t=cpviewsubsqueue','Mail queue:'.$res->fields[0],4);				
+			}
+			else
+                $this->stats['Mail']['maillist'] = $res->fields[0];			
 			
-			if (!empty($tbl_b)) 
-				$ret_b = $this->show_iconstable($tbl_b,null,4);
+			if (!$tok) {
+				if (!empty($tbl_b)) 
+					$ret_b = $this->show_iconstable($tbl_b,null,4);
 			
-		    $win1 = new window2(localize("_MENU2",getlocal()),$ret_b,null,1,null,'HIDE',null,1);
-	        $ret .= $win1->render();
-		    unset ($win1);				
+				$win1 = new window2(localize("_MENU2",getlocal()),$ret_b,null,1,null,'HIDE',null,1);
+				$ret .= $win1->render();
+				unset ($win1);				
+			}
 			
 			$tbl_c = array();
             $sSQL = "select count(id) from pphotos where stype='SMALL'";
-			$res = $db->Execute($sSQL,2);	         
-			$ret_c .= '<br>Total photos in database (small):'.$res->fields[0];	
-			$tbl_c[] = $this->icon("images/file_icon.png",'#','Photos in DB (small):'. $res->fields[0],4);					
+			$res = $db->Execute($sSQL,2);
+			if (!$tok) {			
+				$ret_c .= '<br>Total photos in database (small):'.$res->fields[0];	
+				$tbl_c[] = $this->icon("images/file_icon.png",'#','Photos in DB (small):'. $res->fields[0],4);					
+			}
+			else
+                $this->stats['Items']['DbPicSmall'] = $res->fields[0];			
 			
             $sSQL = "select count(id) from pphotos where stype='MEDIUM'";
-			$res = $db->Execute($sSQL,2);	         
-			$ret_c .= '<br>Total photos in database (medium):'.$res->fields[0];
-			$tbl_c[] = $this->icon("images/file_icon.png",'#','Photos in DB (medium):'. $res->fields[0],4);
+			$res = $db->Execute($sSQL,2);
+			if (!$tok) {			
+				$ret_c .= '<br>Total photos in database (medium):'.$res->fields[0];
+				$tbl_c[] = $this->icon("images/file_icon.png",'#','Photos in DB (medium):'. $res->fields[0],4);
+			}
+			else
+                $this->stats['Items']['DbPicMedium'] = $res->fields[0];			
 			
             $sSQL = "select count(id) from pphotos where stype='LARGE'";
-			$res = $db->Execute($sSQL,2);	         
-			$ret_c .= '<br>Total photos in database (large):'.$res->fields[0];
-			$tbl_c[] = $this->icon("images/file_icon.png",'#','Photos in DB (large):'. $res->fields[0],4);
+			$res = $db->Execute($sSQL,2);
+			if (!$tok) {			
+				$ret_c .= '<br>Total photos in database (large):'.$res->fields[0];
+				$tbl_c[] = $this->icon("images/file_icon.png",'#','Photos in DB (large):'. $res->fields[0],4);
+			}
+			else
+                $this->stats['Items']['DbPicLarge'] = $res->fields[0];
 			
             $sSQL = "select count(id) from pattachments";
-			$res = $db->Execute($sSQL,2);	         
-			$ret_c .= '<br>Total item attachments:'.$res->fields[0];			
-            $tbl_c[] = $this->icon("images/file_icon.png",'#','Files in DB '. $res->fields[0],4);
+			$res = $db->Execute($sSQL,2);	
+			if (!$tok) {			
+				$ret_c .= '<br>Total item attachments:'.$res->fields[0];			
+				$tbl_c[] = $this->icon("images/file_icon.png",'#','Files in DB '. $res->fields[0],4);
+			}
+			else
+                $this->stats['Items']['Attachments'] = $res->fields[0];			
 			
-			if (!empty($tbl_c)) 
-				$ret_c = $this->show_iconstable($tbl_c,null,4);
+			if (!$tok) {
+				if (!empty($tbl_c)) 
+					$ret_c = $this->show_iconstable($tbl_c,null,4);
 			
-		    $win1 = new window2(localize("_MENU3",getlocal()),$ret_c,null,1,null,'HIDE',null,1);
-	        $ret .= $win1->render();
-		    unset ($win1);				
+				$win1 = new window2(localize("_MENU3",getlocal()),$ret_c,null,1,null,'HIDE',null,1);
+				$ret .= $win1->render();
+				unset ($win1);				
+			}	
 		}  
         if (defined('RCITEMS_DPC')) {
             $tbl_d = array();		
 		    $sSQL = "select id,substr(sysins,1,4) as year,substr(sysins,6,2) as month from products where substr(sysins,1,4)='$year' and substr(sysins,6,2)='$month'";
-			//$sSQL = " and ";
 			$res = $db->Execute($sSQL,2);
-			//echo $sSQL;
-			//print_r ($res);
 			$i=0;
 			if (!empty($res)) { 
 				foreach ($res as $n=>$rec) {
 				    $i+=1;					
 				}
 			}
-			$ret_d .= '<br>Items inserted this month:'.$i;
-			$tbl_d[] = $this->icon("images/file_icon.png",'#','Inserts:'.$i,4);
-			
+
+			if (!$tok) {			
+				$ret_d .= '<br>Items inserted this month:'.$i;
+				$tbl_d[] = $this->icon("images/file_icon.png",'#','Inserts:'.$i,4);
+			}
+			else
+                $this->stats['Items']['insert'] = $res->fields[0];			
+						
 		    $sSQL = "select id,substr(sysupd,1,4) as year,substr(sysupd,6,2) as month from products where substr(sysupd,1,4)='$year' and substr(sysupd,6,2)='$month'";
-			//$sSQL = " and ";
 			$res = $db->Execute($sSQL,2);
-			//echo $sSQL;
-			//print_r ($res);
 			$i=0;
 			if (!empty($res)) { 
 				foreach ($res as $n=>$rec) {
 				    $i+=1;				
 				}
 			}
-			$ret_d .= '<br>Items updated this month:'.$i;
-			$tbl_d[] = $this->icon("images/file_icon.png",'cpitems.php','Updates:'.$i,4);
-
-            $sSQL = "select count(id) from products where itmactive=1 or active=101";
-			$res = $db->Execute($sSQL,2);			
-			$ret_d .= '<br>Total active items:'.$res->fields[0];	
-			$tbl_d[] = $this->icon("images/file_icon.png",'cpitems.php','Active:'.$res->fields[0],4);
 			
-            $sSQL = "select count(id) from products where itmactive=0 or active=0";//or...
-			$res = $db->Execute($sSQL,2);			
-			$ret_d .= '<br>Total inactive items:'.$res->fields[0];	
-            $tbl_d[] = $this->icon("images/file_icon.png",'cpitems.php','Inactive:'.$res->fields[0],4);
- 			
+			if (!$tok) {			
+				$ret_d .= '<br>Items updated this month:'.$i;
+				$tbl_d[] = $this->icon("images/file_icon.png",'cpitems.php','Updates:'.$i,4);
+			}
+			else
+                $this->stats['Items']['update'] = $res->fields[0];			
+						
+            $sSQL = "select count(id) from products where itmactive=1 and active=101";
+			$res = $db->Execute($sSQL,2);	
+			if (!$tok) {			
+				$ret_d .= '<br>Total active items:'.$res->fields[0];	
+				$tbl_d[] = $this->icon("images/file_icon.png",'cpitems.php','Active:'.$res->fields[0],4);
+			}
+			else
+                $this->stats['Items']['active'] = $res->fields[0];			
+						
+            $sSQL = "select count(id) from products where (itmactive=0 and active=0) or (itmactive is null and active is null)";//or...
+			$res = $db->Execute($sSQL,2);	
+			if (!$tok) {			
+				$ret_d .= '<br>Total inactive items:'.$res->fields[0];	
+				$tbl_d[] = $this->icon("images/file_icon.png",'cpitems.php','Inactive:'.$res->fields[0],4);
+ 			}
+			else
+                $this->stats['Items']['inactive'] = $res->fields[0];			
+						
             $sSQL = "select count(id) from products";
-			$res = $db->Execute($sSQL,2);			
-			$ret_d .= '<br>Total items:'.$res->fields[0];
-			$tbl_d[] = $this->icon("images/file_icon.png",'cpitems.php','Total:'.$res->fields[0],4);
-			
-            if (!empty($tbl_d)) 
-				$ret_d = $this->show_iconstable($tbl_d,null,4);
+			$res = $db->Execute($sSQL,2);	
+			if (!$tok) {			
+				$ret_d .= '<br>Total items:'.$res->fields[0];
+				$tbl_d[] = $this->icon("images/file_icon.png",'cpitems.php','Total:'.$res->fields[0],4);
+			}
+			else
+                $this->stats['Items']['value'] = $res->fields[0];			
+						
+			if (!$tok) {
+				if (!empty($tbl_d)) 
+					$ret_d = $this->show_iconstable($tbl_d,null,4);
 				
-		    $win1 = new window2(localize("_MENU4",getlocal()),$ret_d,null,1,null,'HIDE',null,1);
-	        $ret .= $win1->render();
-		    unset ($win1);				
+				$win1 = new window2(localize("_MENU4",getlocal()),$ret_d,null,1,null,'HIDE',null,1);
+				$ret .= $win1->render();
+				unset ($win1);				
+			}	
 		} 
         if (defined('RCITEMS_DPC')) {//???????SYNC DPC
 		    $tbl_e = array();
 		    $sSQL = "select id,status,sqlres,sqlquery,substr(date,1,4) as year,substr(date,6,2) as month from syncsql where substr(date,1,4)='$year' and substr(date,6,2)='$month'";
-			//$sSQL = " and ";
 			$res = $db->Execute($sSQL,2);
-			//echo $sSQL;
-			//print_r ($res);
 			$i=0;
 			$chars_send = 0;
 			$noexec_syncs = 0;
@@ -2452,33 +2680,44 @@ EOF;
                         $noexec_syncs+=1;					
 				}
 			}
-			$ret_e .= '<br>Syncs send this month:'.$i;
-			$tbl_e[] = $this->icon("images/file_icon.png",'cpitems.php','Syncs:'.$i,4);
-			$ret_e .= '<br>Syncs not executed this month:'.$noexec_syncs;
-            $tbl_e[] = $this->icon("images/file_icon.png",'cpitems.php','Sync errors:'.$noexec_syncs,4);			
-			$ret_e .= '<br>Syncs data send this month:'.$this->bytesToSize1024($chars_send,1);
-            $tbl_e[] = $this->icon("images/file_icon.png",'cpitems.php','Traffic:'.$this->bytesToSize1024($chars_send,1),4);
+			
+			if (!$tok) {			
+				$ret_e .= '<br>Syncs send this month:'.$i;
+				$tbl_e[] = $this->icon("images/file_icon.png",'cpitems.php','Syncs:'.$i,4);
+				$ret_e .= '<br>Syncs not executed this month:'.$noexec_syncs;
+				$tbl_e[] = $this->icon("images/file_icon.png",'cpitems.php','Sync errors:'.$noexec_syncs,4);			
+				$ret_e .= '<br>Syncs data send this month:'.$this->bytesToSize1024($chars_send,1);
+				$tbl_e[] = $this->icon("images/file_icon.png",'cpitems.php','Traffic:'.$this->bytesToSize1024($chars_send,1),4);
+			}
+			else {
+                $this->stats['Sync']['subtotal'] = $i;			
+				$this->stats['Sync']['noexec'] = $noexec_syncs;
+				$this->stats['Sync']['bytes'] = $this->bytesToSize1024($chars_send,1);
+			}	
 			
 		    $sSQL = "select count(id) from syncsql where substr(date,1,4)='$year'";
-			//echo $sSQL;
 			$res = $db->Execute($sSQL,2);
-			$ret_e .= '<br>Total syncs :'.$res->fields[0]; 	
-			$tbl_e[] = $this->icon("images/file_icon.png",'cpitems.php','Total syncs:'.$res->fields[0],4);			
-            
-			if (!empty($tbl_e)) 
-				$ret_e = $this->show_iconstable($tbl_e,null,4);
+			if (!$tok) {			
+				$ret_e .= '<br>Total syncs :'.$res->fields[0]; 	
+				$tbl_e[] = $this->icon("images/file_icon.png",'cpitems.php','Total syncs:'.$res->fields[0],4);			
+            }
+			else
+                $this->stats['Sync']['value'] = $res->fields[0];
+			
+			if (!$tok) {
+				if (!empty($tbl_e)) 
+					$ret_e = $this->show_iconstable($tbl_e,null,4);
 				
-		    $win1 = new window2(localize("_MENU5",getlocal()),$ret_e,null,1,null,'HIDE',null,1);
-	        $ret .= $win1->render();
-		    unset ($win1);				
+				$win1 = new window2(localize("_MENU5",getlocal()),$ret_e,null,1,null,'HIDE',null,1);
+				$ret .= $win1->render();
+				unset ($win1);				
+			}	
 		}  		
         if (defined('RCMAILDBQUEUE_DPC')) {
 		    $tbl_f = array();
 		    $sSQL = "select id,body,active,status,mailstatus,sender,receiver,substr(timeout,1,4) as year,substr(timeout,6,2) as month from mailqueue where substr(timeout,1,4)='$year' and substr(timeout,6,2)='$month'";
 			$sSQL .= " and active=0";
 			$res = $db->Execute($sSQL,2);
-			//echo $sSQL;
-			//print_r ($res);
 			$i=0;
 			$chars_send = 0;
 			if (!empty($res)) { 
@@ -2487,50 +2726,61 @@ EOF;
                     $chars_send += strlen($rec['body']);				
 				}
 			}
-			$ret_f .= '<br>Mails sent this month:'.$i;
-			$tbl_f[] = $this->icon("images/file_icon.png",'cpsubscribers.php?t=cpviewsubsqueue','Mails sent:'.$i,4);
-			$ret_f .= '<br>Mails data sent this month:'.$this->bytesToSize1024($chars_send,1);
-			$tbl_f[] = $this->icon("images/file_icon.png",'cpsubscribers.php?t=cpviewsubsqueue','Traffic sent:'.$this->bytesToSize1024($chars_send,1),4);
+			if (!$tok) {			
+				$ret_f .= '<br>Mails sent this month:'.$i;
+				$tbl_f[] = $this->icon("images/file_icon.png",'cpsubscribers.php?t=cpviewsubsqueue','Mails sent:'.$i,4);
+				$ret_f .= '<br>Mails data sent this month:'.$this->bytesToSize1024($chars_send,1);
+				$tbl_f[] = $this->icon("images/file_icon.png",'cpsubscribers.php?t=cpviewsubsqueue','Traffic sent:'.$this->bytesToSize1024($chars_send,1),4);
+			}
+			else {
+				$this->stats['Mail']['subtotal'] = $i;
+				$this->stats['Mail']['bytes'] = $this->bytesToSize1024($chars_send,1);
+			}	
 			
 		    $sSQL = "select count(id) from mailqueue where active=1";
-			//echo $sSQL;
 			$res = $db->Execute($sSQL,2);
-			$ret_f .= '<br>Total mails in queue:'.$res->fields[0]; 
-            $tbl_f[] = $this->icon("images/file_icon.png",'cpsubscribers.php?t=cpviewsubsqueue','Active mails:'.$res->fields[0],4);			
-			
+			if (!$tok) {
+				$ret_f .= '<br>Total mails in queue:'.$res->fields[0]; 
+				$tbl_f[] = $this->icon("images/file_icon.png",'cpsubscribers.php?t=cpviewsubsqueue','Active mails:'.$res->fields[0],4);			
+			}
+			else
+                $this->stats['Mail']['value'] = $res->fields[0];
+						
 		    $sSQL = "select count(id) from mailqueue where substr(timeout,1,4)='$year' and active=0";
-			//echo $sSQL;
 			$res = $db->Execute($sSQL,2);
-			$ret_f .= '<br>Total mails send:'.$res->fields[0]; 	          				
-            $tbl_f[] = $this->icon("images/file_icon.png",'cpsubscribers.php?t=cpviewsubsqueue','Total mails:'.$res->fields[0],4);
-			
-			if (!empty($tbl_f)) 
-				$ret_f = $this->show_iconstable($tbl_f,null,4);
+			if (!$tok) {			
+				$ret_f .= '<br>Total mails send:'.$res->fields[0]; 	          				
+				$tbl_f[] = $this->icon("images/file_icon.png",'cpsubscribers.php?t=cpviewsubsqueue','Total mails:'.$res->fields[0],4);
+			}
+			else
+                $this->stats['Mail']['send'] = $res->fields[0];
+						
+			if (!$tok) {
+				if (!empty($tbl_f)) 
+					$ret_f = $this->show_iconstable($tbl_f,null,4);
 				
-		    $win1 = new window2(localize("_MENU6",getlocal()),$ret_f,null,1,null,'HIDE',null,1);
-	        $ret .= $win1->render();
-		    unset ($win1);				
+				$win1 = new window2(localize("_MENU6",getlocal()),$ret_f,null,1,null,'HIDE',null,1);
+				$ret .= $win1->render();
+				unset ($win1);				
+			}	
 		}  
 		if (defined('RCTRANSACTIONS_DPC')) {
 		    $tbl_g = array();
-			
             //trans list, last 5 		
 			$ret_g = GetGlobal('controller')->calldpc_method("rctransactions.getTransactionsList use 5");
 			//more...
 			//$tbutton = seturl('t=cptransview&editmode=1',localize("_moretrans",getlocal()));  
 			//$tbutton = seturl('t=cptransactions&editmode=1',localize("_moretrans",getlocal()));  
-			$tbutton = "<a href='cptransactions.php'>".localize("_moretrans",getlocal())."</a>"; //error in jqgid.lib ..output strarted...!!!
-			$wint = new window(localize(null,getlocal()),$tbutton);
-	        $ret_g .= $wint->render();
-		    unset ($wint);
-			$tbl_g[] = $this->icon("images/file_icon.png",'cptransactions.php',localize("_moretrans",getlocal()),4);
-			
+			if (!$tok) {			
+				$tbutton = "<a href='cptransactions.php'>".localize("_moretrans",getlocal())."</a>"; //error in jqgid.lib ..output strarted...!!!
+				$wint = new window(localize(null,getlocal()),$tbutton);
+				$ret_g .= $wint->render();
+				unset ($wint);
+				$tbl_g[] = $this->icon("images/file_icon.png",'cptransactions.php',localize("_moretrans",getlocal()),4);
+			}
             //summary per month 		
 		    $sSQL = "select tid,cid,tstatus,cost,costpt,payway,roadway,substr(tdate,1,4) as year,substr(tdate,6,2) as month from transactions where substr(tdate,1,4)='$year' and substr(tdate,6,2)='$month'";
-			//$sSQL = " and ";
 			$res = $db->Execute($sSQL,2);
-			//echo $sSQL;
-			//print_r ($res);
 			$i=0;
 			$pay_send = 0;
 			$paynet_send = 0;
@@ -2542,27 +2792,41 @@ EOF;
 				}
 			}	
 			
-			$ret_g .= '<br>Transactions this month:'.$i;
-			$tbl_g[] = $this->icon("images/file_icon.png",'cptransactions.php','Transactions:'.$i,4);
-			$ret_g .= '<br>Monthly revenue (net):'.sprintf("%01.2f", $paynet_send); 	          
-			$tbl_g[] = $this->icon("images/file_icon.png",'cptransactions.php','Revenue (net):'.sprintf("%01.2f", $paynet_send),4);
-			$ret_g .= '<br>Monthly revenue:'.sprintf("%01.2f", $pay_send);
-            $tbl_g[] = $this->icon("images/file_icon.png",'cptransactions.php','Revenue:'.sprintf("%01.2f", $pay_send),4);			
+			if (!$tok) {			
+				$ret_g .= '<br>Transactions this month:'.$i;
+				$tbl_g[] = $this->icon("images/file_icon.png",'cptransactions.php','Transactions:'.$i,4);
+				$ret_g .= '<br>Monthly revenue (net):'.sprintf("%01.2f", $paynet_send); 	          
+				$tbl_g[] = $this->icon("images/file_icon.png",'cptransactions.php','Revenue (net):'.sprintf("%01.2f", $paynet_send),4);
+				$ret_g .= '<br>Monthly revenue:'.sprintf("%01.2f", $pay_send);
+				$tbl_g[] = $this->icon("images/file_icon.png",'cptransactions.php','Revenue:'.sprintf("%01.2f", $pay_send),4);			
+			}
+			else {
+				$this->stats['Transactions']['subtotal'] = $i;
+				$this->stats['Transactions']['revenue'] = sprintf("%01.2f", $pay_send);
+				$this->stats['Transactions']['revenuenet'] = sprintf("%01.2f", $paynet_send);
+			}				
 			
 		    $sSQL = "select sum(cost),sum(costpt) from transactions where substr(tdate,1,4)='$year'";
-			//echo $sSQL;
 			$res = $db->Execute($sSQL,2);
-			$ret_g .= '<br>Total revenue (net):'.sprintf("%01.2f", $res->fields[0]); 	          
-			$tbl_g[] = $this->icon("images/file_icon.png",'cptransactions.php','Total (net):'.sprintf("%01.2f", $res->fields[0]),4);
-			$ret_g .= '<br>Total revenue (taxes included):'.sprintf("%01.2f", $res->fields[1]);			
-			$tbl_g[] = $this->icon("images/file_icon.png",'cptransactions.php','Total:'.sprintf("%01.2f", $res->fields[1]),4);
+			if (!$tok) {			
+				$ret_g .= '<br>Total revenue (net):'.sprintf("%01.2f", $res->fields[0]); 	          
+				$tbl_g[] = $this->icon("images/file_icon.png",'cptransactions.php','Total (net):'.sprintf("%01.2f", $res->fields[0]),4);
+				$ret_g .= '<br>Total revenue (taxes included):'.sprintf("%01.2f", $res->fields[1]);			
+				$tbl_g[] = $this->icon("images/file_icon.png",'cptransactions.php','Total:'.sprintf("%01.2f", $res->fields[1]),4);
+			}
+			else {
+				$this->stats['Transactions']['value'] = sprintf("%01.2f", $res->fields[0]);
+				$this->stats['Transactions']['taxvalue'] = sprintf("%01.2f", $res->fields[1]);
+			}				
 			
-			if (!empty($tbl_g)) 
-				$ret_g = $this->show_iconstable($tbl_g,null,4);
+			if (!$tok) {
+				if (!empty($tbl_g)) 
+					$ret_g = $this->show_iconstable($tbl_g,null,4);
 			
-		    $win1 = new window2(localize("_MENU7",getlocal()),$ret_g,null,1,null,'HIDE',null,1);
-	        $ret .= $win1->render();
-		    unset ($win1);				
+				$win1 = new window2(localize("_MENU7",getlocal()),$ret_g,null,1,null,'HIDE',null,1);
+				$ret .= $win1->render();
+				unset ($win1);				
+			}	
 		}  
         if (defined('RCSAPPVIEW_DPC')) {		  
             //....
@@ -2572,53 +2836,81 @@ EOF;
     }
 	
 	//get the free space
-	protected function free_space($verbose=false, $year=null, $month=null) {
+	protected function free_space($verbose=false, $year=null, $month=null, $template=false) {
 	    $ret = '';
 		$tbl = array();
 		
 		$msize = $this->cached_mail_size($year, $month);
 		$msize2 = $this->bytesToSize1024($msize,1);
-        $ret .= "<br>Mailbox size ". $msize2;
-        $tbl[] = $this->icon("images/file_icon.png",'#','Mailbox size '. $msize2,4);							
-	
+		if (!$template) {		
+			$ret .= "<br>Mailbox size ". $msize2;
+			$tbl[] = $this->icon("images/file_icon.png",'#','Mailbox size '. $msize2,4);							
+	    }
+		else
+			$this->stats['Diskspace']['mailbox'] = $msize2;	
+				
 		$tsize = $this->cached_disk_size($year, $month);
 		$tsize2 = $this->bytesToSize1024($tsize,1);
-        $ret .= "<br>Folder size ". $tsize2;
-		$tbl[] = $this->icon("images/file_icon.png",'#','Folder size '. $tsize2,4);					
-
+		if (!$template) {		
+			$ret .= "<br>Folder size ". $tsize2;
+			$tbl[] = $this->icon("images/file_icon.png",'#','Folder size '. $tsize2,4);					
+        }
+		else
+			$this->stats['Diskspace']['value'] = $tsize2;
+			
         $dsize = $this->cached_database_filesize($year, $month);	
 		$dsize2 = $this->bytesToSize1024($dsize,1);	
-        $ret .= "<br>Database size ". $dsize2;
-		$tbl[] = $this->icon("images/file_icon.png",'#','Database size '. $dsize2,4);					
-
+		if (!$template) {
+			$ret .= "<br>Database size ". $dsize2;
+			$tbl[] = $this->icon("images/file_icon.png",'#','Database size '. $dsize2,4);					
+        }
+		else
+			$this->stats['Diskspace']['database'] = $dsize2;
+			
 		$total_size = $tsize + $dsize + $msize;
 		//echo "Size total ($tsize + $dsize + $msize):",$total_size;
 		$stotal = $this->bytesToSize1024($total_size,1);
-		$ret .= "<br>Total used size ". $stotal;
-		$tbl[] = $this->icon("images/file_icon.png",'#','Size used '. $stotal,4);					
-
+		if (!$template) {		
+			$ret .= "<br>Total used size ". $stotal;
+			$tbl[] = $this->icon("images/file_icon.png",'#','Size used '. $stotal,4);					
+        }
+		else
+			$this->stats['Diskspace']['value'] = $stotal;
+			
 		//alowed size
 		$rtotal = intval(@file_get_contents($this->prpath .'maxsize.conf.php'));
 		//echo 'Size allowed:',$rtotal;
 		$allowed_size = $this->bytesToSize1024($rtotal,1);
-		$ret .= "<br>Total alowed size ". $allowed_size;
-		$tbl[] = $this->icon("images/file_icon.png",'#','Allowed size '. $allowed_size,4);					
-		
+		if (!$template) {
+			$ret .= "<br>Total alowed size ". $allowed_size;
+			$tbl[] = $this->icon("images/file_icon.png",'#','Allowed size '. $allowed_size,4);					
+		}
+		else
+			$this->stats['Diskspace']['size'] = $allowed_size;
+			
 		//remaind size
 		$remain_size = intval($rtotal - $total_size);
 		$rmtotal = $this->bytesToSize1024($remain_size,1);
-		$ret .= "<br>Remaining size ". $rmtotal;
-        $tbl[] = $this->icon("images/file_icon.png",'#','Remaining size '. $rmtotal,4);					
+		if (!$template) {
+			$ret .= "<br>Remaining size ". $rmtotal;
+			$tbl[] = $this->icon("images/file_icon.png",'#','Remaining size '. $rmtotal,4);					
+		}
+		else
+			$this->stats['Diskspace']['remain'] = $rmtotal;		
 		//echo 'Size remain:',$remain_size;
 		
-		if ($verbose) {
-		    if (!empty($tbl)) 
-				$ret = $this->show_iconstable($tbl,null,4);	
+		if (!$template) {
+			if ($verbose) {
+				if (!empty($tbl)) 
+					$ret = $this->show_iconstable($tbl,null,4);	
 				
- 			return ($ret); 			
-        }
-		else
-		    return ($remain_size);
+				return ($ret); 			
+			}
+			else
+				return ($remain_size);
+		}
+        else
+			return true;
         //return ($verbose ? $ret : $remain_size); 		
 	}
 	
@@ -2865,6 +3157,25 @@ EOF;
 
 		return ($ret);  		
     }	
+	
+	protected function templatepanel() {
+		//echo 'z';
+		$this->site_stats(true);
+		$this->_show_update_tools(true);
+		$this->_show_addon_tools(1, true);		
+	}
+	
+	public function getStats($section=null, $subsection=null) {
+		if (!$section) return 0;
+		//print_r($this->stats);//[$section]);
+		//echo $section,'>',$subsection;
+		$sb = $subsection ? $subsection : 'value';
+		return ($this->stats[$section][$sb]);
+	}	
+	
+	public function isStats() {
+		return (!empty($this->stats) ? true : false);
+	}
 	
 };
 }
