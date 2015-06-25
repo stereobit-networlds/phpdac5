@@ -1,7 +1,6 @@
 <?php
 require_once('dpc/system/pcntl.lib.php'); 
 $page = &new pcntl('
-
 super javascript;
 super rcserver.rcssystem;
 
@@ -9,27 +8,31 @@ load_extension adodb refby _ADODB_;
 super database;
 
 /---------------------------------load and create libs
-use xwindow.window,xwindow.window2,browser;
+use xwindow.window;
 use jqgrid.jqgrid;
+use gui.swfcharts;
 /---------------------------------load not create dpc (internal use)
-networlds.clientdpc;
-/include frontpage.fronthtmlpage;
+include networlds.clientdpc;
 include gui.form;
-/include gui.htmlarea;
 
 /---------------------------------load all and create after dpc objects
 private frontpage.fronthtmlpage /cgi-bin;
+#ifdef SES_LOGIN
+public gui.ajax;
 public jqgrid.mygrid;
 public database.dataforms;
-public phpdac.rccontrolpanel;
-public gui.ajax;
-private shop.rctags /cgi-bin;
-
+public shop.rcitems;
+private phpdac.rctags /cgi-bin;
+#endif
+private phpdac.rccontrolpanel /cgi-bin;
 ',1);
-$lan = getlocal();
 
-if (GetReq('editmode')==1)
-  echo $page->render(null,$lan,null,'cpgroup_em.html');
+$cptemplate = GetGlobal('controller')->calldpc_method('rcserver.paramload use FRONTHTMLPAGE+cptemplate');
+
+if ($cptemplate) {
+    $mc_page = (GetSessionParam('LOGIN')) ? 'cp-tags' : 'cp-login';
+	echo $page->render(null,getlocal(), null, $cptemplate.'/index.php');
+}
 else
-  echo $page->render(null,$lan,null,'cpgroup.html');
+	echo $page->render(null,getlocal(),null,'cp_em.html');
 ?>

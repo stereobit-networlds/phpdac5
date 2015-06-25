@@ -1257,7 +1257,8 @@ class pcntl extends controller {
 	  if (paramload('SHELL','debug')) 
 	    echo "\nTime elapsed: ",$this->getthemicrotime() - $this->mytime, " seconds<br>"; 	  
 	      
-	  echo "<!-- phpdac5 :" .($this->getthemicrotime() - $this->mytime) . "-->";	  
+	  //error on ajax
+      //echo "<!-- phpdac5 :" .($this->getthemicrotime() - $this->mytime) . "-->";	  
 	  
 	  controller::__destruct();   
    }

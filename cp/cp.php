@@ -42,13 +42,10 @@ $cptemplate = GetGlobal('controller')->calldpc_method('rcserver.paramload use FR
 
 if ($cptemplate) {
 		
-	$turl = $_GET['turl'];
+	/*$turl = $_GET['turl'];
 	$location = '../' . urldecode(base64_decode($turl));
 	$mylocation = str_replace('_&_', '_%26_',$location);
-	$username = decode(GetSessionParam('UserName')) ?
-				array_shift(explode('@',GetSessionParam('UserName'))) : 
-				array_shift(explode('@',$_POST['cpuser']));
-     
+    */
 	//echo 'template:',$template;  
 	$encoding = $_GET['encoding']?$_GET['encoding']:'utf-8'; 
     $useicons = 0;//1;				

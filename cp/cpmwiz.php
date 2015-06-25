@@ -8,21 +8,27 @@ super rcserver.rcssystem;
 load_extension adodb refby _ADODB_; 
 super database;
 
-/---------------------------------load and create libs
-/use xwindow.window,xwindow.window2,browser;
-
+use xwindow.window;
+use gui.swfcharts;
 /---------------------------------load not create dpc (internal use)
-include networlds.clientdpc;
-/include gui.form;
-			
+include networlds.clientdpc;			
 
 /---------------------------------load all and create after dpc objects
-public frontpage.fronthtmlpage;
+private frontpage.fronthtmlpage /cgi-bin;
+#ifdef SES_LOGIN
 public phpdac.shlogin;
+private shop.rcitems /cgi-bin;
 public phpdac.rcwizard;
-
-
+#endif
+private phpdac.rccontrolpanel /cgi-bin;
 ',1);
+
+$cptemplate = GetGlobal('controller')->calldpc_method('rcserver.paramload use FRONTHTMLPAGE+cptemplate');
 $lan = getlocal();
-echo $page->render(null,$lan,null,"cpwizard$lan.html");//'cp_em.html');
+if ($cptemplate) {
+    $mc_page = (GetSessionParam('LOGIN')) ? 'cp-tags' : 'cp-login';
+	echo $page->render(null,getlocal(), null, $cptemplate.'/index.php');
+}
+else
+	echo $page->render(null,getlocal(),null,"cpwizard$lan.html");
 ?>

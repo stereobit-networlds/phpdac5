@@ -93,15 +93,16 @@ class pcntlajax extends pcntl {
    
 	  //////////////////////////////////////////////////////////////////////
 	  //update log files
-	  if (((defined('LOG_DPC')) && (seclevel('LOG_DPC',$this->userLevelID)))) {
+	  /*if (((defined('LOG_DPC')) && (seclevel('LOG_DPC',$this->userLevelID)))) {
 	       //$this->create_log();
 		   controller::calldpc_method('log.writelog use '. $this->create_log());
-	  }		  
+	  }*/		  
 	  
 	  if (paramload('SHELL','debug')) 
 	    echo "\nTime elapsed: ",$this->getthemicrotime() - $this->mytime, " seconds<br>"; 	  
 	      
-	  echo "<!-- phpdac5 :" .($this->getthemicrotime() - $this->mytime) . "-->";	  
+	  //error on ajax
+      //echo "<!-- phpdac5 :" .($this->getthemicrotime() - $this->mytime) . "-->";	  
 	  
 	  controller::__destruct();   
    }   

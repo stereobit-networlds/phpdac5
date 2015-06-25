@@ -1869,7 +1869,28 @@ EOF;
 		$ret = md5($string);
 		//echo 'target:'.$ret.'<br/>';
 		return ($ret);	
-	}	
+	}
+
+    public function turl($encoded=false) {
+	   
+		if ($turl = $_GET['turl']) {
+		    if ($encoded)
+			    return (urlencode($turl));
+			else {
+				$location = '../' . urldecode(base64_decode($turl));
+				return str_replace('_&_', '_%26_',$location);	
+			}
+		}
+		else
+			return '../index.php';
+    }
+
+    public function cpUsername() {
+		$username = decode(GetSessionParam('UserName')) ?
+							array_shift(explode('@',GetSessionParam('UserName'))) : 
+							array_shift(explode('@',$_POST['cpuser']));	
+		return ($username);
+    }	
 };
 }
 ?>

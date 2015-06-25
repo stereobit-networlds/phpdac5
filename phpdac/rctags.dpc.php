@@ -6,8 +6,8 @@ define("RCTAGS_DPC",true);
 
 $__DPC['RCTAGS_DPC'] = 'rctags';
 
-$a = GetGlobal('controller')->require_dpc('rc/rcbrowser.lib.php');
-require_once($a);
+//$a = GetGlobal('controller')->require_dpc('rc/rcbrowser.lib.php');
+//require_once($a);
 
 $d = GetGlobal('controller')->require_dpc('shop/shtags.dpc.php');
 require_once($d);
@@ -27,26 +27,32 @@ $__ACTIONS['RCTAGS_DPC'][4]='cpeditctag';
 $__ACTIONS['RCTAGS_DPC'][5]='cpedititag';
 
 $__LOCALE['RCTAGS_DPC'][0]='RCTAGS_DPC;SQL tags;Tags SQL';
-$__LOCALE['RCTAGS_DPC'][1]='_LEVEL1;Category Level 1;Κατηγορία επιπέδου 1';
-$__LOCALE['RCTAGS_DPC'][2]='_LEVEL2;Category Level 2;Κατηγορία επιπέδου 2';
-$__LOCALE['RCTAGS_DPC'][3]='_LEVEL3;Category Level 3;Κατηγορία επιπέδου 3';
-$__LOCALE['RCTAGS_DPC'][4]='_LEVEL4;Category Level 4;Κατηγορία επιπέδου 4';
-$__LOCALE['RCTAGS_DPC'][5]='_LEVEL5;Category Level 5;Κατηγορία επιπέδου 5';
-$__LOCALE['RCTAGS_DPC'][6]='_NEWLEVEL;<b>New category</b>;<b>Νέα κατηγορία</b>';
-$__LOCALE['RCTAGS_DPC'][7]='_FLEVEL1;Foreign Alias Level 1;Κατηγορία επιπέδου 1 (Ξενόγλωσση)';
-$__LOCALE['RCTAGS_DPC'][8]='_FLEVEL2;Foreign Alias Level 2;Κατηγορία επιπέδου 2 (Ξενόγλωσση)';
-$__LOCALE['RCTAGS_DPC'][9]='_FLEVEL3;Foreign Alias Level 3;Κατηγορία επιπέδου 3 (Ξενόγλωσση)';
-$__LOCALE['RCTAGS_DPC'][10]='_FLEVEL4;Foreign Alias Level 4;Κατηγορία επιπέδου 4 (Ξενόγλωσση)';
-$__LOCALE['RCTAGS_DPC'][11]='_FLEVEL5;Foreign Alias Level 5;Κατηγορία επιπέδου 5 (Ξενόγλωσση)';
-$__LOCALE['RCTAGS_DPC'][12]='_FNEWLEVEL;<b>New category alias</b>;<b>Νέα κατηγορία (Ξενόγλωσση)</b>';
+$__LOCALE['RCTAGS_DPC'][1]='_LEVEL1;Category Level 1;ΞΞ±Ο„Ξ·Ξ³ΞΏΟΞ―Ξ± ΞµΟ€ΞΉΟ€Ξ­Ξ΄ΞΏΟ… 1';
+$__LOCALE['RCTAGS_DPC'][2]='_LEVEL2;Category Level 2;ΞΞ±Ο„Ξ·Ξ³ΞΏΟΞ―Ξ± ΞµΟ€ΞΉΟ€Ξ­Ξ΄ΞΏΟ… 2';
+$__LOCALE['RCTAGS_DPC'][3]='_LEVEL3;Category Level 3;ΞΞ±Ο„Ξ·Ξ³ΞΏΟΞ―Ξ± ΞµΟ€ΞΉΟ€Ξ­Ξ΄ΞΏΟ… 3';
+$__LOCALE['RCTAGS_DPC'][4]='_LEVEL4;Category Level 4;ΞΞ±Ο„Ξ·Ξ³ΞΏΟΞ―Ξ± ΞµΟ€ΞΉΟ€Ξ­Ξ΄ΞΏΟ… 4';
+$__LOCALE['RCTAGS_DPC'][5]='_LEVEL5;Category Level 5;ΞΞ±Ο„Ξ·Ξ³ΞΏΟΞ―Ξ± ΞµΟ€ΞΉΟ€Ξ­Ξ΄ΞΏΟ… 5';
+$__LOCALE['RCTAGS_DPC'][6]='_NEWLEVEL;<b>New category</b>;<b>ΞΞ­Ξ± ΞΊΞ±Ο„Ξ·Ξ³ΞΏΟΞ―Ξ±</b>';
+$__LOCALE['RCTAGS_DPC'][7]='_FLEVEL1;Foreign Alias Level 1;ΞΞ±Ο„Ξ·Ξ³ΞΏΟΞ―Ξ± ΞµΟ€ΞΉΟ€Ξ­Ξ΄ΞΏΟ… 1 (ΞΞµΞ½ΟΞ³Ξ»Ο‰ΟƒΟƒΞ·)';
+$__LOCALE['RCTAGS_DPC'][8]='_FLEVEL2;Foreign Alias Level 2;ΞΞ±Ο„Ξ·Ξ³ΞΏΟΞ―Ξ± ΞµΟ€ΞΉΟ€Ξ­Ξ΄ΞΏΟ… 2 (ΞΞµΞ½ΟΞ³Ξ»Ο‰ΟƒΟƒΞ·)';
+$__LOCALE['RCTAGS_DPC'][9]='_FLEVEL3;Foreign Alias Level 3;ΞΞ±Ο„Ξ·Ξ³ΞΏΟΞ―Ξ± ΞµΟ€ΞΉΟ€Ξ­Ξ΄ΞΏΟ… 3 (ΞΞµΞ½ΟΞ³Ξ»Ο‰ΟƒΟƒΞ·)';
+$__LOCALE['RCTAGS_DPC'][10]='_FLEVEL4;Foreign Alias Level 4;ΞΞ±Ο„Ξ·Ξ³ΞΏΟΞ―Ξ± ΞµΟ€ΞΉΟ€Ξ­Ξ΄ΞΏΟ… 4 (ΞΞµΞ½ΟΞ³Ξ»Ο‰ΟƒΟƒΞ·)';
+$__LOCALE['RCTAGS_DPC'][11]='_FLEVEL5;Foreign Alias Level 5;ΞΞ±Ο„Ξ·Ξ³ΞΏΟΞ―Ξ± ΞµΟ€ΞΉΟ€Ξ­Ξ΄ΞΏΟ… 5 (ΞΞµΞ½ΟΞ³Ξ»Ο‰ΟƒΟƒΞ·)';
+$__LOCALE['RCTAGS_DPC'][12]='_FNEWLEVEL;<b>New category alias</b>;<b>ΞΞ­Ξ± ΞΊΞ±Ο„Ξ·Ξ³ΞΏΟΞ―Ξ± (ΞΞµΞ½ΟΞ³Ξ»Ο‰ΟƒΟƒΞ·)</b>';
 $__LOCALE['RCTAGS_DPC'][13]='_code;Id;Id';
 $__LOCALE['RCTAGS_DPC'][14]='_tag;Tag;Tag';
-$__LOCALE['RCTAGS_DPC'][15]='_keywords;Keywords;Λέξεις κλειδιά';
-$__LOCALE['RCTAGS_DPC'][16]='_descr;Description;Περιγραφή';
-$__LOCALE['RCTAGS_DPC'][17]='_CLEAR;Clear;Καθαρισμός';
-$__LOCALE['RCTAGS_DPC'][18]='_POST;Post;Αποστολή';
-$__LOCALE['RCTAGS_DPC'][19]='_OK;Success;Επιτυχώς';
-$__LOCALE['RCTAGS_DPC'][20]='_title;Title;Τίτλος';
+$__LOCALE['RCTAGS_DPC'][15]='_keywords;Keywords;Ξ›Ξ­ΞΎΞµΞΉΟ‚ ΞΊΞ»ΞµΞΉΞ΄ΞΉΞ¬';
+$__LOCALE['RCTAGS_DPC'][16]='_descr;Description;Ξ ΞµΟΞΉΞ³ΟΞ±Ο†Ξ®';
+$__LOCALE['RCTAGS_DPC'][17]='_CLEAR;Clear;ΞΞ±ΞΈΞ±ΟΞΉΟƒΞΌΟΟ‚';
+$__LOCALE['RCTAGS_DPC'][18]='_POST;Post;Ξ‘Ο€ΞΏΟƒΟ„ΞΏΞ»Ξ®';
+$__LOCALE['RCTAGS_DPC'][19]='_OK;Success;Ξ•Ο€ΞΉΟ„Ο…Ο‡ΟΟ‚';
+$__LOCALE['RCTAGS_DPC'][20]='_title;Title;Ξ¤Ξ―Ο„Ξ»ΞΏΟ‚';
+$__LOCALE['RCTAGS_DPC'][21]='_tagid;Id;Id';
+$__LOCALE['RCTAGS_DPC'][22]='_tagcode;Code;ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚';
+$__LOCALE['RCTAGS_DPC'][23]='_tagdescr;Description;Ξ ΞµΟΞΉΞ³ΟΞ±Ο†Ξ®';
+$__LOCALE['RCTAGS_DPC'][24]='_tagtitle;Title;Ξ¤Ξ―Ο„Ξ»ΞΏΟ‚';
+$__LOCALE['RCTAGS_DPC'][25]='_tagkeywords;Keywords;ΞΞ»ΞµΞΉΞ΄ΞΉΞ¬';
+$__LOCALE['RCTAGS_DPC'][26]='_tagtag;Tag;Ξ•Ο„ΞΉΞΊΞ­Ο„Ξ±';
 
 class rctags extends shtags {
   
@@ -54,6 +60,7 @@ class rctags extends shtags {
 	var $post, $msg;
 	var $browser;
 	var $editmode;
+	var $cseparator;
 
 	function rctags() {
 	
@@ -66,17 +73,21 @@ class rctags extends shtags {
 	  $this->msg = null;
 	  
 	  if (!$this->editmode) {
-	  //$this->browser = null;
+	  /*$this->browser = null;
 	   $db = GetGlobal('db');
 	   $this->browser = new rcbrowser('vertical',$db,'Kategories','cpkategories','categories','id','id;ctgid;ctgoutline;ctgoutlnorder;active;view;search;cat1;cat2;cat3;cat4;cat5;id',1);	 
 	   
 	   //$this->browser = new rcbrowser($db,'Sqltrans','','syncsql','id','id;fid;time;date;execdate;status;sqlquery;sqlres;reference;id',1);
 	   
-	  /* $this->browser4 = new rcbrowser($db,'Customers','cpcustomers','customers','mail','id;code2;name;afm;address;area;attr1;voice1;voice2;fax;mail;prfdescr;attr1',0);
-	   $this->browser3 = new rcbrowser($db,'Users','cpusers','users','code2','id;code2;email;fname;startdate;subscribe;username;password',0,$this->browser4,'mail',1);
-	   $this->browser2 = new rcbrowser($db,'Stats','cpkategories','stats','tid','id;date;day;month;year;tid;attr1;attr2;vid;id',0,$this->browser3,'code2',7);
-	   $this->browser = new rcbrowser($db,'Items','cpkategories','products','id','code5;active;sysins;itmname;uniname1;uniname2;price0;price1;price2;pricepc;itmdescr;cat0;cat1;cat2;cat3;cat4;id',1,$this->browser2,'tid',0);	  */
-	  }   
+	   //$this->browser4 = new rcbrowser($db,'Customers','cpcustomers','customers','mail','id;code2;name;afm;address;area;attr1;voice1;voice2;fax;mail;prfdescr;attr1',0);
+	   //$this->browser3 = new rcbrowser($db,'Users','cpusers','users','code2','id;code2;email;fname;startdate;subscribe;username;password',0,$this->browser4,'mail',1);
+	   //$this->browser2 = new rcbrowser($db,'Stats','cpkategories','stats','tid','id;date;day;month;year;tid;attr1;attr2;vid;id',0,$this->browser3,'code2',7);
+	   //$this->browser = new rcbrowser($db,'Items','cpkategories','products','id','code5;active;sysins;itmname;uniname1;uniname2;price0;price1;price2;pricepc;itmdescr;cat0;cat1;cat2;cat3;cat4;id',1,$this->browser2,'tid',0);	  
+	   */
+	  }
+
+	  $csep = remote_paramload('RCITEMS','csep',$this->path); 
+      $this->cseparator = $csep ? $csep : '^';		  
 	}
 	
 	function event($event=null) {
@@ -97,43 +108,49 @@ class rctags extends shtags {
 		  case 'cpedititag' :	break;			  							
           case 'cptags' :
 		  default             : //$this->browser->event($event);
-		                       if (!$this->editmode)
-		                        $this->browser->nitobi_javascript();  								  
+		                       /*if (!$this->editmode)
+		                        $this->browser->nitobi_javascript();  	*/							  
         }			
     }
 	
 	function action($action=null) {	
-	
+	   /*
 	   if (!$this->editmode) {
 	     if (GetSessionParam('REMOTELOGIN')) 
 	       $winout = setNavigator(seturl("t=cpremotepanel","Remote Panel"),$this->title); 	 
 	     else  
            $winout = setNavigator(seturl("t=cp","Control Panel"),$this->title);		
-	   }	 		 
+	   }*/	 		 
 	
 	    switch ($action) {	
 			
 		  case 'cpeditctag' :	 
 		  case 'cpedititag' :									
           case 'cptags'     : 
-		  default           :   $out .= $this->show_tags();
+		  default           :   /*
+		                        $out .= $this->show_tags();
                                 //break; 
 		  
 		                        $title = $this->title;
 								//$out = $this->menu();		  
 		                        //$out .= $this->show_menu('cpkategories',3,$this->treeview,'ITEMS','',1);
 								if (!$this->editmode)
-								  $out .= $this->browser->render();							  
+								  $out .= $this->browser->render();	*/
+
+								$out = $this->show_tag_list_grid(null,null,null,null,'d',true); 		
+											
         }
 		
-        
+		return ($out);
+		
+        /*
 		$win2 = new window($title,$out);
 		$winout .= $win2->render("center::100%::0::group_dir_headtitle::left::0::0::");
 		unset ($win2);
 		 
-        $winout .= '<hr>'.$this->show_tag_list();		 
-		
-		return ($winout);
+        $winout .= '<hr>'.$this->show_tag_list();
+
+		return ($winout);*/
     }	
 
 	function show_tags() {
@@ -149,9 +166,9 @@ class rctags extends shtags {
 	
 		$code = $item ? $item : $cat;
 		
-        $tcode = $greek_item ? $greek_item : $greek_cat;
+        /*$tcode = $greek_item ? $greek_item : $greek_cat;
         if ($c = $this->is_tag($tcode))
-            $code = $c;		
+            $code = $c;		*/
 		//echo $code,'>',$tcode;
 		
         $sSQL = "select code,tag,$itmkeywords,$itmdescr,$itmtitle from ptags ";
@@ -181,8 +198,8 @@ class rctags extends shtags {
 	   $itmdescr = $lan?'descr'.$lan:'descr0'; 	
        $itmtitle = $lan?'title'.$lan:'title0';	   
  	   	 
-	   if (stristr($code ,'^'))
-	     $cc = explode('^',$code);  
+	   if (stristr($code ,$this->cseparator))
+	     $cc = explode($this->cseparator,$code);  
 	   else
 	     $cc[] = $code;	 
 	   //print_r($cc);
@@ -326,7 +343,7 @@ class rctags extends shtags {
 		 $sSQL .= " WHERE length(code)=$length";
 	   }	 
 	   elseif ($cat = GetReq('cat')) {
-	     $root = array_shift(explode('^',$cat));
+	     $root = array_shift(explode($this->cseparator,$cat));
 	     $sSQL .= " WHERE code like '$root%'";
 	   }	 
        //else all	   
@@ -362,6 +379,94 @@ class rctags extends shtags {
 	   $myrec = new window($title,$ret);
 	   $out .= $myrec->render("center::100%::0::group_article_table::left::3::3::");
 	   return ($out); 		  
+  }
+  
+  function show_tag_list_grid($width=null, $height=null, $rows=null, $editlink=null, $mode=null, $noctrl=false) {
+	    $height = $height ? $height : 800;
+        $rows = $rows ? $rows : 36;
+        $width = $width ? $width : null; //wide
+        $mode = $mode ? $mode : 'd';
+	    $noctrl = $noctrl ? 0 : 1;  
+	    $lan = getlocal()?getlocal():0;
+		$selected_code = GetReq('id') ? GetReq('id') :
+		                 (GetReq('cat') ? GetReq('cat') : null);
+  
+		if (defined('MYGRID_DPC')) {
+		
+			//$xsSQL = "select id,code,tag,keywords{$lan},descr{$lan},title{$lan} from ptags ";
+			//$out .= GetGlobal('controller')->calldpc_method("mygrid.grid use grid1+ptags+$xsSQL+d++id+1+1+20+400");
+			
+			$myfields = 'id,code,tag,';
+			$mytitles = localize('_tagid',getlocal()) . ',' . localize('_tagcode',getlocal()) . ',' . localize('_tagtag',getlocal()) . ',';				 		
+			$myfields .= "keywords{$lan},descr{$lan},title{$lan}";
+			$mytitles .= localize('_tagkeywords',getlocal()) . ',' . localize('_tagdescr',getlocal()) . ',' . localize('_tagtitle',getlocal()) . ',';		 		 
+		
+		    if ($selected_code)
+			   $where = " where code='$selected_code'";
+			$xsSQL = 'select * from (select '.$myfields . " from ptags $where) as o";
+
+			$farr = explode(',',$myfields);
+			$tarr = explode(',',$mytitles);
+			foreach ($farr as $i=>$t) {
+				if ($t=='id') {
+					$type = 6;
+					$edit = null;	
+					$options = null;					    
+				}
+				elseif ($t=='code') {
+					if ((($mode=='e') || ($mode=='r')) && ($editlink)) {//only edit/read mode
+						$type = 'link';
+						$edit = 6;			  
+						$options = $editlink ;
+					}
+					else {
+						$type = 6;
+						$edit = 1;	
+						$options = null;	
+					}				
+				}		   
+				/*elseif (stristr($t,'active') || stristr($t,'search') || stristr($t,'view')) {
+					$type = 'boolean';
+					$edit = 1;
+					$options = "1:0";
+				}
+				elseif (stristr($t,'cat')) {
+					$type = 10;//'select';//if jqgrid is not paid, not applicable
+					$edit = 1;
+				}*/
+				else {
+					$type = 20;
+					$edit = 1;
+					$options = null; 
+				}
+				$title = $tarr[$i];//localize('_'.$t,getlocal());
+				GetGlobal('controller')->calldpc_method("mygrid.column use grid1+$t|".$title."|$type|$edit|$options");
+			} 
+
+			$out .= GetGlobal('controller')->calldpc_method("mygrid.grid use grid1+ptags+$xsSQL+$mode++id+$noctrl+1+$rows+$height+$width");			
+		}  
+		return ($out);
+  }  
+  
+  /*used by fast item insert cp*/
+  function add_tags_data($code=null,$title=null,$descr=null,$keywords=null) {
+        if (!$code) return;
+        $db = GetGlobal('db'); 
+	    $lan = getlocal();
+	    $itmkeywords = $lan?'keywords'.$lan:'keywords0';
+	    $itmdescr = $lan?'descr'.$lan:'descr0'; 
+        $itmtitle = $lan?'title'.$lan:'title0';  
+  
+        $sSQL = "insert into ptags (code,tag,$itmkeywords,$itmdescr,$itmtitle) values (";
+	    $sSQL .= $db->qstr($code).",".
+	             $db->qstr($title).",".
+				 $db->qstr($keywords).",".
+				 $db->qstr($descr).",".
+				 $db->qstr($title).
+				 ")"; 
+        //echo $sSQL;
+		$result = $db->Execute($sSQL);
+        return ($result);		
   }
   
 };

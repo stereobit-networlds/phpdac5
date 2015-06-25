@@ -4,23 +4,27 @@ $page = &new pcntl('
 super javascript;
 super rcserver.rcssystem;
 
-/load_extension adodb refby _ADODB_;
-/super database; 
-
+load_extension adodb refby _ADODB_;
+super database; 
+use xwindow.window;
+use gui.swfcharts;
 include networlds.clientdpc;
-
-
-public frontpage.fronthtmlpage;
+private frontpage.fronthtmlpage /cgi-bin;
+#ifdef SES_LOGIN
+public shop.rcitems;
 public rc.rclogo;
-
+#endif
+private phpdac.rccontrolpanel /cgi-bin;
 ',1);
-//print_r($_SESSION);
-$encoding = $_GET['encoding']?$_GET['encoding']:'utf-8';
+$cptemplate = GetGlobal('controller')->calldpc_method('rcserver.paramload use FRONTHTMLPAGE+cptemplate');
 
-
-if (GetSessionParam('LOGIN')!='yes') {
-  //echo 'CKfinder::Not Logged in!';
+if ($cptemplate) {
+    $mc_page = (GetSessionParam('LOGIN')) ? 'cp-ckfinder' : 'cp-login';
+	echo $page->render(null,getlocal(), null, $cptemplate.'/index.php');
+	die();
 }
+else
+	echo $page->render(null,getlocal(),null,'cp_em.html');
 
 ?>
 

@@ -14,32 +14,31 @@ use jqgrid.jqgrid;
 
 /---------------------------------load not create dpc (internal use)
 include networlds.clientdpc;
-include frontpage.fronthtmlpage;
 include gui.form;
-include gui.datepick;
-include mail.smtpmail;
-			
+/include gui.datepick;
+/include mail.smtpmail;			
 
 /---------------------------------load all and create after dpc objects
+private frontpage.fronthtmlpage /cgi-bin;
+#ifdef SES_LOGIN
 public jqgrid.mygrid;
 public gui.ajax;
 public database.dataforms;
 public phpdac.rccontrolpanel;
 public phpdac.rcupload;
-/public mail.abcmail;
-/public shop.rcshmail;
-/public shop.rcshsubscribers;
-/public shop.rckategories;
 private shop.rcitems /cgi-bin;
-/public phpdac.rccustomers;
-/public rc.rcreport;
-/public rcserver.rcsidewin;
 public shop.rcvstats;
 public shop.rctransactions;
+#endif
+private phpdac.rccontrolpanel /cgi-bin;
 ',1);
 
-$lan = getlocal();
+$cptemplate = GetGlobal('controller')->calldpc_method('rcserver.paramload use FRONTHTMLPAGE+cptemplate');
 
-echo $page->render(null,$lan,null,'cp_em.html');
+if ($cptemplate) {
+    $mc_page = (GetSessionParam('LOGIN')) ? 'cp-tags' : 'cp-login';
+	echo $page->render(null,getlocal(), null, $cptemplate.'/index.php');
+}
+else
+	echo $page->render(null,getlocal(),null,'cp_em.html');
 ?>
-

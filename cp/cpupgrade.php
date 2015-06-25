@@ -11,19 +11,27 @@ super database;
 /---------------------------------load and create libs
 use xwindow.window,xwindow.window2,browser;
 use filesystem.downloadfile;
-
+use gui.swfcharts;
 /---------------------------------load not create dpc (internal use)
 include networlds.clientdpc;
-/include gui.form;
-			
 
 #---------------------------------load all and create after dpc objects
-public frontpage.fronthtmlpage;
+private frontpage.fronthtmlpage /cgi-bin;
+#ifdef SES_LOGIN
 public phpdac.shlogin;
 public phpdac.rcconfig;
+private shop.rcitems /cgi-bin;
 public phpdac.rcuwizard;
-
+#endif
+private phpdac.rccontrolpanel /cgi-bin;
 ',1);
-$lan = getlocal();
-echo $page->render(null,$lan,null,"cpwizard$lan.html");//'cp_em.html');
+
+$cptemplate = GetGlobal('controller')->calldpc_method('rcserver.paramload use FRONTHTMLPAGE+cptemplate');
+
+if ($cptemplate) {
+    $mc_page = (GetSessionParam('LOGIN')) ? 'cp-tags' : 'cp-login';
+	echo $page->render(null,getlocal(), null, $cptemplate.'/index.php');
+}
+else
+	echo $page->render(null,getlocal(),null,'cp_em.html');
 ?>

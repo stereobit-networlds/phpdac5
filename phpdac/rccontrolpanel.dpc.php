@@ -48,93 +48,119 @@ $__LOCALE['RCCONTROLPANEL_DPC'][11]='_income;Income;Εισόδημα';
 $__LOCALE['RCCONTROLPANEL_DPC'][12]='_moretrans;All transactions;Όλες οι συναλλαγές';
 
 //cpmdbrec commands
-$__LOCALE['RCCONTROLPANEL_DPC'][80]='_exit;Exit;Έξοδος';
-$__LOCALE['RCCONTROLPANEL_DPC'][81]='_dashboard;Dashboard;Πίνακας ελέγχου';
-$__LOCALE['RCCONTROLPANEL_DPC'][82]='_logout;Logout;Αποσύνδεση';
-$__LOCALE['RCCONTROLPANEL_DPC'][83]='_rssfeeds;RSS Feeds;RSS Feeds';
-$__LOCALE['RCCONTROLPANEL_DPC'][84]='_edititemtext;Edit Item Text;Μεταβολή κειμένου (text) αντικειμένου';
-$__LOCALE['RCCONTROLPANEL_DPC'][85]='_deleteitemattachment;Delete Item Attachment;Διαγραφή συνημμένου είδους';
-$__LOCALE['RCCONTROLPANEL_DPC'][90]='_editcat;Edit Category;Μεταβολή κατηγορίας';
-$__LOCALE['RCCONTROLPANEL_DPC'][91]='_addcat;Add Category;Νέα Κατηγορία';
-$__LOCALE['RCCONTROLPANEL_DPC'][92]='_additem;Add Item;Νέο Είδος';
-$__LOCALE['RCCONTROLPANEL_DPC'][93]='_webstatistics;Statistics;Στατιστικά';
-$__LOCALE['RCCONTROLPANEL_DPC'][94]='_addcathtml;Add Category content;Προσθήκη κειμένου κατηγορίας';
-$__LOCALE['RCCONTROLPANEL_DPC'][95]='_editcathtml;Edit Category content;Μεταβολή κειμένου κατηγορίας';
-$__LOCALE['RCCONTROLPANEL_DPC'][96]='_edititem;Edit Item;Μεταβολή αντικειμένου';
-$__LOCALE['RCCONTROLPANEL_DPC'][97]='_edititemphoto;Edit Photo;Προσθήκη/Μεταβολή φωτογραφίας';
-$__LOCALE['RCCONTROLPANEL_DPC'][98]='_edititemdbhtm;Edit Item Htm (db);Μεταβολή κειμένου (hdb)';
-$__LOCALE['RCCONTROLPANEL_DPC'][99]='_edititemdbhtml;Edit Item Html (db);Μεταβολή κειμένου (h2db)';
-$__LOCALE['RCCONTROLPANEL_DPC'][100]='_edititemdbtext;Edit Item Text (db);Μεταβολή κειμένου (tdb)';
-$__LOCALE['RCCONTROLPANEL_DPC'][101]='_senditemmail;Send e-mail;Αποστολή e-mail';
-$__LOCALE['RCCONTROLPANEL_DPC'][102]='_delitemattachment;Delete content (db);Διαγραφή κειμένου (db)';
-$__LOCALE['RCCONTROLPANEL_DPC'][103]='_edititemtext;Edit Item Text;Μεταβολή κειμένου (text) ';
-$__LOCALE['RCCONTROLPANEL_DPC'][104]='_edititemhtm;Edit Item Htm;Μεταβολή κειμένου (htm) ';
-$__LOCALE['RCCONTROLPANEL_DPC'][105]='_edititemhtml;Edit Item Html;Μεταβολή κειμένου (html) ';
-$__LOCALE['RCCONTROLPANEL_DPC'][106]='_additemhtml;Add Item Html;Εισαγωγή κειμένου';
-$__LOCALE['RCCONTROLPANEL_DPC'][107]='_transactions;Transactions;Συναλλαγές';
-$__LOCALE['RCCONTROLPANEL_DPC'][108]='_users;Users;Χρήστες';
-$__LOCALE['RCCONTROLPANEL_DPC'][109]='_itemattachments2db;Add attachments to db;Μεταφορά κειμένων στην βάση δεδομένων';
-$__LOCALE['RCCONTROLPANEL_DPC'][110]='_importdb;Import Database;Εισαγωγή βάσης δεδομένων';
-$__LOCALE['RCCONTROLPANEL_DPC'][111]='_config;Configuration;Ρυθμίσεις';
-$__LOCALE['RCCONTROLPANEL_DPC'][112]='_contactform;Contact Form;Φόρμα επικοινωνίας';
-$__LOCALE['RCCONTROLPANEL_DPC'][113]='_subscribers;Subscribers;Συνδρομητές';
-$__LOCALE['RCCONTROLPANEL_DPC'][114]='_sitemap;Sitemap;Χάρτης αντικειμένων';
-$__LOCALE['RCCONTROLPANEL_DPC'][115]='_search;Search;Φόρμα Αναζήτησης';
-$__LOCALE['RCCONTROLPANEL_DPC'][116]='_upload;Upload files;Ανέβασμα αρχείων';
-$__LOCALE['RCCONTROLPANEL_DPC'][117]='_uploadid;Upload files;Ανέβασμα αρχείων';
-$__LOCALE['RCCONTROLPANEL_DPC'][118]='_uploadcat;Upload category files;Ανέβασμα αρχείων κατηγορίας';
-$__LOCALE['RCCONTROLPANEL_DPC'][119]='_syncphoto;Sync photos;Συγχρονισμός φωτογραφιών';
-$__LOCALE['RCCONTROLPANEL_DPC'][120]='_syncsql;Sync data;Συγχρονισμός δεδομένων';
-$__LOCALE['RCCONTROLPANEL_DPC'][121]='_dbphoto;Image in DB;Εικόνα στην βάση δεδομένων';
-$__LOCALE['RCCONTROLPANEL_DPC'][122]='_edithtml;Edit html files;Επεξεργασία σελίδων';
-$__LOCALE['RCCONTROLPANEL_DPC'][123]='_awstats;Web statistics;Στατιστικά';
-$__LOCALE['RCCONTROLPANEL_DPC'][124]='_google_analytics;Google Analytics;Στατιστικά Google';
-$__LOCALE['RCCONTROLPANEL_DPC'][125]='_siwapp;Siwapp;Siwapp τιμολόγηση';
-$__LOCALE['RCCONTROLPANEL_DPC'][126]='_MENU1;Size;Μέγεθος';
-$__LOCALE['RCCONTROLPANEL_DPC'][127]='_MENU2;People;Συναλλασόμενοι';
-$__LOCALE['RCCONTROLPANEL_DPC'][128]='_MENU3;Photos & attachments;Φωτογραφίες και έγγραφα';
-$__LOCALE['RCCONTROLPANEL_DPC'][129]='_MENU4;Inventory;Αποθήκη';
-$__LOCALE['RCCONTROLPANEL_DPC'][130]='_MENU5;Synchronize;Συγχρονισμοί';
-$__LOCALE['RCCONTROLPANEL_DPC'][131]='_MENU6;Newsletters;Αποστολές';
-$__LOCALE['RCCONTROLPANEL_DPC'][132]='_MENU7;Orders;Κινήσεις';
-$__LOCALE['RCCONTROLPANEL_DPC'][133]='_add_categories;Upload Categories;Εισαγωγή κατηγοριών';
-$__LOCALE['RCCONTROLPANEL_DPC'][134]='_add_products;Upload Products;Εισαγωγή ειδών';
+$__LOCALE['RCCONTROLPANEL_DPC'][13]='_awstats;Web statistics;Στατιστικά';
+$__LOCALE['RCCONTROLPANEL_DPC'][14]='_google_analytics;Google Analytics;Στατιστικά Google';
+$__LOCALE['RCCONTROLPANEL_DPC'][15]='_siwapp;Siwapp;Siwapp τιμολόγηση';
+$__LOCALE['RCCONTROLPANEL_DPC'][16]='_MENU1;Size;Μέγεθος';
+$__LOCALE['RCCONTROLPANEL_DPC'][17]='_MENU2;People;Συναλλασόμενοι';
+$__LOCALE['RCCONTROLPANEL_DPC'][18]='_MENU3;Photos & attachments;Φωτογραφίες και έγγραφα';
+$__LOCALE['RCCONTROLPANEL_DPC'][19]='_MENU4;Inventory;Αποθήκη';
+$__LOCALE['RCCONTROLPANEL_DPC'][20]='_MENU5;Synchronize;Συγχρονισμοί';
+$__LOCALE['RCCONTROLPANEL_DPC'][21]='_MENU6;Newsletters;Αποστολές';
+$__LOCALE['RCCONTROLPANEL_DPC'][22]='_MENU7;Orders;Κινήσεις';
+$__LOCALE['RCCONTROLPANEL_DPC'][23]='_add_categories;Upload Categories;Εισαγωγή κατηγοριών';
+$__LOCALE['RCCONTROLPANEL_DPC'][24]='_add_products;Upload Products;Εισαγωγή ειδών';
 
-$__LOCALE['RCCONTROLPANEL_DPC'][135]='_google_addwords;Google Adwords;Google Adwords';
-$__LOCALE['RCCONTROLPANEL_DPC'][136]='_upload_logo;Upload logo;Αλλαγή λογοτύπου';
-$__LOCALE['RCCONTROLPANEL_DPC'][137]='_add_recaptcha;ReCaptcha;ReCaptcha';
-$__LOCALE['RCCONTROLPANEL_DPC'][138]='_update;Update;Αναβάθμιση';
-$__LOCALE['RCCONTROLPANEL_DPC'][139]='_backup;Backup;Αποθήκευση δεδομένων';
-$__LOCALE['RCCONTROLPANEL_DPC'][140]='_backup_content;Backup contents;Αποθήκευση στοιχείων';
-$__LOCALE['RCCONTROLPANEL_DPC'][141]='_maildbqueue;Newsletters & mailing lists;Μαζικές αποστολές e-mails';
-$__LOCALE['RCCONTROLPANEL_DPC'][142]='_sendnewsletters;Enable newsletter mailing list feature;Ενεργοποίηση μαζικών αποστολών e-mails';
-$__LOCALE['RCCONTROLPANEL_DPC'][143]='_TWEETSRSS;Feeds & tweets;Ενημέρωση';
-$__LOCALE['RCCONTROLPANEL_DPC'][144]='_add_domainname;Domain name;Domain name';
-$__LOCALE['RCCONTROLPANEL_DPC'][145]='_customers;Customers;Πελάτες';
-$__LOCALE['RCCONTROLPANEL_DPC'][146]='_installeshop;Install e-shop;Εγκατάσταση e-shop';
-$__LOCALE['RCCONTROLPANEL_DPC'][147]='_uninstalleshop;Uninstall e-shop;Κατάργηση e-shop';
-$__LOCALE['RCCONTROLPANEL_DPC'][148]='_eshop;e-shop module;e-shop πρόσθετο';
-$__LOCALE['RCCONTROLPANEL_DPC'][149]='_install;Install;Εγκατάσταση';
-$__LOCALE['RCCONTROLPANEL_DPC'][150]='_ckfinder;CKfinder;CKfinder';
-$__LOCALE['RCCONTROLPANEL_DPC'][151]='_jqgrid;JQgrid;JQgrid';
-$__LOCALE['RCCONTROLPANEL_DPC'][152]='_ieditor;IEditor;IEditor';
-$__LOCALE['RCCONTROLPANEL_DPC'][154]='_addons;Addons;Πρόσθετα';
-$__LOCALE['RCCONTROLPANEL_DPC'][155]='_edit_htmlfiles;Edit system files;Επεξεργασία αρχείων συστήματος';
-$__LOCALE['RCCONTROLPANEL_DPC'][156]='_addspace;Limited space, add space;Πρόσθεσε χωρητικότητα';
-$__LOCALE['RCCONTROLPANEL_DPC'][157]='_ago;after expiration;που έληξε';
-$__LOCALE['RCCONTROLPANEL_DPC'][158]='_fromnow;before expire;πρίν τη λήξη';
-$__LOCALE['RCCONTROLPANEL_DPC'][159]='_modified;modified;Ενημερώθηκε';
-$__LOCALE['RCCONTROLPANEL_DPC'][160]='_ago2;ago;πρίν';
-$__LOCALE['RCCONTROLPANEL_DPC'][161]='_fromnow2;from now;μετά';
-$__LOCALE['RCCONTROLPANEL_DPC'][162]='_cpimages;Update icons;Ενημέρωση εικονιδίων';
-$__LOCALE['RCCONTROLPANEL_DPC'][163]='_addkey;Add key;Εισαγωγή κλειδιού';
-$__LOCALE['RCCONTROLPANEL_DPC'][164]='_genkey;Gen key;Δημιουργία κλειδιού';
-$__LOCALE['RCCONTROLPANEL_DPC'][165]='_validatekey;Validate key;Έλεγχος κλειδιού';
-$__LOCALE['RCCONTROLPANEL_DPC'][166]='_desendnewsletters;Uninstall newsletter feature;Απεγκατάσταση μαζικών αποστολών e-mails';
-$__LOCALE['RCCONTROLPANEL_DPC'][167]='_newsletters;Newsletter feature installed;Αποστολή e-mails εγκατεστημένο';
-$__LOCALE['RCCONTROLPANEL_DPC'][168]='_year;Year;Έτος';
-$__LOCALE['RCCONTROLPANEL_DPC'][169]='_month;Month;Μήνας';
-$__LOCALE['RCCONTROLPANEL_DPC'][170]='_more;More...;Περισσότερα...';
+$__LOCALE['RCCONTROLPANEL_DPC'][25]='_google_addwords;Google Adwords;Google Adwords';
+$__LOCALE['RCCONTROLPANEL_DPC'][26]='_upload_logo;Upload logo;Αλλαγή λογοτύπου';
+$__LOCALE['RCCONTROLPANEL_DPC'][27]='_add_recaptcha;ReCaptcha;ReCaptcha';
+$__LOCALE['RCCONTROLPANEL_DPC'][28]='_update;Update;Αναβάθμιση';
+$__LOCALE['RCCONTROLPANEL_DPC'][29]='_backup;Backup;Αποθήκευση δεδομένων';
+$__LOCALE['RCCONTROLPANEL_DPC'][30]='_backup_content;Backup contents;Αποθήκευση στοιχείων';
+$__LOCALE['RCCONTROLPANEL_DPC'][31]='_maildbqueue;Newsletters & mailing lists;Μαζικές αποστολές e-mails';
+$__LOCALE['RCCONTROLPANEL_DPC'][32]='_sendnewsletters;Enable newsletter mailing list feature;Ενεργοποίηση μαζικών αποστολών e-mails';
+$__LOCALE['RCCONTROLPANEL_DPC'][33]='_TWEETSRSS;Feeds & tweets;Ενημέρωση';
+$__LOCALE['RCCONTROLPANEL_DPC'][34]='_add_domainname;Domain name;Domain name';
+$__LOCALE['RCCONTROLPANEL_DPC'][35]='_customers;Customers;Πελάτες';
+$__LOCALE['RCCONTROLPANEL_DPC'][36]='_installeshop;Install e-shop;Εγκατάσταση e-shop';
+$__LOCALE['RCCONTROLPANEL_DPC'][37]='_uninstalleshop;Uninstall e-shop;Κατάργηση e-shop';
+$__LOCALE['RCCONTROLPANEL_DPC'][38]='_eshop;e-shop module;e-shop πρόσθετο';
+$__LOCALE['RCCONTROLPANEL_DPC'][39]='_install;Install;Εγκατάσταση';
+$__LOCALE['RCCONTROLPANEL_DPC'][40]='_ckfinder;CKfinder;CKfinder';
+$__LOCALE['RCCONTROLPANEL_DPC'][41]='_jqgrid;JQgrid;JQgrid';
+$__LOCALE['RCCONTROLPANEL_DPC'][42]='_ieditor;IEditor;IEditor';
+$__LOCALE['RCCONTROLPANEL_DPC'][43]='_addons;Addons;Πρόσθετα';
+$__LOCALE['RCCONTROLPANEL_DPC'][44]='_edit_htmlfiles;Edit system files;Επεξεργασία αρχείων συστήματος';
+$__LOCALE['RCCONTROLPANEL_DPC'][45]='_addspace;Limited space, add space;Πρόσθεσε χωρητικότητα';
+$__LOCALE['RCCONTROLPANEL_DPC'][46]='_ago;after expiration;που έληξε';
+$__LOCALE['RCCONTROLPANEL_DPC'][47]='_fromnow;before expire;πρίν τη λήξη';
+$__LOCALE['RCCONTROLPANEL_DPC'][48]='_modified;modified;Ενημερώθηκε';
+$__LOCALE['RCCONTROLPANEL_DPC'][49]='_ago2;ago;πρίν';
+$__LOCALE['RCCONTROLPANEL_DPC'][50]='_fromnow2;from now;μετά';
+$__LOCALE['RCCONTROLPANEL_DPC'][51]='_cpimages;Update icons;Ενημέρωση εικονιδίων';
+$__LOCALE['RCCONTROLPANEL_DPC'][52]='_addkey;Add key;Εισαγωγή κλειδιού';
+$__LOCALE['RCCONTROLPANEL_DPC'][53]='_genkey;Gen key;Δημιουργία κλειδιού';
+$__LOCALE['RCCONTROLPANEL_DPC'][54]='_validatekey;Validate key;Έλεγχος κλειδιού';
+$__LOCALE['RCCONTROLPANEL_DPC'][55]='_desendnewsletters;Uninstall newsletter feature;Απεγκατάσταση μαζικών αποστολών e-mails';
+$__LOCALE['RCCONTROLPANEL_DPC'][56]='_newsletters;Newsletter feature installed;Αποστολή e-mails εγκατεστημένο';
+$__LOCALE['RCCONTROLPANEL_DPC'][57]='_year;Year;Έτος';
+$__LOCALE['RCCONTROLPANEL_DPC'][58]='_month;Month;Μήνας';
+$__LOCALE['RCCONTROLPANEL_DPC'][59]='_more;More...;Περισσότερα...';
+
+$__LOCALE['RCCONTROLPANEL_DPC'][60]='_exit;Exit;Έξοδος';
+$__LOCALE['RCCONTROLPANEL_DPC'][61]='_dashboard;Dashboard;Πίνακας ελέγχου';
+$__LOCALE['RCCONTROLPANEL_DPC'][62]='_logout;Logout;Αποσύνδεση';
+$__LOCALE['RCCONTROLPANEL_DPC'][63]='_rssfeeds;RSS Feeds;RSS Feeds';
+$__LOCALE['RCCONTROLPANEL_DPC'][64]='_edititemtext;Edit Item Text;Μεταβολή κειμένου';// (text) αντικειμένου';
+$__LOCALE['RCCONTROLPANEL_DPC'][65]='_deleteitemattachment;Delete Item Attachment;Διαγραφή συνημμένου';// είδους';
+$__LOCALE['RCCONTROLPANEL_DPC'][66]='_editcat;Edit Category;Μεταβολή κατηγορίας';
+$__LOCALE['RCCONTROLPANEL_DPC'][67]='_addcat;Add Category;Νέα Κατηγορία';
+$__LOCALE['RCCONTROLPANEL_DPC'][68]='_additem;Add Item;Νέο Είδος';
+$__LOCALE['RCCONTROLPANEL_DPC'][69]='_webstatistics;Statistics;Στατιστικά';
+$__LOCALE['RCCONTROLPANEL_DPC'][70]='_addcathtml;Add Category Html;Προσθήκη κειμένου';// κατηγορίας';
+$__LOCALE['RCCONTROLPANEL_DPC'][71]='_editcathtml;Edit Category Html;Μεταβολή κειμένου';// κατηγορίας';
+$__LOCALE['RCCONTROLPANEL_DPC'][72]='_edititem;Edit Item;Μεταβολή είδους';// αντικειμένου';
+$__LOCALE['RCCONTROLPANEL_DPC'][73]='_edititemphoto;Edit Photo;Μεταβολή φωτογραφίας';// αντικειμένου';
+$__LOCALE['RCCONTROLPANEL_DPC'][74]='_edititemdbhtm;Edit Item Htm;Μεταβολή κειμένου';// (htm) αντικειμένου (db)';
+$__LOCALE['RCCONTROLPANEL_DPC'][75]='_edititemdbhtml;Edit Item Html;Μεταβολή κειμένου';// (html) αντικειμένου (db)';
+$__LOCALE['RCCONTROLPANEL_DPC'][76]='_edititemdbtext;Edit Item Text;Μεταβολή κειμένου';// (text) αντικειμένου (db)';
+$__LOCALE['RCCONTROLPANEL_DPC'][77]='_senditemmail;Send e-mail;Αποστολή e-mail';
+$__LOCALE['RCCONTROLPANEL_DPC'][78]='_delitemattachment;Delete Text;Διαγραφή κειμένου';// (db)';
+$__LOCALE['RCCONTROLPANEL_DPC'][79]='_edititemtext;Edit Item Text;Μεταβολή κειμένου';// (text) αντικειμένου';
+$__LOCALE['RCCONTROLPANEL_DPC'][80]='_edititemhtm;Edit Item Htm;Μεταβολή κειμένου';// (htm) αντικειμένου';
+$__LOCALE['RCCONTROLPANEL_DPC'][81]='_edititemhtml;Edit Item Html;Μεταβολή κειμένου';// (html) αντικειμένου';
+$__LOCALE['RCCONTROLPANEL_DPC'][82]='_additemhtml;Add Item Html;Εισαγωγή κειμένου';// στο αντικείμενο';
+$__LOCALE['RCCONTROLPANEL_DPC'][83]='_transactions;Transactions;Συναλλαγές';
+$__LOCALE['RCCONTROLPANEL_DPC'][84]='_users;Users;Χρήστες';
+$__LOCALE['RCCONTROLPANEL_DPC'][85]='_itemattachments2db;Add Items to DB;Μεταφορά κειμένων στην Β.Δ.';//βάση δεδομένων';
+$__LOCALE['RCCONTROLPANEL_DPC'][86]='_importdb;Import Database;Εισαγωγή βάσης δεδομένων';
+$__LOCALE['RCCONTROLPANEL_DPC'][87]='_config;Configuration;Ρυθμίσεις';
+$__LOCALE['RCCONTROLPANEL_DPC'][88]='_contactform;Contact Form;Φόρμα επικοινωνίας';
+$__LOCALE['RCCONTROLPANEL_DPC'][89]='_subscribers;Subscribers;Συνδρομητές';
+$__LOCALE['RCCONTROLPANEL_DPC'][90]='_sitemap;Sitemap;Χάρτης πλοήγησης';// αντικειμένων';
+$__LOCALE['RCCONTROLPANEL_DPC'][91]='_search;Search;Φόρμα Αναζήτησης';
+$__LOCALE['RCCONTROLPANEL_DPC'][92]='_upload;Upload files;Ανέβασμα αρχείων';
+$__LOCALE['RCCONTROLPANEL_DPC'][93]='_uploadid;Upload item files;Ανέβασμα αρχείων';// αντικειμένου';
+$__LOCALE['RCCONTROLPANEL_DPC'][94]='_uploadcat;Upload category files;Ανέβασμα αρχείων';// κατηγορίας';
+$__LOCALE['RCCONTROLPANEL_DPC'][95]='_syncphoto;Sync photos;Συγχρονισμός φωτογραφιών';
+$__LOCALE['RCCONTROLPANEL_DPC'][96]='_syncsql;Sync data;Συγχρονισμός δεδομένων';
+$__LOCALE['RCCONTROLPANEL_DPC'][97]='_dbphoto;Image in DB;Εικόνα στην βάση δεδομένων';
+$__LOCALE['RCCONTROLPANEL_DPC'][98]='_editctag;Category Tags;Tags κατηγορίας';
+$__LOCALE['RCCONTROLPANEL_DPC'][99]='_edititag;Item Tags;Tags είδους';
+$__LOCALE['RCCONTROLPANEL_DPC'][100]='_menu;Menu;Επιλογές';
+$__LOCALE['RCCONTROLPANEL_DPC'][101]='_slideshow;Slideshow;Επιλογές Slideshow';
+$__LOCALE['RCCONTROLPANEL_DPC'][102]='_ckfinder;Upload files;Upload αρχείων';
+$__LOCALE['RCCONTROLPANEL_DPC'][103]='_webmail;Web Mail;Web Mail';
+$__LOCALE['RCCONTROLPANEL_DPC'][104]='_editpage;Edit Page;Επεξεργασία σελίδας';
+$__LOCALE['RCCONTROLPANEL_DPC'][105]='_rempass;Forgotten password;Υπενθύμιση κωδικού';
+$__LOCALE['RCCONTROLPANEL_DPC'][106]='_chpass;Change password;Αλλαγή κωδικού';
+$__LOCALE['RCCONTROLPANEL_DPC'][107]='_cphelp;Ηelp;Βοήθεια';
+$__LOCALE['RCCONTROLPANEL_DPC'][108]='_cpupgrade;Upgrade;Αναβάθμιση';
+$__LOCALE['RCCONTROLPANEL_DPC'][109]='_cpwizard;Enable wizard;Οδηγός εγκατάστασης';
+$__LOCALE['RCCONTROLPANEL_DPC'][110]='_cpdhtmlon;Windows mode;Πλοήγηση Windows';
+$__LOCALE['RCCONTROLPANEL_DPC'][111]='_cpdhtmloff;Frames mode;Πλοήγηση Frames';
+$__LOCALE['RCCONTROLPANEL_DPC'][112]='_cpcropwiz;Crop wizard;Crop wizard';
+$__LOCALE['RCCONTROLPANEL_DPC'][113]='_OPTIONS;Options;Επιλογές';
+$__LOCALE['RCCONTROLPANEL_DPC'][114]='_ADD;Add;Προσθήκη';
+$__LOCALE['RCCONTROLPANEL_DPC'][115]='_CATEGORY;Category;Κατηγορία';
+$__LOCALE['RCCONTROLPANEL_DPC'][116]='_ITEM;Item;Είδος';
+$__LOCALE['RCCONTROLPANEL_DPC'][117]='_SETTINGS;Settings;Ρυθμίσεις';
+$__LOCALE['RCCONTROLPANEL_DPC'][118]='_customers;Customers;Πελάτες';
+$__LOCALE['RCCONTROLPANEL_DPC'][119]='_EDITHTML;Edit Html;Σελίδες Html';
+$__LOCALE['RCCONTROLPANEL_DPC'][120]='_SELECTHTML;Select Html;Επιλογή Html';
+$__LOCALE['RCCONTROLPANEL_DPC'][121]='_ADDFAST;Add item;Εισαγωγή είδους';
+$__LOCALE['RCCONTROLPANEL_DPC'][122]='_addtag;Add Tag;Εισαγωγή Ετικέτας';
+$__LOCALE['RCCONTROLPANEL_DPC'][123]='_back;Back;Επιστροφή';
 
 class rccontrolpanel {
 
@@ -215,9 +241,14 @@ class rccontrolpanel {
 		                     ((!empty($this->murl)) ? array_pop($this->murl) : str_replace('www.','',$_ENV["HTTP_HOST"]));		
 		
 		$this->appkey = new appkey();
+		
 		$this->cptemplate = remote_paramload('FRONTHTMLPAGE','cptemplate',$this->prpath);
 		$this->stats = array();
 		$this->cpStats = false;
+		if ($this->cptemplate) {
+			$this->templatepanel(true); //always
+			$this->cpStats = $this->isStats();
+		}		
 	}
 	 	
     function event($sAction) {    	  
@@ -279,16 +310,18 @@ class rccontrolpanel {
     }
   
     function action($sAction) {
-	  
-      $tmpl = 'cpdashboard.htm';  
-	  $t = $this->path . '/html/'. str_replace('.',getlocal().'.',$tmpl) ; 
-	  //echo $t;
-	  if (is_readable($t)) 
-	    $this->dashboard = file_get_contents($t);	  		 
-	   
+		   
 	  //echo GetSessionParam('LOGIN'),"...";
 	  if (GetSessionParam('LOGIN')=='yes') {
-	      switch ($sAction) {
+	    
+		$tmpl = 'cpdashboard.htm';  
+		$t = $this->path . '/html/'. str_replace('.',getlocal().'.',$tmpl) ; 
+		//echo $t;
+		if (is_readable($t)) 
+			$this->dashboard = file_get_contents($t);
+				  
+	  
+	    switch ($sAction) {
 		    
 			case 'cpzbackup' : $out = $this->zip_directory(GetReq('zname'),GetReq('zpath'));
 			                   break;
@@ -323,23 +356,16 @@ class rccontrolpanel {
 			case "cp"          :	
 			default            : if ($this->cptemplate) {
 			                        //echo 'a'; //not always executed but ony ehwn in dashboard
-									if ((GetReq('t')=='cp')||(!GetReq('t')))
-										$out .= $this->templatepanel(); 
-										$this->cpStats = $this->isStats();
+									if ((GetReq('t')=='cp')||(!GetReq('t'))) 
+										$this->templatepanel(); 
+									$this->cpStats = $this->isStats();
 								 }	
 			                     else
 									$out .= $this->controlpanel(4,3,$this->editmode); 
 			  
-		 } 		 		  
+		} 		 		  
 	  }  
-	  else {  
-	     //login....
-		 
-		 //if (!$out = GetGlobal('controller')->calldpc_method("fronthtmlpage.subpage use cplogin.htm+rccontrolpanel.logincp_form->".$this->nitobi.">1"))	  
-	       // $out = $this->logincp_form($this->nitobi);  	
-	  }	  
 	
-	 
 	  return ($out);
     } 
 	
@@ -1057,12 +1083,14 @@ window.setTimeout(\"neu()\",$mytimeout);
         $text = 'update';
 		$u = null;
 		//check for time limited services
+		$index = 0;
 		if (($codeexpires = $this->get_code_expirations()) && (!empty($codeexpires))) {
 		    foreach ($codeexpires as $section=>$exp_text) {
                 $module = $section .'_DPC';
 				$mod = localize($module, getlocal());
 				$update_key_url = $this->call_wizard_url('addkey');//, true);	//is upgrade			
 				if ($template) {
+					$this->stats['Update']['value'] = ++$index;
 				    $this->stats['Update']['url'][] = $update_key_url;
 					$this->stats['Update']['href'][] = $exp_text;
 					$html = '<li>
@@ -1072,7 +1100,19 @@ window.setTimeout(\"neu()\",$mytimeout);
                                         <span class="small italic ">'.date("F d Y H:i:s.").'</span>
                                     </div>
                              </li>';
-					$this->stats['Update']['html'] .= $html;		 
+					if ($index<9) $this->stats['Update']['html'] .= $html;	
+                    $notify = ' <li>
+                                   <a href="#">
+                                       <div class="task-info">
+                                         <div class="desc">'.$exp_text.'</div>
+                                         <div class="percent">44%</div>
+                                       </div>
+                                       <div class="progress progress-striped active no-margin-bot">
+                                           <div class="bar" style="width: 44%;"></div>
+                                       </div>
+                                   </a>
+                               </li>'; 
+                    if ($index<5) $this->stats['Update']['notify'] .= $notify;							   
 				}
 				else
 				  $u .= "<h3><a href='$update_key_url'>" . date("F d Y H:i:s.") . "&nbsp;".$mod."&nbsp;".$exp_text."</a></h3>";
@@ -1085,6 +1125,7 @@ window.setTimeout(\"neu()\",$mytimeout);
 				//automated dpc update
 				$update_dpc_url = $this->call_wizard_url('dpcmod');//, true);	//is upgrade			
 				if ($template) {
+				    $this->stats['Update']['value'] = ++$index;
 					$this->stats['Update']['url'][] = $update_dpc_url;
 					$this->stats['Update']['href'][] = $dpc;
 					$html = '<li>
@@ -1094,7 +1135,19 @@ window.setTimeout(\"neu()\",$mytimeout);
                                         <span class="small italic ">'.date("F d Y H:i:s.").'</span>
                                     </div>
                              </li>';
-					$this->stats['Update']['html'] .= $html;
+					if ($index<9) $this->stats['Update']['html'] .= $html;
+                    $notify = ' <li>
+                                   <a href="#">
+                                       <div class="task-info">
+                                         <div class="desc">'.$dpc.'</div>
+                                         <div class="percent">44%</div>
+                                       </div>
+                                       <div class="progress progress-striped active no-margin-bot">
+                                           <div class="bar" style="width: 44%;"></div>
+                                       </div>
+                                   </a>
+                               </li>'; 
+                    if ($index<5) $this->stats['Update']['notify'] .= $notify;					
 				}
 				else
 					$u .= "<h3><a href='$update_dpc_url'>" . date("F d Y H:i:s.") . "&nbsp;".$dpc."</a></h3>";
@@ -1107,6 +1160,7 @@ window.setTimeout(\"neu()\",$mytimeout);
 				//automated dpc update
 				$update_dac_url = $this->call_wizard_url('dacpage');//, true);	//is upgrade			
 				if ($template) {
+				    $this->stats['Update']['value'] = ++$index;
 					$this->stats['Update']['url'][] = $update_dac_url;
 					$this->stats['Update']['href'][] = $dac;
 					$html = '<li>
@@ -1116,7 +1170,19 @@ window.setTimeout(\"neu()\",$mytimeout);
                                         <span class="small italic ">'.date("F d Y H:i:s.").'</span>
                                     </div>
                              </li>';
-					$this->stats['Update']['html'] .= $html;				
+					if ($index<9) $this->stats['Update']['html'] .= $html;
+                    $notify = ' <li>
+                                   <a href="#">
+                                       <div class="task-info">
+                                         <div class="desc">'.$dac.'</div>
+                                         <div class="percent">44%</div>
+                                       </div>
+                                       <div class="progress progress-striped active no-margin-bot">
+                                           <div class="bar" style="width: 44%;"></div>
+                                       </div>
+                                   </a>
+                               </li>'; 
+                    if ($index<5) $this->stats['Update']['notify'] .= $notify;					
 				}
 				else
 					$u .= "<h3><a href='$update_dac_url'>" . date("F d Y H:i:s.") . "&nbsp;".$dac."</a></h3>";
@@ -1128,16 +1194,29 @@ window.setTimeout(\"neu()\",$mytimeout);
 		    //automated add space
 		    $update_url = $this->call_wizard_url('addspace');//, true);	//is upgrade			
 			if ($template) {
-					$this->stats['Update']['url'][] = localize('_addspace', getlocal());
-					$this->stats['Update']['href'][] = $update_url;
-					$html = '<li>
-                                <span class="label label-important"><i class=" icon-bug"></i></span>
-                                    <span><a href="'.$update_url.'">'.localize('_addspace', getlocal()).'</a></span>
-                                    <div class="pull-right">
-                                        <span class="small italic ">'.date("F d Y H:i:s.").'</span>
+			    $this->stats['Update']['value'] = ++$index;
+				$this->stats['Update']['url'][] = localize('_addspace', getlocal());
+				$this->stats['Update']['href'][] = $update_url;
+				$html = '<li>
+                            <span class="label label-important"><i class=" icon-bug"></i></span>
+                            <span><a href="'.$update_url.'">'.localize('_addspace', getlocal()).'</a></span>
+                            <div class="pull-right">
+                                <span class="small italic ">'.date("F d Y H:i:s.").'</span>
+                            </div>
+                        </li>';
+				if ($index<9) $this->stats['Update']['html'] .= $html;
+                $notify = ' <li>
+                                <a href="#">
+                                    <div class="task-info">
+                                        <div class="desc">'.localize('_addspace', getlocal()).'</div>
+                                        <div class="percent">44%</div>
                                     </div>
-                             </li>';
-					$this->stats['Update']['html'] .= $html;			
+                                    <div class="progress progress-striped active no-margin-bot">
+                                        <div class="bar" style="width: 44%;"></div>
+                                    </div>
+                                </a>
+                            </li>'; 
+                if ($index<5) $this->stats['Update']['notify'] .= $notify;
 			}
 			else
 				$u .= "<h3><a href='$update_url'>" . date("F d Y H:i:s.") . "&nbsp;".localize('_addspace', getlocal())."</a></h3>";
@@ -1151,6 +1230,7 @@ window.setTimeout(\"neu()\",$mytimeout);
 				
                 $update_url = $this->call_wizard_url($update, true);
 				if ($template) {
+				    $this->stats['Update']['value'] = ++$index;
 					$this->stats['Update']['url'][] = str_replace('_',' ',strtoupper($update));
 					$this->stats['Update']['href'][] = $update_url;
 					$html = '<li>
@@ -1160,7 +1240,19 @@ window.setTimeout(\"neu()\",$mytimeout);
                                         <span class="small italic ">'.date("F d Y H:i:s.", $udatecreated).'</span>
                                     </div>
                              </li>';
-					$this->stats['Update']['html'] .= $html;				
+					if ($index<9) $this->stats['Update']['html'] .= $html;
+					$notify = ' <li>
+                                <a href="#">
+                                    <div class="task-info">
+                                        <div class="desc">'.str_replace('_',' ',strtoupper($update)).'</div>
+                                        <div class="percent">44%</div>
+                                    </div>
+                                    <div class="progress progress-striped active no-margin-bot">
+                                        <div class="bar" style="width: 44%;"></div>
+                                    </div>
+                                </a>
+                            </li>'; 
+					if ($index<5) $this->stats['Update']['notify'] .= $notify;					
 				}
 				else				
 					$u .= "<h3><a href='$update_url'>" . date("F d Y H:i:s.", $udatecreated) . "&nbsp;".str_replace('_',' ',strtoupper($update))."</a></h3>";
@@ -3158,11 +3250,498 @@ EOF;
 		return ($ret);  		
     }	
 	
-	protected function templatepanel() {
+    function panelmenu($rettokens=null) {
+    $turl = urlencode(GetReq('turl'));
+	$passturl = $turl ? 'editmode=1&turl='.$turl : 'editmode=1';
+    $template = remote_paramload('FRONTHTMLPAGE','template',$this->path); 
+	$editpage = GetGlobal('pagename');
+	$lan = getlocal();
+	$turl = $_GET['turl'];
+	$location = '../' . urldecode(base64_decode($turl));
+	$mylocation = str_replace('_&_', '_%26_',$location);
+    $tokens = array();
+	$stats = 'cgi-bin/awstats.php';
+    $class = 'class=""';
+	$csep =  remote_paramload('RCITEMS','csep',$this->path);
+	$cseparator = $csep ? $csep : '^'; 
+    $encoding = 'utf-8';
+
+ 	$environment = $this->parse_environment();//true); //@parse_ini_file("cp.ini");
+    //print_r($environment);      
+    $seclevid = GetSessionParam('ADMINSecID');
+   
+    if ($environment['DASHBOARD']==1) 
+       $otokens[] = "<li><a $class href='cp.php?$passturl'>".localize('_dashboard',$lan)."</a></li>"; 	
+	 
+	 if ($environment['AWSTATS']==1) 
+	   $otokens[] = "<li><a $class href='cp.php?mc_page=cp-webstats&$passturl&encoding=$encoding'>".localize('_webstatistics',$lan)."</a></li>";	
+
+	 if ($environment['WEBMAIL']==1) {
+	   $urlbase = remote_paramload('SHELL','urlbase',paramload('SHELL','prpath'));
+       $otokens[] = "<li><a $class href='cp.php?mc_page=cp-webmail&$passturl&encoding=$encoding'>".localize('_webmail',$lan)."</a></li>";
+	 }  
+	 
+     //if (stristr($editpage,'index.php')) {
+	     if ($environment['MENU']==1) 
+           $otokens[] = "<li><a $class href='cpmenu.php?t=cpmconfig&$passturl&encoding=$encoding'>".localize('_menu',$lan)."</a></li>";
+
+	     if ($environment['SLIDESHOW']==1) 
+           $otokens[] = "<li><a $class href='cpslideshow.php?t=cpsconfig&$passturl&encoding=$encoding'>".localize('_slideshow',$lan)."</a></li>";	 
+     //}	 
+	 
+	 if ($environment['CONFIG']==1) {
+		//echo $editpage,'>';	 
+		//if (stristr($editpage,'index.php')) {
+		$pparts = explode('.',$editpage);
+		$config_section = strtoupper($pparts[0]);		 
+		if ($config_section) {	  
+           $otokens[] = "<li><a $class href='cpconfig.php?cpart=$config_section&$passturl&encoding=$encoding'>".localize('_config',$lan)."</a></li>"; 
+		}
+     }//config...	
+	  
+	 
+	 if (stristr($editpage,'contact.php')) {
+	    if ($environment['CONTACT_FORM']==1) 
+           $otokens[] = "<li><a $class href='cpform.php?t=cpform&$passturl&encoding=$encoding'>".localize('_contactform',$lan)."</a></li>";
+	 }	
+	 if (stristr($editpage,'subscribe.php')) 
+	    if ($environment['SUBSCRIBERS']==1) {
+           $otokens[] = "<li><a $class href='cpsubscribers.php?$passturl&encoding=$encoding'>".localize('_subscribers',$lan)."</a></li>";
+	 }	
+	 if (stristr($editpage,'sitemap.php')) {
+	    if ($environment['SITEMAP']==1) {
+		 	$pparts = explode('.',$editpage);
+		    $config_section = strtoupper($pparts[0]);		 
+			if ($config_section)  
+				$otokens[] = "<li><a $class href='cpconfig.php?cpart=$config_section&$passturl&encoding=$encoding'>".localize('_sitemap',$lan)."</a></li>";
+
+		}   
+	 }	
+	 if (stristr($editpage,'search.php')) {
+	    if ($environment['SEARCH']==1) 
+           $otokens[] = "<li><a $class href='cpitems.php?t=cpattach2db&$passturl&encoding=$encoding'>".localize('_search',$lan)."</a></li>";
+	 }
+	 //}//config
+	 if ($environment['EDIT_CATEGORY']==1) { 
+	       $cat = null;
+           $otokens[] = "<li><a $class href='cpkategories.php?t=cpkategories&cat=$cat&$passturl&encoding=$encoding'>".localize('_editcat',$lan)."</a></li>";
+	 } 	 
+     if ($environment['EDIT_ITEM']==1) {
+           $v = null;
+		   $otokens[] = "<li><a $class href='cpitems.php?t=cpitems&id=$v&$passturl&encoding=$encoding'>".localize('_edititem',$lan)."</a></li>";
+	 } 	 
+	 if ($environment['USERS']==1) 
+           $otokens[] = "<li><a $class href='cpusers.php?t=cpusers&$passturl&encoding=$encoding'>".localize('_users',$lan)."</a></li>"; 
+
+	 if ($environment['CUSTOMERS']==1) 
+           $otokens[] = "<li><a $class href='cpcustomers.php?t=cpcustomers&$passturl&encoding=$encoding'>".localize('_customers',$lan)."</a></li>"; 
+
+	 if ($environment['TRANSACTIONS']==1) 
+		   $otokens[] = "<li><a $class href='cptransactions.php?t=cptransactions&$passturl&encoding=$encoding'>".localize('_transactions',$lan)."</a></li>"; 
+ 	 
+	 if ($environment['ITEM_SENDMAIL']==1) 
+		 $otokens[] = "<li><a $class href='cpsubscribers.php?encoding=$encoding&$passturl'>".localize('_senditemmail',$lan)."</a></li>";	 		 
+
+	 if ($environment['RESOURCES_UPLOAD']==1) 
+		 $otokens[] = "<li><a $class href='cpupload.php?$passturl&encoding=$encoding'>".localize('_upload',$lan)."</a></li>";	 		 
+
+	 if ($environment['CKFINDER']==1) 
+		 $otokens[] = "<li><a $class href='cpmckfinder.php?&$passturl&encoding=$encoding'>".localize('_ckfinder',$lan)."</a></li>";	 		 
+	
+	 if ($environment['EDITHTML']==1) {
+	    //$turl = array_shift(explode('?',urldecode(base64_decode($_GET['turl']))));//$_GET['turl'];
+		$turl_file = str_replace('.php','.html',array_shift(explode('?',urldecode(base64_decode($_GET['turl'])))));
+		//echo $turl_file,'..';
+		$htmlfile = $_GET['htmlfile'] ? $_GET['htmlfile'] : urlencode(base64_encode($turl_file));
+		if ($htmlfile) 
+	       $otokens[] = "<li><a $class href='cpmhtmleditor.php?cke4=1&encoding=$encoding&$passturl&htmlfile=$htmlfile'>".localize('_editpage',$lan)."</a></li>";
+	 }  	 
+
+     //win category.......................................................
+	 if (!empty($otokens)) {
+		    $li0 = '<li class="sub-menu">
+			          <a href="javascript:;" class="">
+                          <i class="icon-list"></i>
+                          <span>'.localize('_OPTIONS',$lan).'</span>
+                          <span class="arrow"></span>
+                      </a>';
+			$li1 = '</li>';
+		    $tokens[] = $li0 . '<ul class="sub">'.implode('',$otokens).'</ul>' . $li1;	
+	 }
+	 
+	 $new_elements = false;
+	 
+	 $qquery = str_replace('_&_', '_%26_', base64_decode($_GET['turl'])); //echo '>',$qquery,'>'; //& category problem
+     $urlquery = parse_url($qquery); /*parse_url(base64_decode($_GET['turl']));*/ //echo $urlquery['query'];
+     parse_str($urlquery['query'],$getp); //echo implode('.',$getp);  
+	 
+     foreach ($getp as $p=>$v) {
+	   	 
+       if (stristr($p,'cat')) {
+	   
+         $cat = urlencode($v);
+		 
+	     /*if ($environment['ADD_CATEGORY']==1) 
+           $ntokens[] = "<li><a $class href='cpkategories.php?t=cpaddcat&cat=$cat&$passturl'>".localize('_addcat',$lan)."</a></li>";	
+         */
+	     if ($environment['ADD_ITEM']==1) 
+           $ntokens[] = "<li><a $class href='cpmhtmleditor.php?htmlfile=" . "&encoding=$encoding&id=$cat&type=.html&$passturl&insfast=1'>".localize('_ADDFAST',$lan)."</a></li>";	
+
+         $new_elements = true; //if cat exist	
+
+	     if ($environment['EDIT_CTAG']==1)  //add cat tags
+           $ctokens[] = "<li><a $class href='cptags.php?t=cpeditctag&cat=$cat&$passturl'>".localize('_editctag',$lan)."</a></li>";	
+		 
+		 if ($environment['EDIT_CATEGORY']==1) 
+           $ctokens[] = "<li><a $class href='cpkategories.php?t=cpkategories&cat=$cat&$passturl&encoding=$encoding'>".localize('_editcat',$lan)."</a></li>";
+
+		 if ($environment['CATEGORY_UPLOAD']==1) 
+		   $ctokens[] = "<li><a $class href='cpupload.php?cat=$cat&$passturl&encoding=$encoding'>".localize('_uploadcat',$lan)."</a></li>";	 		 
+ 
+	     if ($environment['SYNCPHOTO']==1) 	 
+           $ctokens[] = "<li><a $class href='cpitems.php?t=cpvrestorephoto&cat=$cat&$passturl&encoding=$encoding'>".localize('_syncphoto',$lan)."</a></li>"; 
+
+	     if ($environment['DBPHOTO']==1) 	 
+           $ctokens[] = "<li><a $class href='cpitems.php?t=cpvdbphoto&cat=$cat&$passturl&encoding=$encoding'>".localize('_dbphoto',$lan)."</a></li>"; 
+		 
+		 /*if ($environment['RSS']==1) //rss for category  
+           $ctokens[] = "<li><a $class href='cpxmlexp.php?editmode=1&cat=$cat&$passturl&encoding=$encoding'>".localize('_rssfeeds',$lan)."</a></li>";	
+		  */ 
+		 if ($environment['RSS']==1) //rss for category  
+           $ctokens[] = "<li><a $class href='cpitems.php?t=cpvitemrss&cat=$cat&$passturl&encoding=$encoding'>".localize('_rssfeeds',$lan)."</a></li>";	
+ 	
+		 if ($environment['ITEM_SENDMAIL']==1) //category send mail..advanced mail template system (rctedit,rctedititems)
+		   $ctokens[] = "<li><a $class href='cpsubscribers.php?htmlfile=&encoding=$encoding&cat=$cat&$passturl'>".localize('_senditemmail',$lan)."</a></li>";	 		 
+ 		 
+	 
+	     $mycurrentcat = explode($cseparator,$v);
+	     $vn = array_pop($mycurrentcat);
+	     $cat_htm_attachment = "html/". $vn . $lan . '.htm';		
+	     $cat_html_attachment = "html/". $vn . $lan . '.html'; 
+	   	 
+		 if ($environment['CATEGORY_ATTACHMENT']==1) {
+	       if (is_readable($cat_htm_attachment)) 
+             $ctokens[] = "<li><a $class href='cpmhtmleditor.php?htmlfile=" . urlencode(base64_encode($cat_htm_attachment)) . "&encoding=$encoding&id=$vn&type=.htm&$passturl'>".localize('_editcathtml',$lan)."</a></li>";	  		   
+           elseif (is_readable($cat_html_attachment)) 
+	         $ctokens[] = "<li><a $class href='cpmhtmleditor.php?htmlfile=" . urlencode(base64_encode($cat_html_attachment)) . "&encoding=$encoding&id=$vn&type=.html&$passturl'>".localize('_editcathtml',$lan)."</a></li>";	  		   
+	       else 
+             $ctokens[] = "<li><a $class href='cpmhtmleditor.php?htmlfile=&encoding=$encoding&id=$vn&type=.html&$passturl'>".localize('_addcathtml',$lan)."</a></li>";			    
+		 }//environment
+		 
+		 //win category.......................................................
+		 if (!empty($ntokens)) {
+		 	        $active = null;//$active_id ? null : ' active';
+					$li0 = '<li class="sub-menu'.$active.'">
+			          <a href="javascript:;" class="">
+                          <i class="icon-plus"></i>
+                          <span>'.localize('_ADD',$lan).'</span>
+                          <span class="arrow"></span>
+                      </a>';
+			$li1 = '</li>';
+		    $tokens[] = $li0 . '<ul class="sub">'.implode('',$ntokens).'</ul>' . $li1;		
+		 }		 
+		 if (!empty($ctokens)) {
+            //$active = 'sub-menu active';//GetReq('id') ? null : (GetReq('cat') ? 'sub-menu active' : 'sub-menu');		 
+		    $li0 = '<li class="sub-menu">
+			          <a href="javascript:;" class="">
+                          <i class="icon-stackexchange"></i>
+                          <span>'.localize('_CATEGORY',$lan).'</span>
+                          <span class="arrow"></span>
+                      </a>';
+			$li1 = '</li>';
+		    $tokens[] = $li0 . '<ul class="sub">'.implode('',$ctokens).'</ul>' . $li1;	
+		 }
+       }//if	   
+	   	 
+       if (stristr($p,'id')) {
+	     if ($environment['EDIT_ITAG']==1)  //add id tags
+           $itokens[] = "<li><a $class href='cptags.php?t=cpedititag&id=$v&$passturl&encoding=$encoding'>".localize('_edititag',$lan)."</a></li>";	
+	   
+         if ($environment['EDIT_ITEM']==1) 
+		   $itokens[] = "<li><a $class href='cpitems.php?t=cpitems&id=$v&$passturl&encoding=$encoding'>".localize('_edititem',$lan)."</a></li>";	
+  
+		 if ($environment['EDIT_ITEM_PHOTO']==1) 
+	       $itokens[] = "<li><a $class href='cpitems.php?t=cpvphoto&id=$v&$passturl&encoding=$encoding'>".localize('_edititemphoto',$lan)."</a></li>";
+ 
+	     if ($environment['SYNCPHOTO']==1) 	 
+           $itokens[] = "<li><a $class href='cpitems.php?t=cpvrestorephoto&id=$v&$passturl&encoding=$encoding'>".localize('_syncphoto',$lan)."</a></li>"; 
+
+	     if ($environment['DBPHOTO']==1) 	 
+           $itokens[] = "<li><a $class href='cpitems.php?t=cpvdbphoto&id=$v&$passturl&encoding=$encoding'>".localize('_dbphoto',$lan)."</a></li>"; 
+
+		 if ($environment['RSS']==1) //rss for item  
+           $itokens[] = "<li><a $class href='cpitems.php?t=cpvitemrss&id=$v&$passturl&encoding=$encoding'>".localize('_rssfeeds',$lan)."</a></li>";	
+		 
+		 if ($environment['ITEM_UPLOAD']==1) 
+		   $itokens[] = "<li><a $class href='cpupload.php?id=$v&$passturl&encoding=$encoding'>".localize('_uploadid',$lan)."</a></li>";	 		 
+			 
+
+		 if ($environment['ITEM_ATTACHMENT']==1) {
+	       $text_attachment = "html/". $v . $lan . '.txt';
+	       $htm_attachment = "html/". $v . $lan . '.htm';		
+	       $html_attachment = "html/". $v . $lan . '.html'; 
+	       //echo $html_attachment,'>';	     
+	   
+           if ($attachment_type = GetGlobal('controller')->calldpc_method("rcitems.has_attachment2db use $v")) {
+	         //echo '>',$attachment-type;
+	         switch ($attachment_type) {
+		       case '.html' :$itokens[] = "<li><a $class href='cpmhtmleditor.php?htmlfile=" . "&encoding=$encoding&id=$v&type=$attachment_type&$passturl'>".localize('_edititemdbhtml',$lan)."</a></li>"; 
+		                     break;
+						 
+		       case '.htm'  :$itokens[] = "<li><a $class href='cpmhtmleditor.php?htmlfile=" . "&encoding=$encoding&id=$v&type=$attachment_type&$passturl'>".localize('_edititemdbhtm',$lan)."</a></li>";
+			                 break;
+						 
+		       case '.txt ' :$itokens[] = "<li><a $class href='cpmhtmleditor.php?htmlfile=" . "&encoding=$encoding&id=$v&type=$attachment_type&$passturl'>".localize('_edititemdbtext',$lan)."</a></li>";	 
+			                 break;			 
+		       default      :$itokens[] = 'Unknown attachment type!<br>'; 					 						 						 
+						     //$_icons[] = "";
+		     }
+			 
+			 	 
+			 if ($environment['ITEM_SENDMAIL']==1) 
+		       $itokens[] = "<li><a $class href='cpsubscribers.php?htmlfile=&encoding=$encoding&id=$v&type=$attachment_type&$passturl'>".localize('_senditemmail',$lan)."</a></li>";	 		 
+ 
+			 if ($environment['ITEM_DELETE_DB_ATTACHMENT']==1)  
+	           $itokens[] = "<li><a $class href='cpitems.php?t=cpvdelattach&id=$v&$passturl&encoding=$encoding'>".localize('_deleteitemattachment',$lan)."</a></li>";		  
+ 
+	       }
+	       //else {	    
+	       elseif (is_readable($text_attachment)) {
+	           $itokens[] = "<li><a $class href='cpmhtmleditor.php?htmlfile=" . urlencode(base64_encode($text_attachment)) . "&encoding=$encoding&id=$v&$passturl&type=.txt'>".localize('_edititemtext',$lan)."</a></li>";	
+			   if ($environment['ITEM_SENDMAIL']==1) 			 
+					$itokens[] = "<li><a $class href='cpsubscribers.php?htmlfile=" . urlencode(base64_encode($text_attachment)) . "&encoding=$encoding&id=$v&$passturl&type=.txt'>".localize('_senditemmail',$lan)."</a></li>";	
+		   }	 
+	       elseif (is_readable($htm_attachment)) {
+	           $itokens[] = "<li><a $class href='cpmhtmleditor.php?htmlfile=" . urlencode(base64_encode($htm_attachment)) . "&encoding=$encoding&id=$v&$passturl&type=.htm'>".localize('_edititemhtm',$lan)."</a></li>";
+			   if ($environment['ITEM_SENDMAIL']==1) 			  
+					$itokens[] = "<li><a $class href='cpsubscribers.php?htmlfile=" . urlencode(base64_encode($htm_attachment)) . "&encoding=$encoding&id=$v&$passturl&type=.htm'>".localize('_senditemmail',$lan)."</a></li>";		
+		   }	 
+           elseif (is_readable($html_attachment)) {
+	           $itokens[] = "<li><a $class href='cpmhtmleditor.php?htmlfile=" . urlencode(base64_encode($html_attachment)) . "&encoding=$encoding&id=$v&$passturl&type=.html'>".localize('_edititemhtml',$lan)."</a></li>";	
+			   if ($environment['ITEM_SENDMAIL']==1) 	  		   
+					$itokens[] = "<li><a $class href='cpsubscribers.php?htmlfile=" . urlencode(base64_encode($html_attachment)) . "&encoding=$encoding&id=$v&$passturl&type=.html'>".localize('_senditemmail',$lan)."</a></li>";			
+		   }
+	       else {//create nerw file	 
+	           $new_attachment = "html/". $v . $lan . '.html';
+               $itokens[] = "<li><a $class href='cpmhtmleditor.php?htmlfile=&encoding=$encoding&id=$v&$passturl&type=.html'>".localize('_additemhtml',$lan)."</a></li>";			  
+			   if ($environment['ITEM_SENDMAIL']==1) //mail ..
+		           $itokens[] = "<li><a $class href='cpsubscribers.php?htmlfile=&encoding=$encoding&id=$v&type=.html&$passturl'>".localize('_senditemmail',$lan)."</a></li>";	 		 				   
+	       }
+	       //}//else
+         }//environment
+		 elseif ($environment['ITEM_SENDMAIL']==1) //only mail ...
+		    $itokens[] = "<a href='cpsubscribers.php?htmlfile=&encoding=$encoding&id=$v&type=.html&$passturl'>".localize('_senditemmail',$lan)."</a></li>";	 		 
+ 	
+		 //win category.......................................................
+		 if (!empty($itokens)) {
+		    //$active = GetReq('id') ? 'sub-menu active' : 'sub-menu';
+		    $li0 = '<li class="sub-menu">
+			          <a href="javascript:;" class="">
+                          <i class="icon-file"></i>
+                          <span>'.localize('_ITEM',$lan).'</span>
+                          <span class="arrow"></span>
+                      </a>';
+			$li1 = '</li>';
+		    $tokens[] = $li0 . '<ul class="sub">'.implode('',$itokens).'</ul>' . $li1;				 
+		 }	
+       }//if	
+	      
+       /*if ($v=='viewcart') {	
+	     if ($environment['TRANSACTIONS']==1) {
+		   //old way
+           //$etokens[] = "<a href='cptransactions.php?t=cptransview&$passturl&encoding=$encoding'>".localize('_transactions',$lan)."</a></li>";
+		   //$_icons[] = "<a href='cptransactions.php?t=cptransview&$passturl&encoding=$encoding'>".loadicon('/icons/'.'_transactions'.'.gif',localize('_transactions',$lan),null)."</a></li>";
+		   //new way
+		   $etokens[] = "<a href='cptransactions.php?t=cptransactions&$passturl&encoding=$encoding'>".localize('_transactions',$lan)."</a></li>";
+		   $_icons[] = "<a href='cptransactions.php?t=cptransactions&$passturl&encoding=$encoding'>".loadicon('/icons/'.'_transactions'.'.gif',localize('_transactions',$lan),null)."</a></li>";		   
+		 }  
+	   }	 
+		 
+       if (($v=='signup') || ($v=='RCCONTROLPANEL')) {	
+	     if ($environment['USERS']==1) {
+           $etokens[] = "<a href='cpusers.php?t=cpusers&$passturl&encoding=$encoding'>".localize('_users',$lan)."</a></li>"; 
+		   $_icons[] = "<a href='cpusers.php?t=cpusers&$passturl&encoding=$encoding'>".loadicon('/icons/'.'_users'.'.gif',localize('_users',$lan),null)."</a></li>";
+		 }  
+	     if ($environment['CUSTOMERS']==1) {
+           $etokens[] = "<a href='cpcustomers.php?t=cpcustomers&$passturl&encoding=$encoding'>".localize('_customers',$lan)."</a></li>"; 
+		   $_icons[] = "<a href='cpcustomers.php?t=cpcustomers&$passturl&encoding=$encoding'>".loadicon('/icons/'.'_customers'.'.gif',localize('_customers',$lan),null)."</a></li>";
+		 } 		 
+		 if ($environment['SMS']==1) {
+		   $etokens[] = "<a href='cpsmsgui.php?t=cpsmsgui&$passturl&encoding=$encoding'>".localize('_sendsms',$lan)."</a></li>";   
+		   $_icons[] = "<a href='cpsmsgui.php?t=cpsmsgui&$passturl&encoding=$encoding'>".loadicon('/icons/'.'_sendsms'.'.gif',localize('_sendsms',$lan),null)."</a></li>";
+		 }  
+	   }
+	   //extra category.......................................................
+	   if (!empty($etokens)) {
+	   
+		$eitem_content = implode('<hr/>',$etokens);
+		$ewinitem = new window2('Extras',$eitem_content,null,1,null,$winhide,null,1);
+		$tokens[] = $ewinitem->render("center::100%::0::group_article_selected::left::0::0::");	
+		unset ($ewinitem);			 
+	   }*/	 //moved to standart options  
+     }
+ 
+     //....
+	 if ($new_elements===false) { //cat not exist
+       if ($environment['ADD_CATEGORY']==1) 
+         $ntokens[] = "<li><a $class href='cpkategories.php?t=cpaddcat&$passturl'>".localize('_addcat',$lan)."</a></li>";	
+ 
+	   if ($environment['ADD_ITEM']==1)  
+         $ntokens[] = "<li><a $class href='cpitems.php?t=cpvinput&$passturl'>".localize('_additem',$lan)."</a></li>";	
+ 
+	   if (($environment['EDIT_CTAG']==1) || ($environment['EDIT_ITAG']==1))   //add tags no cat/id list
+         $ntokens[] = "<li><a $class href='cptags.php?t=cpeditctag&$passturl'>".localize('_addtag',$lan)."</a></li>";	
+	   
+       //$tokens[] = '<hr>'; 
+	   if (!empty($ntokens)) {
+		    $li0 = '<li class="sub-menu">
+			          <a href="javascript:;" class="">
+                          <i class="icon-plus"></i>
+                          <span>'.localize('_ADD',$lan).'</span>
+                          <span class="arrow"></span>
+                      </a>';
+			$li1 = '</li>';
+		    $tokens[] = $li0 . '<ul class="sub">'.implode('',$ntokens).'</ul>' . $li1;	
+	   }	   
+     }
+
+
+     //if ((stristr($_SERVER['HTTP_REFERER'],'index.php')) || (stristr($_SERVER['HTTP_REFERER'],'katalog.php'))) {	 
+	   if ($environment['ATTACH_FILES2DB']==1) 
+         $stokens[] = "<li><a $class href='cpitems.php?t=cpattach2db&$passturl'>".localize('_itemattachments2db',$lan)."</a></li>";
+	 
+	   /*if ($environment['RSS']==1) 	 
+         $stokens[] = "<li><a $class href='cpxmlexp.php?$passturl&cat=$v'>".localize('_rssfeeds',$lan)."</a></li>";
+		*/	
+	   if ($environment['RSS']==1) 	 
+         $stokens[] = "<li><a $class href='cpitems.php?t=cpvitemrss&$passturl&encoding=$encoding'>".localize('_rssfeeds',$lan)."</a></li>";
+	   
+	   if ($environment['IMPORTDB']==1) 
+         $stokens[] = "<li><a $class href='cpimportdb.php?$passturl&encoding=$encoding'>".localize('_importdb',$lan)."</a></li>";
+	
+	   if ($environment['SYNCPHOTO']==1) 	 
+         $stokens[] = "<li><a $class href='cpitems.php?t=cpvrestorephoto&$passturl&encoding=$encoding'>".localize('_syncphoto',$lan)."</a></li>"; 
+	
+	   if ($environment['DBPHOTO']==1) 	 
+         $stokens[] = "<li><a $class href='cpitems.php?t=cpvdbphoto&$passturl&encoding=$encoding'>".localize('_dbphoto',$lan)."</a></li>"; 
+	   
+	   if ($environment['SYNCSQL']==1) 	 
+         $stokens[] = "<li><a $class href='cpsyncsql.php?$passturl&encoding=$encoding'>".localize('_syncsql',$lan)."</a></li>"; 
+		   
+	   if ($environment['CONFIG']==1) 	 
+         $stokens[] = "<li><a $class href='cpconfig.php?$passturl&encoding=$encoding'>".localize('_config',$lan)."</a></li>"; 
+	
+
+     //$stokens[] =  "<li><a $class href=\"cpmdbrec.php?t=rempwd&$passturl\">".localize('_rempass',$lan)."</a></li>";				    	  
+	 //$stokens[] =  "<li><a $class href=\"cpmdbrec.php?t=chpass&$passturl\"".localize('_chpass',$lan)."</a></li>";
+	 $stokens[] =  "<li><a $class href=\"cpmdbrec.php?t=chpass&$passturl\">".localize('_chpass',$lan)."</a></li>";
+     //s$tokens[] =  "<li><a $class href=\"cpmdbrec.php?t=cphelp&$passturl\">".localize('_cphelp',$lan)."</a></li>";		 	
+	 /*if ($seclevid>=8) {
+		$dhtml_var = remote_paramload('FRONTHTMLPAGE','dhtml',paramload('SHELL','prpath'));
+		$dhtml_switch = $dhtml_var>0 ? '0' : '1';	 
+		$modetitle = $dhtml_var>0 ? localize('_cpdhtmloff',$lan):localize('_cpdhtmlon',$lan);//'Win Mode OFF' : 'Win Mode ON';	
+		$stokens[] =  "<li><a $class href=\"cpconfig.php?t=cpconfmod&var=fronthtmlpage.dhtml&val=$dhtml_switch&$passturl\">".$modetitle."</a></li>";	
+	    
+	 }*/
+	 if ($seclevid>=9) {
+		$stokens[] =  "<li><a $class href=\"cpmwiz.php?t=cpwizreinit&$passturl\">".localize('_cpwizard',$lan)."</a></li>";		 
+		$stokens[] =  "<li><a $class href=\"cpmdbrec.php?t=cpupgrade&$passturl\">".localize('_cpupgrade',$lan)."</a></li>";	 
+
+		//already into ..._top
+		//$turl = urldecode(decode($_GET['turl']));
+		//$turl_m = urldecode(decode('AmMMaVlsVHcBPV5mUnUHdQF8U20AcAI9')); 
+		//echo GetReq('turl'),']',$turl_m;
+		$urlargs = explode('?',$location);
+		//print_r($urlargs);
+		$turl_m = urldecode(base64_decode($_GET['turl']));// . '&cropwiz=1'; //not reenter cp
+		$modify_url = /*$location*/$urlargs[0] . "?modify=".urlencode(base64_encode('stereobit'))."&turl=".urlencode(encode($turl_m)).'&cropwiz=1'; 	
+		$stokens[] =  "<li><a $class href=\"$modify_url\" target='_top'>".localize('_cpcropwiz',$lan)."</a></li>";
+	 }
+	 
+     //win settings.......................................................
+	 if (!empty($stokens)) {
+		    $li0 = '<li class="sub-menu">
+			          <a href="javascript:;" class="">
+                          <i class="icon-cogs"></i>
+                          <span>'.localize('_SETTINGS',$lan).'</span>
+                          <span class="arrow"></span>
+                      </a>';
+			$li1 = '</li>';
+		    $tokens[] = $li0 . '<ul class="sub">'.implode('',$stokens).'</ul>' . $li1;	
+	 }
+	 
+	 /*template based menu*/
+	 if (($template) /*&& ($environment['EDIT_HTMLFILES']==1)*/) {
+	 
+        //$my_current_page = GetGlobal('controller')->calldpc_var("fronthtmlpage.MC_CURRENT_PAGE");	
+		$my_current_page = GetGlobal('controller')->calldpc_method("fronthtmlpage.mc_parse_editurl use $location");		
+		$mc_current_page = str_replace(array('.php','../'),array('',''),$my_current_page);
+		//echo $mc_current_page;
+		
+	    if ($environment['EDIT_HTMLFILES']==1) {
+		  /*edit html*/
+	      //$mc_pages = GetGlobal('controller')->calldpc_method("fronthtmlpage.mcPages use 1");
+		  $mc_pages = GetGlobal('controller')->calldpc_method("fronthtmlpage.mc_read_files use pages+php++1");
+		  foreach ($mc_pages as $mcpage=>$mctitle) {
+		    $mc_page = urlencode(base64_encode($mcpage . '.php'));
+		    $mc_title = ($mcpage==$mc_current_page) ?
+		                 '<b>'.$mctitle.'</b>' : $mctitle;			
+			$htokens[] = "<li><a $class href='cpmhtmleditor.php?htmlfile=" .$mc_page. "&encoding=$encoding&$passturl'>".$mc_title."</a></li>";
+		  }
+	 
+		  //win edit html.......................................................
+		  if (!empty($htokens)) {
+		    $li0 = '<li class="sub-menu">
+			          <a href="javascript:;" class="">
+                          <i class="icon-th"></i>
+                          <span>'.localize('_EDITHTML',$lan).'</span>
+                          <span class="arrow"></span>
+                      </a>';
+			$li1 = '</li>';
+		    $tokens[] = $li0 . '<ul class="sub">'.implode('',$htokens).'</ul>' . $li1;	
+		  }	
+        }
+
+		if ($environment['SELECT_HTMLFILES']==1) {
+		  /*select html*/					
+	      //$mc_pages = GetGlobal('controller')->calldpc_method("fronthtmlpage.mcPages use 1");
+		  $mc_pages = GetGlobal('controller')->calldpc_method("fronthtmlpage.mc_read_files use pages+php++1");
+		  foreach ($mc_pages as $mcpage=>$mctitle) {
+		    $mc_page = urlencode(base64_encode($mcpage . '.php'));
+		    $mc_title = ($mcpage==$mc_current_page) ?
+		               '<b>'.$mctitle.'</b>' : $mctitle;
+		    $qtokens[] = "<li><a $class href='cpmhtmleditor.php?htmlfile=" .$mc_page. "&mc_page=$mcpage&turl=".$_GET['turl']."&encoding=$encoding&$passturl'>".$mc_title."</a></li>";
+		  }	
+		  //win select html.......................................................
+		  if (!empty($qtokens)) {
+		    $li0 = '<li class="sub-menu">
+			          <a href="javascript:;" class="">
+                          <i class="icon-th"></i>
+                          <span>'.localize('_SELECTHTML',$lan).'</span>
+                          <span class="arrow"></span>
+                      </a>';
+			$li1 = '</li>';
+		    $tokens[] = $li0 . '<ul class="sub">'.implode('',$qtokens).'</ul>' . $li1;		
+		  }	
+        }		
+	 }
+   
+     //print_r($tokens);
+     if ($rettokens) 
+		return ($tokens);
+     else 
+		return (implode('',$tokens));
+    }		
+	
+	public function templatepanel($init=false) {
 		//echo 'z';
-		$this->site_stats(true);
-		$this->_show_update_tools(true);
-		$this->_show_addon_tools(1, true);		
+		if ($init)
+			$this->_show_update_tools(true);		
+		else {	
+			$this->site_stats(true);
+			//$this->_show_update_tools(true);
+			$this->_show_addon_tools(1, true);		
+		}
 	}
 	
 	public function getStats($section=null, $subsection=null) {

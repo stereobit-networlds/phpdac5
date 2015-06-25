@@ -12,21 +12,24 @@ super database;
 use xwindow.window,xwindow.window2,browser;
 
 /---------------------------------load not create dpc (internal use)
-
 include networlds.clientdpc;
-include frontpage.fronthtmlpage;
 include gui.form;
 include gui.htmlarea;
-			
 
 /---------------------------------load all and create after dpc objects
-public phpdac.rccontrolpanel;
+private frontpage.fronthtmlpage /cgi-bin;
+#ifdef SES_LOGIN
 public phpdac.rcconfig;
-
-
+#endif
+private phpdac.rccontrolpanel /cgi-bin;
 ',1);
 
-$lan = getlocal();
+$cptemplate = GetGlobal('controller')->calldpc_method('rcserver.paramload use FRONTHTMLPAGE+cptemplate');
 
-echo $page->render(null,$lan,null,'cpgroup_em.html');
+if ($cptemplate) {
+    $mc_page = (GetSessionParam('LOGIN')) ? 'cp-tags' : 'cp-login';
+	echo $page->render(null,getlocal(), null, $cptemplate.'/index.php');
+}
+else
+	echo $page->render(null,getlocal(),null,'cp_em.html');
 ?>
