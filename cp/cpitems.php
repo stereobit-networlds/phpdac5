@@ -24,7 +24,6 @@ private frontpage.fronthtmlpage /cgi-bin;
 public jqgrid.mygrid;
 public gui.ajax;
 public database.dataforms;
-public phpdac.rccontrolpanel;
 public phpdac.rcupload;
 private shop.rcitems /cgi-bin;
 public shop.rcvstats;

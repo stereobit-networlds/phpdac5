@@ -1522,7 +1522,14 @@ EOF;
 			$_SESSION[$param] = $val;
 		else	
 		    $GLOBALS[$param] = $val;
-	}	
+	}
+
+    public function getParam($param) {
+		if ($_POST[$param]) 
+			return ($_POST[$param]);
+  
+		return ($_GET[$param]);
+    }	
 	
 	public function serverSTR($str=null) {
 	    $server_str = $str ? $str : 'REQUEST_URI';

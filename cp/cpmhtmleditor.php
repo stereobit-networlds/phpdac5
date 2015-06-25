@@ -25,13 +25,12 @@ $cptemplate = GetGlobal('controller')->calldpc_method('rcserver.paramload use FR
 
 if ($cptemplate) {
 
-	/*$turl = $_GET['turl'];
-	$location = '../' . urldecode(base64_decode($turl));
-	$mylocation = str_replace('_&_', '_%26_',$location);
-	*/
-    $mc_page = (GetSessionParam('LOGIN')) ?
-	           ($_POST['insfast'] ? 'cp-uploadimage' : 'cp-htmleditor') :
-			   'cp-login';
+	switch ($_GET['t']) {
+		case 'cpmvphoto' : $p = 'cp-mvphoto'; break;
+		case 'cpmvdel'   : $p = 'cp-mvphoto'; break;
+		default          : $p = ($_POST['insfast'] ? 'cp-uploadimage' : 'cp-htmleditor');
+	}
+    $mc_page = (GetSessionParam('LOGIN')) ? $p : 'cp-login';
 	echo $page->render(null,getlocal(), null, $cptemplate.'/index.php');
 }
 else

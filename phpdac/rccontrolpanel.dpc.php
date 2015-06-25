@@ -3460,8 +3460,12 @@ EOF;
          if ($environment['EDIT_ITEM']==1) 
 		   $itokens[] = "<li><a $class href='cpitems.php?t=cpitems&id=$v&$passturl&encoding=$encoding'>".localize('_edititem',$lan)."</a></li>";	
   
-		 if ($environment['EDIT_ITEM_PHOTO']==1) 
-	       $itokens[] = "<li><a $class href='cpitems.php?t=cpvphoto&id=$v&$passturl&encoding=$encoding'>".localize('_edititemphoto',$lan)."</a></li>";
+		 if ($environment['EDIT_ITEM_PHOTO']==1) {	       
+		   if ($this->cptemplate)
+				$itokens[] = "<li><a $class href='cpmhtmleditor.php?t=cpmvphoto&id=$v&$passturl&encoding=$encoding'>".localize('_edititemphoto',$lan)."</a></li>";
+		   else
+				$itokens[] = "<li><a $class href='cpitems.php?t=cpvphoto&id=$v&$passturl&encoding=$encoding'>".localize('_edititemphoto',$lan)."</a></li>";		   
+		 }  
  
 	     if ($environment['SYNCPHOTO']==1) 	 
            $itokens[] = "<li><a $class href='cpitems.php?t=cpvrestorephoto&id=$v&$passturl&encoding=$encoding'>".localize('_syncphoto',$lan)."</a></li>"; 

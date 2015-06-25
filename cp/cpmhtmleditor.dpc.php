@@ -4,10 +4,23 @@ $__DPCSEC['CPMHTMLEDITOR_DPC']='1;1;1;1;1;1;1;1;1';
 if ((!defined("CPMHTMLEDITOR_DPC")) && (seclevel('CPMHTMLEDITOR_DPC',decode(GetSessionParam('UserSecID')))) ) {
 define("CPMHTMLEDITOR_DPC",true);
 
+$a = GetGlobal('controller')->require_dpc('images/wateresize.lib.php');
+require_once($a);
+
+$b= GetGlobal('controller')->require_dpc('images/SimpleImage.lib.php');
+require_once($b);
+
 $__DPC['CPMHTMLEDITOR_DPC'] = 'cpmhtmleditor';
 
 $__EVENTS['CPMHTMLEDITOR_DPC'][0]='cpmhtmleditor';
+$__EVENTS['CPMHTMLEDITOR_DPC'][1]='cpmdropzone';
+$__EVENTS['CPMHTMLEDITOR_DPC'][2]='cpmvphoto';
+$__EVENTS['CPMHTMLEDITOR_DPC'][3]='cpmvdel';
+
 $__ACTIONS['CPMHTMLEDITOR_DPC'][0]='cpmhtmleditor';
+$__ACTIONS['CPMHTMLEDITOR_DPC'][1]='cpmdropzone';
+$__ACTIONS['CPMHTMLEDITOR_DPC'][2]='cpmvphoto';
+$__ACTIONS['CPMHTMLEDITOR_DPC'][3]='cpmvdel';
 
 //$__DPCATTR['CPMHTMLEDITOR_DPC']['cpmhtmleditor'] = 'cpmhtmleditor,1,0,0,0,0,0,0,0,0,0,0,1';
 
@@ -22,12 +35,15 @@ class cpmhtmleditor {
 	static $staticpath;
 	var $encoding, $prpath, $template, $one_attachment, $slan;
 	var $htmlfile, $ckeditor4, $cke4, $ckjs;
-	var $msg;
+	var $urlpath, $urlbase, $msg;
 
 	function __construct() {
 	
 		self::$staticpath = paramload('SHELL','urlpath');
 	
+		$this->urlpath = paramload('SHELL','urlpath').$this->infolder.'/';		  
+		$this->urlbase = paramload('SHELL','urlbase').$this->infolder.'/';	
+		
 		$this->encoding = $_GET['encoding']?$_GET['encoding']:'utf-8';
 		//echo '>',$encoding;
 		$this->prpath = paramload('SHELL','prpath');
@@ -58,15 +74,21 @@ class cpmhtmleditor {
 	public function event($sEvent) {
 	
 		switch ($sEvent) {
-			default : 	
-						$this->javascript();
-						$this->raw_save();
+		    case 'cpmvdel'     :$this->delete_photo(); break;
+			case 'cpmvphoto'   :break; 
+		    case 'cpmdropzone' :$this->dropzone(); break; //fast-entry photo
+			default 		   : 	
+								$this->javascript();
+								$this->raw_save();
 		}
     }
 	
 	public function action($sAction) {
 		switch ($sAction) {
-			default : $out = $this->editor();
+		    case 'cpmvdel'     :
+		    case 'cpmvphoto'   : $out = $this->gallery(); break; 
+			case 'cpmdropzone' : break;
+			default 		   : $out = $this->editor();
 		}	
 		return ($out);
     }
@@ -475,8 +497,9 @@ document.addEventListener('keydown', function (event) {
 		$myfile = GetParam('file')?	GetParam('file') : $file;	
 		$myid = GetParam('id')?	GetParam('id') : $id;	
 		$mytype = GetParam('type')?	GetParam('type') : $type;	
-	 
+	    /*
 		$out .= "<input type=\"submit\" name=\"ok\" value=\"  ".localize('_submit',getlocal())."  \" />";	  
+		*/
 		$out .= "<input type=\"hidden\" name=\"file2saveon\" value=\"" . $myfile . "\" />";	  
 		$out .= "<input type=\"hidden\" name=\"filetemp\" value=\"" . $mytempfile . "\" />";	 
 		$out .= "<input type=\"hidden\" name=\"id\" value=\"" . $myid . "\" />";	 
@@ -484,9 +507,34 @@ document.addEventListener('keydown', function (event) {
 
 		//insert item fast
 		if ($insfast) {
+			/*
 			$out .= "<br/><br/>".localize('_title',getlocal()).":<input type=\"text\" name=\"title\" value=\"".localize('_subject',getlocal())."\" />";
 			$out .= "<br/>".localize('_tags',getlocal()).":<input type=\"text\" name=\"tags\" value=\"".str_replace(array(' ','_','-'),array(',',' ',' '),$myid)."\" />";
+			*/
 			$out .= "<input type=\"hidden\" name=\"insfast\" value=\"" . $insfast . "\" />";		   	  
+			
+			$out .= '            <div class="space20"></div>
+                                 <div class="row-fluid">
+                                     <div class="feedback">
+                                         <h3>'.localize('_title',getlocal()).'</h3>
+                                         <p>'.localize('_tags',getlocal()).'</p>
+                                         <div class="space20"></div>
+
+                                             <!--div class="control-group">
+                                                 <input type="text" placeholder="Name" class="span12">
+                                             </div-->
+                                             <div class="control-group ">
+                                                 <input type="text" name="title" value="'.localize('_subject',getlocal()).'" class="span6 one-half">
+                                                 <input type="text" name="tags" value="'.str_replace(array(' ','_','-'),array(',',' ',' '),$myid).'" class="span6">
+                                             </div>
+                                             <!--div class="control-group">
+                                                 <textarea placeholder="Message" class="span12" rows="5"></textarea>
+                                             </div-->
+                                             <div class="text-center">
+                                                 <button class="btn btn-success " name="ok" type="submit">'.localize('_submit',getlocal()).'</button>
+                                             </div>
+                                     </div>
+                                 </div>';
 		}	  
 		
 		$out .= "</form>";
@@ -622,7 +670,345 @@ document.addEventListener('keydown', function (event) {
 			} 
 		}	
 		return ($ret);
+    }
+	
+	protected function watermark($s, $f) {
+		$image2add = remote_paramload('RCITEMS','image2add',$this->path);
+	
+		if (is_file($s)) {
+	        $process_img = new wateresize();
+			$process_img->loadimg($s, 0, 0, 'jpg', 1, $this->urlpath, $this->image2add);
+			$process_img->set_jpg_quality(filesize($s));
+	        $ret = $process_img->saveimg($this->urlpath, $f);	
+	        unset($process_img);		
+		}   
+	    else
+			$ret = move_uploaded_file($s,$f);
+				
+	}
+
+    protected function create_thumbnail($s, $file, $ptype, $uphotoid=null) {
+	
+        $restype = remote_paramload('RCITEMS','restype',$this->prpath);//'.jpg'; 				  			
+		$autoresize = remote_arrayload('RCITEMS','autoresize',$this->prpath);
+		
+		//3 sized scaled images
+		$photo_bg = remote_paramload('RCITEMS','photobgpath',$this->prpath);		  
+		$img_large = $photo_bg ? $this->urlpath ."/images/$photo_bg/" : $thubpath;	  	  
+		$photo_md = remote_paramload('RCITEMS','photomdpath',$this->prpath);		  
+		$img_medium = $photo_md ? $this->urlpath ."/images/$photo_md/" : $thubpath;	  	  
+		$photo_sm = remote_paramload('RCITEMS','photosmpath',$this->prpath);		  
+		$img_small = $photo_sm ? $this->urlpath ."/images/$photo_sm/" : $thubpath;	  
+		
+		$f = $file . $restype;
+		
+		switch ($ptype) {
+		
+			  case 'SMALL' : //resize medium, small and save at once
+                             if (!empty($autoresize)) {							 
+                               $image = new SimpleImage();
+                               $image->load($s);
+							   						   
+							   if ($dim_small = $autoresize[0]) {
+                                 $image->resizeToWidth($dim_small);
+                                 $image->save($img_small . $f);
+                               }
+                               return 1;							   
+							 }							 
+			                 break;
+							 
+			  case 'MEDIUM' ://resize medium, small and save at once
+                             if (!empty($autoresize)) {							 
+                               $image = new SimpleImage();
+                               $image->load($s);
+							   
+							   if ($dim_medium = $autoresize[1]) {
+                                 $image->resizeToWidth($dim_medium);
+                                 $image->save($img_medium . $f);
+							   }							   
+							   if ($dim_small = $autoresize[0]) {
+                                 $image->resizeToWidth($dim_small);
+                                 $image->save($img_small . $myfilename);
+                               }
+                               return 1;							   
+							 }
+			                 break;
+							 
+			  case 'LARGE' : //resize large, medium and small and save at once	
+                             if (!empty($autoresize)) {							 
+                               $image = new SimpleImage();
+                               $image->load($s);
+							   
+							   if ($dim_large = $autoresize[2]) {
+                                 $image->resizeToWidth($dim_large);
+                                 $image->save($img_large . $f);	
+							   }								   
+							   if ($dim_medium = $autoresize[1]) {
+                                 $image->resizeToWidth($dim_medium);
+                                 $image->save($img_medium . $f);	
+							   }
+							   if ($dim_small = $autoresize[0]) {
+                                 $image->resizeToWidth($dim_small);
+                                 $image->save($img_small . $f);	
+							   }
+                               return 1; 							   
+							 }
+			                 break;
+							 							 							 
+			  default      : //DEFAULT 1 sized photo
+                             $path = $uphotoid ? 
+							         $this->urlpath . remote_paramload('RCITEMS','adrespath',$this->prpath) : 
+									 $this->urlpath . remote_paramload('RCITEMS','respath',$this->prpath);
+							         
+							 //resize large autoresize
+                             if (!empty($autoresize)) {							 
+                               $image = new SimpleImage();
+                               $image->load($s);
+							   						   
+							   if ($dim_large = $autoresize[2]) {
+                                 $image->resizeToWidth($dim_large);
+                                 $image->save($path . $f);	
+                               }
+                               return 1;							   
+							 }
+                             else
+								move_uploaded_file($s, $path . $f);
+		}
     }	
+	
+	protected function encode_image_id($id=null) {
+	    if (!$id) return null;
+		$encodeimageid = remote_paramload('RCITEMS','encodeimageid',$this->prpath);	  				
+
+		if ($this->encodeimageid) 
+			$out = md5($id);
+		else
+		    $out = $id;
+			
+        return $out;
+	}	
+	
+	//handle dropzone js form for pic uploading
+	protected function dropzone($accepted_filetypes=null) {
+	    $title = GetParam('title') ? str_replace(' ','-',GetParam('title')) : 'title'; //posted item code
+		$ds = DIRECTORY_SEPARATOR;  
+		//$storeFolder = 'uploads'; 
+
+		$restype = remote_paramload('RCITEMS','restype',$this->prpath);//'.jpg'; 				  		
+        $phototype = remote_paramload('RCITEMS','phototype',$this->path);
+
+		$photodb = remote_paramload('RCITEMS','photodb',$this->prpath);
+		$mixphoto = remote_paramload('RCITEMS','mixphoto',$this->prpath);	 
+		$photoquality = remote_paramload('RCITEMS','photoquality',$this->prpath);
+	  
+		$mixx = remote_paramload('RCITEMS','mixx',$this->prpath);	 
+		$mixy = remote_paramload('RCITEMS','mixy',$this->prpath);	 	  
+		$mixx = $mixx ? $mixx : 'CENTER';	 
+		$mixy = $mixy ? $mixy : 'MIDDLE';		
+		
+		$rp = remote_paramload('RCITEMS','respath',$this->prpath);		
+		$rrp = $rp ? $rp : '/images/thub/';
+		$thubpath = $this->urlpath . $rrp;	  
+		$rp2 = remote_paramload('RCITEMS','adrespath',$this->prpath);
+		$rrp2 = $rp2 ? $rp2 : '/images/uphotos/';
+		$uphotos = $this->urlpath . $rrp2;
+		
+ 		$photo_sm = remote_paramload('RCITEMS','photosmpath',$this->prpath);		  
+		$img_small = $photo_sm ? $this->urlpath ."/images/$photo_sm/" : $thubpath;	  
+		
+		if (!empty($_FILES)) {
+     
+			$tempFile = $_FILES['file']['tmp_name'];               
+			//$targetPath = dirname( __FILE__ ) . $ds. $storeFolder . $ds;  
+			//$targetFile =  $targetPath. $_FILES['file']['name'];  
+			$f = $_FILES['file']['name'];//$title . $restype;
+			$targetFile =  $thubpath . $f;	
+            //move_uploaded_file($tempFile,$targetFile); 
+			//die();
+			$targetName = $this->encode_image_id($title);			
+			
+            $targetMainPath = $phototype ? $img_small : $thubpath; 			
+			$targetSecPath = $uphotos;
+			$targetMainFile = $targetMainPath . $targetName; 
+			$targetSecFile = $targetSecPath . $targetName; 
+			
+			if (is_readable($targetMainFile.$restype)) { //look if pic exist
+			    //save at uphotos a,b,c..
+				for ($iz='A';$iz<'Z';$iz++) {
+					if (!is_readable($targetSecFile.$iz.$restype))
+						break;
+				}
+				$targetName .= $iz; //'A';
+				$this->create_thumbnail($tempFile, $targetName, null, $iz);
+			}
+			else {
+			    //save at main path
+				switch ($phototype) {
+					case 1  : $this->create_thumbnail($tempFile, $targetName, 'SMALL'); break;
+					case 2  : $this->create_thumbnail($tempFile, $targetName, 'MEDIUM'); break;
+					default : $this->create_thumbnail($tempFile, $targetName, 'LARGE');
+				}
+			}
+		}
+		die();
+	}
+	
+	protected function gallery($title=null) {
+	    $_id = $title ? $title : GetReq('id'); 
+		$name = $this->encode_image_id($_id);
+		$ret = null;
+		$id = 0;
+
+		$xlink = 'cpmhtmleditor.php?t=cpmvdel&id='; 
+		$restype = remote_paramload('RCITEMS','restype',$this->prpath);//'.jpg'; 				  		
+	
+		$photo_bg = remote_paramload('RCITEMS','photobgpath',$this->prpath);		  
+		$img = "/images/$photo_bg/" . $name . $restype;
+		$img_large = $photo_bg ? $this->urlpath . $img : null;	  	  
+		if (($img_large) && is_readable($img_large)) {
+		    $id += 1;
+			$ret = '<div class="mega-entry cat-large cat-all" id="mega-entry-'.$id.'" data-src="'.$img.'" data-lowsize="">
+                        <div class="mega-covercaption mega-square-bottom mega-landscape-right mega-portrait-bottom mega-red">
+                            <!-- The Content Part with Hidden Overflow Container -->
+                            <div class="mega-title"><img src="img/gallery/icons/grid.png" alt="" style="float: left; padding-right: 15px;"/>'.$name.'</div>
+                            <div class="mega-date">Lorem ipsun dolor</div>
+                            <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua...<br/><br/><a href="#">Read the whole story</a></p>
+                        </div>
+                        <!-- The Link Buttons -->
+                        <div class="mega-coverbuttons">
+                            <div class="mega-link mega-red"><a href="'.$xlink.$name.'&type=LARGE"><div class="mega-link mega-red"></div></a></div>
+                            <a class="fancybox" rel="group" href="'.$img.'" title="'.$name.'"><div class="mega-view mega-red"></div></a>
+                        </div>
+                    </div>';
+		}
+		
+		$photo_md = remote_paramload('RCITEMS','photomdpath',$this->prpath);		  
+		$img = "/images/$photo_md/" . $name . $restype;
+		$img_medium = $photo_md ? $this->urlpath . $img : null;
+		if (($img_medium) && is_readable($img_medium)) {
+		    $id += 1;
+			$ret .= '<div class="mega-entry cat-medium cat-all" id="mega-entry-'.$id.'" data-src="'.$img.'" data-lowsize="">
+                        <div class="mega-covercaption mega-square-bottom mega-landscape-right mega-portrait-bottom mega-red">
+                            <!-- The Content Part with Hidden Overflow Container -->
+                            <div class="mega-title"><img src="img/gallery/icons/grid.png" alt="" style="float: left; padding-right: 15px;"/>'.$name.'</div>
+                            <div class="mega-date">Lorem ipsun dolor</div>
+                            <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua...<br/><br/><a href="#">Read the whole story</a></p>
+                        </div>
+                        <!-- The Link Buttons -->
+                        <div class="mega-coverbuttons">
+                            <div class="mega-link mega-red"><a href="'.$xlink.$name.'&type=MEDIUM"><div class="mega-link mega-red"></div></a></div>
+                            <a class="fancybox" rel="group" href="'.$img.'" title="'.$name.'"><div class="mega-view mega-red"></div></a>
+                        </div>
+                    </div>';		
+		}
+		
+ 		$photo_sm = remote_paramload('RCITEMS','photosmpath',$this->prpath);		  
+		$img = "/images/$photo_sm/" . $name . $restype;
+		$img_small = $photo_sm ? $this->urlpath . $img : null;
+		if (($img_small) && is_readable($img_small)) {
+		    $id += 1;
+			$ret .= '<div class="mega-entry cat-small cat-all" id="mega-entry-'.$id.'" data-src="'.$img.'" data-lowsize="">
+                        <div class="mega-covercaption mega-square-bottom mega-landscape-right mega-portrait-bottom mega-red">
+                            <!-- The Content Part with Hidden Overflow Container -->
+                            <div class="mega-title"><img src="img/gallery/icons/grid.png" alt="" style="float: left; padding-right: 15px;"/>'.$name.'</div>
+                            <div class="mega-date">Lorem ipsun dolor</div>
+                            <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua...<br/><br/><a href="#">Read the whole story</a></p>
+                        </div>
+                        <!-- The Link Buttons -->
+                        <div class="mega-coverbuttons">
+                            <div class="mega-link mega-red"><a href="'.$xlink.$name.'&type=SMALL"><div class="mega-link mega-red"></div></a></div>
+                            <a class="fancybox" rel="group" href="'.$img.'" title="'.$name.'"><div class="mega-view mega-red"></div></a>
+                        </div>
+                    </div>';		
+		}
+	
+		$rp = remote_paramload('RCITEMS','respath',$this->prpath);		
+		$rrp = $rp ? $rp : '/images/thub/';
+		$img = $rrp . $name . $restype;
+		$img_thub = $this->urlpath . $img;	 
+		if (($img_thub) && is_readable($img_thub)) {
+		    $id += 1;
+			$ret .= '<div class="mega-entry cat-thumb cat-all" id="mega-entry-'.$id.'" data-src="'.$img.'" data-lowsize="">
+                        <div class="mega-covercaption mega-square-bottom mega-landscape-right mega-portrait-bottom mega-red">
+                            <!-- The Content Part with Hidden Overflow Container -->
+                            <div class="mega-title"><img src="img/gallery/icons/grid.png" alt="" style="float: left; padding-right: 15px;"/>'.$name.'</div>
+                            <div class="mega-date">Lorem ipsun dolor</div>
+                            <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua...<br/><br/><a href="#">Read the whole story</a></p>
+                        </div>
+                        <!-- The Link Buttons -->
+                        <div class="mega-coverbuttons">
+                            <div class="mega-link mega-red"><a href="'.$xlink.$name.'&type=THUMB"><div class="mega-link mega-red"></div></a></div>
+                            <a class="fancybox" rel="group" href="'.$img.'" title="'.$name.'"><div class="mega-view mega-red"></div></a>
+                        </div>
+                    </div>';		
+		}
+		
+		$rp2 = remote_paramload('RCITEMS','adrespath',$this->prpath);
+		$rrp2 = $rp2 ? $rp2 : '/images/uphotos/';
+		for ($i='A';$i<'Z';$i++) {
+		    $img = $rrp2 . $name . $i . $restype;
+			$img_uphoto = $this->urlpath . $img;
+			if (($img_uphoto) && is_readable($img_uphoto)) {
+				$id += 1;
+				$ret .= '<div class="mega-entry cat-uphotos cat-all" id="mega-entry-'.$id.'" data-src="'.$img.'" data-lowsize="">
+                        <div class="mega-covercaption mega-square-bottom mega-landscape-right mega-portrait-bottom mega-red">
+                            <!-- The Content Part with Hidden Overflow Container -->
+                            <div class="mega-title"><img src="img/gallery/icons/grid.png" alt="" style="float: left; padding-right: 15px;"/>'.$name.'</div>
+                            <div class="mega-date">Lorem ipsun dolor</div>
+                            <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua...<br/><br/><a href="#">Read the whole story</a></p>
+                        </div>
+                        <!-- The Link Buttons -->
+                        <div class="mega-coverbuttons">
+                            <div class="mega-link mega-red"><a href="'.$xlink.$name.'&type=UPHOTO&uid='.$i.'"><div class="mega-link mega-red"></div></a></div>
+                            <a class="fancybox" rel="group" href="'.$img.'" title="'.$name.'"><div class="mega-view mega-red"></div></a>
+                        </div>
+						</div>';			
+			}
+		}
+		
+		return ($ret);
+	}
+	
+	function delete_photo($title=null) {
+		$db = GetGlobal('db');
+		$type = GetReq('type');  
+		$id = $title ? $title : GetReq('id');
+		$uid = null;
+		
+		$restype = remote_paramload('RCITEMS','restype',$this->prpath);//'.jpg'; 				  		
+		  
+		//3 sized scaled images
+		$photo_bg = remote_paramload('RCITEMS','photobgpath',$this->prpath);		  
+		$img_large = $photo_bg ? $this->urlpath ."/images/$photo_bg/" : $thubpath;	  	  
+		$photo_md = remote_paramload('RCITEMS','photomdpath',$this->prpath);		  
+		$img_medium = $photo_md ? $this->urlpath ."/images/$photo_md/" : $thubpath;	  	  
+		$photo_sm = remote_paramload('RCITEMS','photosmpath',$this->prpath);		  
+		$img_small = $photo_sm ? $this->urlpath ."/images/$photo_sm/" : $thubpath;	  
+			  
+		$rp = remote_paramload('RCITEMS','respath',$this->prpath);		
+		$rrp = $rp ? $this->urlpath . $rp : $this->urlpath . '/images/thub/';
+		$rp2 = remote_paramload('RCITEMS','adrespath',$this->prpath);
+		$rrp2 = $rp2 ? $this->urlpath . $rp2 : $this->urlpath . '/images/uphotos/';
+		
+		switch ($type) {
+		    case 'SMALL' : $w = $img_small; break;
+			case 'MEDIUM': $w = $img_medium; break;
+			case 'LARGE' : $w = $img_large; break;
+			case 'THUMB' : $w = $rrp; break;
+			case 'UPHOTO': $w = $rrp2; 
+			               $uid = GetReq('uid');
+			               break;
+		    default      : $w = $rrp;
+		}
+
+        $pic_file = $w . $id . $uid . $restype;
+		
+		if (file_exists($pic_file)) {
+		  unlink($pic_file);
+		  return true;
+		}  
+		return false;
+    }			
 };
 }
 ?>

@@ -22,7 +22,7 @@ private frontpage.fronthtmlpage /cgi-bin;
 public jqgrid.mygrid;
 public gui.ajax;
 public database.dataforms;
-public phpdac.rccontrolpanel;
+private shop.rcitems /cgi-bin;
 public gui.ajax;
 private shop.rckategories /cgi-bin;
 #endif
