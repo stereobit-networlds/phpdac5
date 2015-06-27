@@ -9,7 +9,7 @@ load_extension adodb refby _ADODB_;
 super database;
 
 /---------------------------------load and create libs
-use xwindow.window,xwindow.window2,browser;
+use xwindow.window,gui.swfcharts;
 
 /---------------------------------load not create dpc (internal use)
 include networlds.clientdpc;
@@ -19,6 +19,7 @@ include gui.htmlarea;
 /---------------------------------load all and create after dpc objects
 private frontpage.fronthtmlpage /cgi-bin;
 #ifdef SES_LOGIN
+private shop.rcitems /cgi-bin;
 public phpdac.rcconfig;
 #endif
 private phpdac.rccontrolpanel /cgi-bin;

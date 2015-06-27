@@ -414,10 +414,10 @@ document.addEventListener('keydown', function (event) {
          }		 
 	  }
 	  else {//load
+	     //echo $id,'>',$type;
          if (($id) && ($type)) { //db
 		    //echo 'load from db:',$id,$type;
 		    $mydata = GetGlobal('controller')->calldpc_method("rcitems.has_attachment2db use " . $id ."+$type+1"); 
-			//echo '>',$mydata;
          }
          else {//text
 		    //echo 'load from file'; 
@@ -639,7 +639,12 @@ document.addEventListener('keydown', function (event) {
 
     }
 
-    protected function editor() {
+    public function editor($itemcode=null, $itemtype='.html', $file = null) {
+	
+	    $id = $itemcode ? $itemcode : GetReq('id');
+		$type = $itemtype ? $itemtype : (GetReq('type') ? GetReq('type') : '.html');
+		$htmlfile = $file ? $file : $this->htmlfile; 
+		
 		if (!empty($_POST)) {
 			//echo 'post....';	
 			if (($id = GetParam('id')) && ($type = GetParam('type'))) {	
@@ -654,11 +659,11 @@ document.addEventListener('keydown', function (event) {
 		}
 		else {
 			//echo 'load....';	
-			if (($id = GetReq('id')) && ($type = GetReq('type'))) {	
+			if (($id) && ($type)) {	
 				$ret = $this->render(null,null,$id,$type);
 			}
-			elseif ($this->htmlfile) {
-				$p = explode('/',$this->htmlfile);
+			elseif ($htmlfile) {
+				$p = explode('/',$htmlfile);
 				$fa = array_pop($p);
 				$myfile = getcwd() . '/html/' . $this->template .  $fa;
 				//$tempname = getcwd() . '/modify_html.tmp';
@@ -671,6 +676,9 @@ document.addEventListener('keydown', function (event) {
 		}	
 		return ($ret);
     }
+	
+	
+	//IMAGES
 	
 	protected function watermark($s, $f) {
 		$image2add = remote_paramload('RCITEMS','image2add',$this->path);

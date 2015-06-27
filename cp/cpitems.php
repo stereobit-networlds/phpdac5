@@ -28,6 +28,7 @@ public phpdac.rcupload;
 private shop.rcitems /cgi-bin;
 public shop.rcvstats;
 public shop.rctransactions;
+private cp.cpmhtmleditor /cgi-bin;
 #endif
 private phpdac.rccontrolpanel /cgi-bin;
 ',1);
@@ -35,7 +36,10 @@ private phpdac.rccontrolpanel /cgi-bin;
 $cptemplate = GetGlobal('controller')->calldpc_method('rcserver.paramload use FRONTHTMLPAGE+cptemplate');
 
 if ($cptemplate) {
-    $mc_page = (GetSessionParam('LOGIN')) ? 'cp-tags' : 'cp-login';
+    switch ($_GET['ajax']) {
+		case 1 : $mc_page = (GetSessionParam('LOGIN')) ? 'cp-blank' : 'cp-login'; break;
+		default: $mc_page = (GetSessionParam('LOGIN')) ? 'cp-items' : 'cp-login';
+	}	
 	echo $page->render(null,getlocal(), null, $cptemplate.'/index.php');
 }
 else

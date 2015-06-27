@@ -44,14 +44,14 @@ class pcntlajax extends pcntl {
 	  $this->pre_render($theme,$lan,$cl,$fp);
 	  
 	  	  
-	  if ($this->ajax_var) { //ajax response
+	  /*if ($this->ajax_var) { //ajax response
 	    
 	    $hfp = new ajaxhtmlpage($fp,null,$appi);  
 	    $ret = $hfp->render($this->data);
 	    unset($hfp);	  
 	  }
 	  else {//common pcntl response
-	  	  
+	  	*/  
 	    $appi = (isset($this->map)? $this->map:$this->remoteapp);
 	    //echo $appi;
 		//if splash && no action && no secont time
@@ -80,7 +80,7 @@ class pcntlajax extends pcntl {
 	      $ret .= $hfp->render($this->data);
 	      unset($hfp);
 		}	  
-	  }  
+	  /*}  **********/
 	  
 	  if ($this->debug) 
 	    echo "\naction elapsed: ",$this->getthemicrotime() - $atime, " seconds<br>"; 	    

@@ -233,7 +233,9 @@ class CCPP
     {
         if ($this->isDefined($name))
             return $this->macros[$name];
-        fwrite(STDERR, "#CCPP error: attempting to access undefined macro \"$name\"\n");
+		
+		$STDERR = fopen('php://stderr', 'w+');	
+        fwrite($STDERR, "#CCPP error: attempting to access undefined macro \"$name\"\n");
         return '';
     }
     
@@ -241,7 +243,8 @@ class CCPP
     {
         if ($this->options['execute.method'] == 'include') {
             //tmpname()
-            fwrite(STDERR, '#error Not implemented execution method "include"');
+			$STDERR = fopen('php://stderr', 'w+');
+            fwrite($STDERR, '#error Not implemented execution method "include"');
             exit (1);
         }
         else { 
@@ -480,6 +483,7 @@ class CCPP
         // Phase 4
         // Processing
         foreach ($sourceTokens as $key => &$value) {
+			
             if ($skipTokens > 0) {$skipTokens--; continue;}
             if (is_string($value)) //Operator
                 $code .= $value;
@@ -541,7 +545,10 @@ class CCPP
                 // User defined directive (WIP)
                 elseif (array_key_exists($directive, $this->user_directives))
                     $code .= $sPOT.'$this->_processor_userdirective('.$this->_protector_singleQuoted($op).', '.$value[2].');'.$sPCT."\n";
-                else fwrite(STDERR, "#CCPP: Invalid directive \"#$directive\" at line {$value[2]}\n");
+                else {
+					$STDERR = fopen('php://stderr', 'w+');
+					fwrite($STDERR, "#CCPP: Invalid directive \"#$directive\" at line {$value[2]}\n");
+				}  	
 
             } // END Directives
             elseif ($value[0] == T_DOC_COMMENT); //Skip /** */ PHPDoc comments.
@@ -599,7 +606,8 @@ class CCPP
         }
         else {
             //$this->debug('No matching braket');
-            fwrite(STDERR, '#CCPP error: no matching bracket near line '.$sourceTokens[$key][2].' of the code');
+			$STDERR = fopen('php://stderr', 'w+');
+            fwrite($STDERR, '#CCPP error: no matching bracket near line '.$sourceTokens[$key][2].' of the code');
             exit (2);
         }
     }
@@ -704,12 +712,14 @@ class CCPP
     }
     protected function _processor_error($message, $line = __LINE__)
     {
-        fwrite(STDERR, '#error: "'.$message.'" on line '.$line." in the source\n");
+		$STDERR = fopen('php://stderr', 'w+');
+        fwrite($STDERR, '#error: "'.$message.'" on line '.$line." in the source\n");
         $this->_processor_exitClean(1);
     }
     protected function _processor_warning($message, $line = __LINE__)
     {
-        fwrite(STDERR, '#warning: "'.$message.'" on line '.$line." in the source\n");
+	    $STDERR = fopen('php://stderr', 'w+');
+        fwrite($STDERR, '#warning: "'.$message.'" on line '.$line." in the source\n");
     }
     protected function _processor_exitClean($status = 0)
     {

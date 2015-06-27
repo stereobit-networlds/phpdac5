@@ -33,7 +33,7 @@ public jqgrid.mygrid;
 public gui.ajax;
 public shop.rckategories;
 private shop.shkatalogmedia /cgi-bin;
-public shop.rcvstats;
+private shop.rcitems /cgi-bin;
 private shop.shcustomers /cgi-bin;
 private shop.shcart /cgi-bin;
 public shop.rctransactions;

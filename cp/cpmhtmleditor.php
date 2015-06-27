@@ -26,9 +26,10 @@ $cptemplate = GetGlobal('controller')->calldpc_method('rcserver.paramload use FR
 if ($cptemplate) {
 
 	switch ($_GET['t']) {
-		case 'cpmvphoto' : $p = 'cp-mvphoto'; break;
-		case 'cpmvdel'   : $p = 'cp-mvphoto'; break;
-		default          : $p = ($_POST['insfast'] ? 'cp-uploadimage' : 'cp-htmleditor');
+	    case 'cpmhtmleditor' : $p = $_GET['ajax'] ? 'cp-ajax-ckeditor' : 'cp-ckeditor'; break;
+		case 'cpmvphoto'     : $p = $_GET['ajax'] ? 'cp-ajax-mvphoto' : 'cp-mvphoto'; break;
+		case 'cpmvdel'       : $p = $_GET['ajax'] ? 'cp-ajax-mvphoto' : 'cp-mvphoto'; break;
+		default              : $p = ($_POST['insfast'] ? 'cp-uploadimage' : 'cp-htmleditor');
 	}
     $mc_page = (GetSessionParam('LOGIN')) ? $p : 'cp-login';
 	echo $page->render(null,getlocal(), null, $cptemplate.'/index.php');

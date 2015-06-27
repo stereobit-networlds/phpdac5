@@ -30,7 +30,7 @@ class rcmenu extends shmenu {
 
     var $crlf, $path, $title;
 	var $t_config, $t_config0, $t_config1, $t_config2;
-	var $edit_per_lan;
+	var $edit_per_lan, $cptemplate;
 	
 
     function __construct() {
@@ -41,7 +41,7 @@ class rcmenu extends shmenu {
 	
 	      $os =  php_uname();//'>';
           $info = strtolower($os);// $_SERVER['HTTP_USER_AGENT'] );   
-          $this->crlf = ( strpos( $info, "windows" ) === false ) ? "\n" : "\r\n" ;	
+          $this->crlf = PHP_EOL; //( strpos( $info, "windows" ) === false ) ? "\n" : "\r\n" ;	
 		  
           if ($remoteuser=GetSessionParam('REMOTELOGIN')) 
 		    $this->path = paramload('SHELL','prpath')."instances/$remoteuser/";	
@@ -59,6 +59,8 @@ class rcmenu extends shmenu {
 			$config['FORM']['element_bgcolor1'] = 'EEEEEE';
 			$config['FORM']['element_bgcolor2'] = 'DDDDDD';			
 		  }
+		  
+		  $this->cptemplate = remote_paramload('FRONTHTMLPAGE','cptemplate', $this->path);	
 	}
 	
     function event($event=null) {	

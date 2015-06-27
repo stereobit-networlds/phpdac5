@@ -33,6 +33,7 @@ public jqgrid.mygrid;
 public gui.ajax;
 public database.dataforms;
 public shop.shsubscribe;
+private shop.rcitems /cgi-bin;
 public phpdac.rcusers;
 public phpdac.rccustomers;
 public shop.rctransactions;

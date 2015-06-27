@@ -20,7 +20,7 @@ include gui.htmlarea;
 private frontpage.fronthtmlpage /cgi-bin;
 #ifdef SES_LOGIN
 public shop.rcitems;
-public shop.rcmenu;
+private phpdac.rcmenu /cgi-bin;
 #endif
 private phpdac.rccontrolpanel /cgi-bin;
 ',1);
@@ -28,7 +28,7 @@ private phpdac.rccontrolpanel /cgi-bin;
 $cptemplate = GetGlobal('controller')->calldpc_method('rcserver.paramload use FRONTHTMLPAGE+cptemplate');
 
 if ($cptemplate) {
-    $mc_page = (GetSessionParam('LOGIN')) ? 'cp-tags' : 'cp-login';
+    $mc_page = (GetSessionParam('LOGIN')) ? 'cp-menu' : 'cp-login';
 	echo $page->render(null,getlocal(), null, $cptemplate.'/index.php');
 }
 else

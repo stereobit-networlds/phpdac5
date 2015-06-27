@@ -9,7 +9,7 @@ load_extension adodb refby _ADODB_;
 super database;
 
 /---------------------------------load and create libs
-use xwindow.window,xwindow.window2,browser,gui.swfcharts;
+use xwindow.window,gui.swfcharts;
 use jqgrid.jqgrid;
 
 /---------------------------------load not create dpc (internal use)
@@ -32,7 +32,13 @@ private phpdac.rccontrolpanel /cgi-bin;
 $cptemplate = GetGlobal('controller')->calldpc_method('rcserver.paramload use FRONTHTMLPAGE+cptemplate');
 
 if ($cptemplate) {
-    $mc_page = (GetSessionParam('LOGIN')) ? 'cp-tags' : 'cp-login';
+
+	switch ($_GET['t']) {
+		case 'cpkategories'  : $p = $_GET['ajax'] ? 'cp-ajax-ckeditor' : 'cp-tags'; break;
+		default              : $p = $_GET['ajax'] ? 'cp-ajax-ckeditor' : 'cp-tags';
+	}
+	
+    $mc_page = (GetSessionParam('LOGIN')) ? $p : 'cp-login';
 	echo $page->render(null,getlocal(), null, $cptemplate.'/index.php');
 }
 else

@@ -161,6 +161,11 @@ $__LOCALE['RCCONTROLPANEL_DPC'][120]='_SELECTHTML;Select Html;Επιλογή Htm
 $__LOCALE['RCCONTROLPANEL_DPC'][121]='_ADDFAST;Add item;Εισαγωγή είδους';
 $__LOCALE['RCCONTROLPANEL_DPC'][122]='_addtag;Add Tag;Εισαγωγή Ετικέτας';
 $__LOCALE['RCCONTROLPANEL_DPC'][123]='_back;Back;Επιστροφή';
+$__LOCALE['RCCONTROLPANEL_DPC'][124]='_mailqueue;Mail queue;Μαζικές Αποστολές';
+$__LOCALE['RCCONTROLPANEL_DPC'][125]='_ENTITIES;Entities;Στοιχεία';
+$__LOCALE['RCCONTROLPANEL_DPC'][126]='_categories;Sections;Κατηγορίες';
+$__LOCALE['RCCONTROLPANEL_DPC'][127]='_items;Items;Αντικείμενα';
+$__LOCALE['RCCONTROLPANEL_DPC'][128]='_configmenu;Config menu;Ρυθμίσεις menu';
 
 class rccontrolpanel {
 
@@ -3283,7 +3288,7 @@ EOF;
 	 
      //if (stristr($editpage,'index.php')) {
 	     if ($environment['MENU']==1) 
-           $otokens[] = "<li><a $class href='cpmenu.php?t=cpmconfig&$passturl&encoding=$encoding'>".localize('_menu',$lan)."</a></li>";
+           $otokens[] = "<li><a $class href='cpmenu.php?t=cpmconfig&$passturl&encoding=$encoding'>".localize('_configmenu',$lan)."</a></li>";
 
 	     if ($environment['SLIDESHOW']==1) 
            $otokens[] = "<li><a $class href='cpslideshow.php?t=cpsconfig&$passturl&encoding=$encoding'>".localize('_slideshow',$lan)."</a></li>";	 
@@ -3321,24 +3326,8 @@ EOF;
 	    if ($environment['SEARCH']==1) 
            $otokens[] = "<li><a $class href='cpitems.php?t=cpattach2db&$passturl&encoding=$encoding'>".localize('_search',$lan)."</a></li>";
 	 }
-	 //}//config
-	 if ($environment['EDIT_CATEGORY']==1) { 
-	       $cat = null;
-           $otokens[] = "<li><a $class href='cpkategories.php?t=cpkategories&cat=$cat&$passturl&encoding=$encoding'>".localize('_editcat',$lan)."</a></li>";
-	 } 	 
-     if ($environment['EDIT_ITEM']==1) {
-           $v = null;
-		   $otokens[] = "<li><a $class href='cpitems.php?t=cpitems&id=$v&$passturl&encoding=$encoding'>".localize('_edititem',$lan)."</a></li>";
-	 } 	 
-	 if ($environment['USERS']==1) 
-           $otokens[] = "<li><a $class href='cpusers.php?t=cpusers&$passturl&encoding=$encoding'>".localize('_users',$lan)."</a></li>"; 
+	 //}//config 
 
-	 if ($environment['CUSTOMERS']==1) 
-           $otokens[] = "<li><a $class href='cpcustomers.php?t=cpcustomers&$passturl&encoding=$encoding'>".localize('_customers',$lan)."</a></li>"; 
-
-	 if ($environment['TRANSACTIONS']==1) 
-		   $otokens[] = "<li><a $class href='cptransactions.php?t=cptransactions&$passturl&encoding=$encoding'>".localize('_transactions',$lan)."</a></li>"; 
- 	 
 	 if ($environment['ITEM_SENDMAIL']==1) 
 		 $otokens[] = "<li><a $class href='cpsubscribers.php?encoding=$encoding&$passturl'>".localize('_senditemmail',$lan)."</a></li>";	 		 
 
@@ -3368,6 +3357,39 @@ EOF;
 			$li1 = '</li>';
 		    $tokens[] = $li0 . '<ul class="sub">'.implode('',$otokens).'</ul>' . $li1;	
 	 }
+	 
+	 //ENTITIES
+	 if ($environment['EDIT_CATEGORY']==1) { 
+	       $cat = null;
+           $ztokens[] = "<li><a $class href='cpkategories.php?t=cpkategories&cat=$cat&$passturl&encoding=$encoding'>".localize('_categories',$lan)."</a></li>";
+	 } 	 
+     if ($environment['EDIT_ITEM']==1) {
+           $v = null;
+		   $ztokens[] = "<li><a $class href='cpitems.php?t=cpitems&id=$v&$passturl&encoding=$encoding'>".localize('_items',$lan)."</a></li>";
+	 } 		 
+	 
+	 if ($environment['USERS']==1) 
+           $ztokens[] = "<li><a $class href='cpusers.php?t=cpusers&$passturl&encoding=$encoding'>".localize('_users',$lan)."</a></li>"; 
+
+	 if ($environment['CUSTOMERS']==1) 
+           $ztokens[] = "<li><a $class href='cpcustomers.php?t=cpcustomers&$passturl&encoding=$encoding'>".localize('_customers',$lan)."</a></li>"; 
+
+	 if ($environment['TRANSACTIONS']==1) 
+		   $ztokens[] = "<li><a $class href='cptransactions.php?t=cptransactions&$passturl&encoding=$encoding'>".localize('_transactions',$lan)."</a></li>"; 
+ 	 	 
+	 if ($environment['ITEM_SENDMAIL']==1) 
+		 $ztokens[] = "<li><a $class href='cpsubscribers.php?t=cpviewsubsqueue&encoding=$encoding&$passturl'>".localize('_mailqueue',$lan)."</a></li>";	 		 		 
+		 
+	 if (!empty($ztokens)) {
+		    $li0 = '<li class="sub-menu">
+			          <a href="javascript:;" class="">
+                          <i class="icon-list"></i>
+                          <span>'.localize('_ENTITIES',$lan).'</span>
+                          <span class="arrow"></span>
+                      </a>';
+			$li1 = '</li>';
+		    $tokens[] = $li0 . '<ul class="sub">'.implode('',$ztokens).'</ul>' . $li1;	
+	 }	 
 	 
 	 $new_elements = false;
 	 
