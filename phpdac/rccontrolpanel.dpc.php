@@ -258,11 +258,7 @@ class rccontrolpanel {
 	 	
     function event($sAction) {    	  
 	   
-	   //if a remote user is in do not allow /cp actions
-	   /////////////////////////////////////////////////////////////
-	   if (GetSessionParam('REMOTELOGIN')!='') die("Not allowed!");//	
-	   /////////////////////////////////////////////////////////////	
-	   
+	   if (GetGlobal('login')|| (GetSessionParam('LOGIN')=='yes')) {
 	   $this->autoupdate();	   	  		  			      
   
 	   switch ($sAction) {
@@ -312,12 +308,13 @@ class rccontrolpanel {
 							 }
 		                     break;				 
        } 
+	   }//if
     }
   
     function action($sAction) {
 		   
 	  //echo GetSessionParam('LOGIN'),"...";
-	  if (GetSessionParam('LOGIN')=='yes') {
+	  if (GetGlobal('login')|| (GetSessionParam('LOGIN')=='yes')) {
 	    
 		$tmpl = 'cpdashboard.htm';  
 		$t = $this->path . '/html/'. str_replace('.',getlocal().'.',$tmpl) ; 
