@@ -361,8 +361,8 @@ class controller extends sysdpc {
 	      (class_exists($__DPC[$class])) ) {
 		//echo '>>>',strtoupper($parts[1]),'_DPC','=',$__DPC[strtoupper($parts[1]).'_DPC'];
 	    //SetGlobal('__DPCMEM[$class]',& new GetGlobal('__DPC[$class]');
-		$__DPCMEM[$class] =  & new $__DPC[$class]; 
-		$__DPCOBJ[$dpc] =  & $__DPCMEM[$class];//alias of new name object array
+		$__DPCMEM[$class] =  new $__DPC[$class]; 
+		$__DPCOBJ[$dpc] =  $__DPCMEM[$class];//alias of new name object array
 		$__DPCID[$class] = $dpc; //new name index array
 		return TRUE;
 	  }	  
@@ -802,7 +802,7 @@ class controller extends sysdpc {
 	  }
 	  if ($loaded) {		
 			$classname = str_replace(".","_",$dpcname);
-		    $this->module_dac = &new $classname(&$environment);
+		    $this->module_dac = new $classname($environment);
 			//print_r(get_class_methods($this->module_dac));
 			
 			//$ver = explode(".",phpversion());
@@ -942,7 +942,7 @@ class controller extends sysdpc {
 	    if ($loaded) {	
 			
 			$classname = str_replace(".","_",$dpcname);
-		    $this->module_dac = &new $classname(&$environment);
+		    $this->module_dac = new $classname($environment);
 			
 			//$ver = explode(".",phpversion());
 			//if (($ver[0]<5) && (method_exists($module_dac,'action'))) 

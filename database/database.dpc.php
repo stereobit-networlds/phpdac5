@@ -76,7 +76,7 @@ class database {
 		  $this->dbp->PConnect($_Host, $_User, $_Password, $_Dbname);
 		}			  
 		
-		SetGlobal('db',&$this->dbp);//global alias
+		SetGlobal('db',$this->dbp);//global alias
 		//echo $_Dbname;
 		
 		//test code
@@ -146,7 +146,7 @@ class database {
 		  if ($returnpointer)
 			  return ($dbp);
 		  else	
-			  SetGlobal('db',&$dbp);//global alias 		  
+			  SetGlobal('db',$dbp);//global alias 		  
 	   }				
 	}   
    
