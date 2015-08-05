@@ -578,7 +578,7 @@ class pcntl extends controller {
    }   
    
    //overwrite
-   public function init($code=null, $accelerated=0) {      
+   public function init($code) {      
    
       //ACCELERATE modules reading...
 	  $t = new ktimer;
@@ -679,7 +679,7 @@ class pcntl extends controller {
    //overwrite
    public function event($event=null, $dpc_init=null) {
 
-     controller::event($event, null);
+     controller::event($event, $dpc_init);
    }
    //overwrite
    public function action($action=null) {
