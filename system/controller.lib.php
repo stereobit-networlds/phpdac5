@@ -229,7 +229,7 @@ class controller extends sysdpc {
    }
    
    //function calldpc_init() {
-   public function init($accelerated=0) {        
+   public function init($code=null, $accelerated=0) {        
    
       //ACCELERATE modules reading...
 	  $t = new ktimer;
@@ -680,7 +680,7 @@ class controller extends sysdpc {
 	}
 
 	//if dpc_init is set then dpc has priority and executed before new of others 
-    public function event($action,$dpc_init=null) {   
+    public function event($action, $dpc_init=null) {   
 	   $__DPCMEM = GetGlobal('__DPCMEM');
 	   $__DPC = GetGlobal('__DPC');		 
        $__EVENTS = GetGlobal('__EVENTS');		    

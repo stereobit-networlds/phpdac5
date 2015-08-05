@@ -271,7 +271,7 @@ class pcntl extends controller {
 	  $this->preprocessor = new CCPP($config);
    }   
    
-   public function render($theme=null,$lan=null,$cl=null,$fp=null,$xmlns=null) {      
+   public function render($theme=null,$lan=null,$cl=null,$fp=null) {      
    
       $atime = $this->getthemicrotime();  
 	  
@@ -578,7 +578,7 @@ class pcntl extends controller {
    }   
    
    //overwrite
-   public function init($code) {      
+   public function init($code=null, $accelerated=0) {      
    
       //ACCELERATE modules reading...
 	  $t = new ktimer;
@@ -677,9 +677,9 @@ class pcntl extends controller {
    }
    
    //overwrite
-   public function event($event=null) {
+   public function event($event=null, $dpc_init=null) {
 
-     controller::event($event);
+     controller::event($event, null);
    }
    //overwrite
    public function action($action=null) {
