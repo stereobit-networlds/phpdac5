@@ -50,10 +50,12 @@ class multichoice {
 	   
 	     $chk = ($this->initchecked==($num)) ? 'checked' : '';
 	   
+	     //echo $choice;
 	     $label = localize($choice,getlocal());
+		 //echo ' '.$label.'<br/>';
 	   
          $out .= "<input type=\"radio\" name=\"$this->name\" value=\"$choice\" $chk>$label";
-		 //$out .= "<br>";
+		 $out .= "<br/>";
 	   }
 	   
 	   if ($this->cform) { 

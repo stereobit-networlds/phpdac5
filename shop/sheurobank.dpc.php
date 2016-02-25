@@ -31,6 +31,7 @@ $__LOCALE['SHEUROBANK_DPC'][2]='_PAYCANCEL;Transaction canceled.;Ακυρωση 
 $__LOCALE['SHEUROBANK_DPC'][3]='_PAYERROR;Error during payment. Please try later.;Λανθασμένη συναλαγή. Παρακαλώ δοκιμάστε αργότερα.';  
 $__LOCALE['SHEUROBANK_DPC'][4]='_SRVERROR;Unknown error. Please try later.;Άγνωστο σφάλμα. Παρακαλώ δοκιμαστε αργότερα.';  
 $__LOCALE['SHEUROBANK_DPC'][5]='_EUROBANK;Credit card;Πιστωτική κάρτα'; 
+$__LOCALE['SHEUROBANK_DPC'][6]='_mailSubject;Transaction No ;Παραστατικό αγοράς Νο '; 
  
 class sheurobank  {
 
@@ -67,7 +68,10 @@ class sheurobank  {
       $this->debug_return = 0;//1;	  		  
 	  
       $this->title2show =  remote_paramload('SHEUROBANK','title',$this->path);	  
-      $this->amount = GetSessionParam('amount') ? GetSessionParam('amount') : 10.00;	  
+	  //$this->amount = GetSessionParam('amount') ? GetSessionParam('amount') : 0.10;	//cart value
+      $pay = GetSessionParam('amount') ? GetSessionParam('amount') : 0.10;	//cart value
+	  //echo $pay;
+      $this->amount = strval(number_format($pay,2,',','.'));	  
 	  
 	  /*if (($this->debug) || ($this->debug_return))
 	       //test transaction (already in trnas table)
@@ -81,7 +85,7 @@ class sheurobank  {
 	  if ($sandbox)
        $this->eurobank_url = "https://euro.test.modirum.com/vpos/shophandlermpi";
 	  else  
-       $this->eurobank_url = "https://euro.test.modirum.com/vpos/shophandlermpi";
+       $this->eurobank_url = "https://vpos.eurocommerce.gr/vpos/shophandlermpi"; //"https://euro.test.modirum.com/vpos/shophandlermpi";
            
       $this->eurobank_payment = false; //init	   
 	  $this->fields = array();//empty data to send
@@ -118,8 +122,11 @@ class sheurobank  {
 	                       $this->handle_Transaction('success');
 						   
 						   if (defined('SHCART_DPC')) {
-						     $tid = $this->eurobank_get_post_params(1);
-					         GetGlobal('controller')->calldpc_method("shcart.goto_mailer use ".$tid.'++invoice.htm');
+							   
+						     $tid = $this->eurobank_get_post_params('orderid');
+							 $subject = localize('_mailSubject', getlocal()) . $tid;
+							 
+					         GetGlobal('controller')->calldpc_method("shcart.goto_mailer use $tid++invoice.htm+".$subject);
 					       }
 						}
 						else 
@@ -154,17 +161,19 @@ class sheurobank  {
      switch ($action) {
 		case 'payreturn' : if ($this->eurobank_payment) {
 			
+			                 $tid = $this->eurobank_get_post_params('orderid');
 		                     //$ret = $this->set_message('success',null);
 							 
 		                     if (defined('SHCART_DPC')) {
-		                       //$ret = $this->set_message('success'); //NO
-							   //NO NEED...called into cartview tid+3
-		                       //$ret .= GetGlobal('controller')->calldpc_method("shcart.finalize_cart use ".$tid);
+								  
+		                        //$ret = $this->set_message('success'); //NO
+							    //NO NEED...called into cartview tid+3
+		                        //$ret .= GetGlobal('controller')->calldpc_method("shcart.finalize_cart use ".$tid);
 							   
-							   //$ok = GetGlobal('controller')->calldpc_method("shcart.loadcart use ".$tid);
-							   // if ($ok) {
+							    //$ok = GetGlobal('controller')->calldpc_method("shcart.loadcart use ".$tid);
+							    // if ($ok) {
 		                          $ret .= GetGlobal('controller')->calldpc_method("shcart.cartview use $tid+3");
-								  //GetGlobal('controller')->calldpc_method("shcart.clear");
+								  GetGlobal('controller')->calldpc_method("shcart.clear");
 								//}  
 						     }	 
 						   }
@@ -174,8 +183,8 @@ class sheurobank  {
 							  
 		                      if (defined('SHCART_DPC')) {							  
 							    //reload cart from error transaction
-							    $ok = GetGlobal('controller')->calldpc_method("shcart.loadcart use ".$tid);//GetReq('tid'));
-							    if ($ok)
+							    //$ok = GetGlobal('controller')->calldpc_method("shcart.loadcart use ".$tid);//GetReq('tid'));
+							    //if ($ok)
 		                          $ret .= GetGlobal('controller')->calldpc_method("shcart.cartview use ".$tid);//GetReq('tid'));
 							  }	  
 						   }	 
@@ -212,10 +221,11 @@ class sheurobank  {
 	  
 	  $confirmUrl = 't=payreturn&tid='.$this->transaction;
 	  $cancelUrl = 't=paycancel&tid='.$this->transaction;
+	  $description = localize('_mailSubject', getlocal()) . $this->transaction;
 	  
 	  $this->add_field('mid', $this->merchantid);
 	  $this->add_field('orderid', $this->transaction);
-	  $this->add_field('orderDesc', $this->title2show);
+	  $this->add_field('orderDesc', $description); //$this->title2show);
 	  $this->add_field('orderAmount', $this->amount);
 	  $this->add_field('currency', 'EUR');
 	  $this->add_field('payerEmail', $this->username);
@@ -238,10 +248,11 @@ class sheurobank  {
 	  if ($this->debug_return)
 	    print_r($_POST);
 	
-	  foreach ($this->return_post_args as $arg=>$value) {	  
-		${$arg} = $_POST[$value];
+	  $post = array();
+	  foreach ($this->return_post_args as $arg) {	  
+		${$arg} = $_POST[$arg];
         if ($arg!='digest') //exclude digest param from post array (exist as $(arg))
-			$post[$arg] = $_POST[$value]; 		
+			$post[$arg] = $_POST[$arg]; 		
 	  }  
 	  
 	  if ($this->verify_eurobank_payment($post, $digest)) {	
@@ -277,12 +288,12 @@ class sheurobank  {
    
    //check the posted data digest param by replicate it
    protected function verify_eurobank_payment($post_data=null, $post_digest=null) {
- 
-     if (($post_data) && ($post_digest)) { 
+     //echo 'Verify:';
+     if (is_array($post_data) && ($post_digest)) { 
 	   
 	   $form_data = implode("",$post_data) . $this->eurobank_pass;  
 	   $digest = base64_encode(sha1($form_data, true));
-	   
+	   //echo '>',$digest,'-',$post_digest;
 	   if (strcmp($digest, $post_digest)==0) {
 		 
 	       $this->savetransaction($post_data);
@@ -315,7 +326,13 @@ class sheurobank  {
      } 
      return $fin; 
      
-   }      
+   }  
+
+   protected function eurobank_get_post_params($field=null) {
+      if ($field==null) return null;
+	  
+	  return ($_POST[$field]);
+   }     
    
    protected function handle_Transaction($status,$ticket=null) {
 
@@ -476,7 +493,7 @@ class sheurobank  {
 	   case 'STATUSFLAG' : $data = implode(",", $status); break;
        case 'REPAY'      : $data = implode(",", $status); break;   
        case 'SUCCESS'    : $data = implode(",", $status); break;
-	   default           : $data = null;
+	   default           : $data = implode(",", $status);
 	 }
 	   
      $record = date('Y-m-d h:m:s') .','. $data."\n";

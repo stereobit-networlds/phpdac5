@@ -17,17 +17,25 @@ class twigengine extends Twig_Autoloader {
 
    var $prpath, $tpath, $tcache;
    var $twig;
+   var $tmpl_path, $tmpl_name;
    
    function __construct($cache=false) {
    
         $this->prpath = paramload('SHELL','prpath');
-        $this->tpath = paramload('FRONTHTMLPAGE','path');
 		$this->tcache = paramload('SHELL','cachepath');
         //echo 'aaaaa';
 		
+        $this->tpath = remote_paramload('FRONTHTMLPAGE','path',$this->prpath);		
+	    $this->tmpl_path = remote_paramload('FRONTHTMLPAGE','path',$this->prpath);
+	    $this->tmpl_name = remote_paramload('FRONTHTMLPAGE','template',$this->prpath);	 		
+		
 		parent::register();
 		
-		$loader = new Twig_Loader_Filesystem($this->prpath.$this->tpath);//'/path/to/templates');
+		$mypath = $this->tmpl_name ? 
+		          $this->prpath . $this->tmpl_path .'/'. $this->tmpl_name .'/'. str_replace('.',getlocal().'.',$template) :
+		          $this->prpath . $this->tpath;
+		//echo $mypath;
+		$loader = new Twig_Loader_Filesystem($mypath);//'/path/to/templates');
 		$c = ($cache) ? array('cache' => $this->tcache) : array();
 		$this->twig = new Twig_Environment($loader, $c);
 						   

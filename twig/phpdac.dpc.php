@@ -57,6 +57,31 @@ class phpdac {
 	    return (remote_paramload($sec,$var,$this->prpath));
 	}	
 	
+	//localize
+	public function _vlocalize($var=null) {
+	    if (!$var) return ('no var');
+	    $n = GetGlobal('controller')->calldpc_var($var);		
+		return (localize($n,getlocal()));
+	}
+	
+	public function _slocalize($svar=null) {
+	    if (!$svar) return ('no session var');
+	    $n = GetSessionParam($svar);		
+		return (localize($n,getlocal()));
+	}	
+	
+	public function _glocalize($var=null) {
+	    if (!$var) return ('no global var');
+	    $n = GetGlobal($var);		
+		return (localize($n,getlocal()));
+	}	
+	
+	public function _plocalize($var=null) {
+	    if (!$var) return ('no param var');
+	    $n = GetParam($var);		
+		return (localize($n,getlocal()));
+	}	
+	
 	//filter
 	public function _nformat($n=null) {
 	   if (!$n) return;
