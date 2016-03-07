@@ -6,6 +6,8 @@ class phpdac {
     var $prpath, $tpath, $tcache;
     var $title;
 	var $phpdacarray;
+	
+	var $phpdacTokens;
    
     function __construct() {
    
@@ -15,7 +17,8 @@ class phpdac {
         //echo 'aaaaa';
 		
 		$this->title = 'aaaa';  
-        $this->phpdacarray = array();		
+        $this->phpdacarray = array();
+        $this->phpdacTokens = array('test'=>'test');		
     }
 	
 	public function mytitle() {
@@ -81,6 +84,19 @@ class phpdac {
 	    $n = GetParam($var);		
 		return (localize($n,getlocal()));
 	}	
+	
+	//tokens
+	public function addTokens($tokens=null) {
+		if (is_array($tokens)) {
+			$this->phpdacTokens = (array) $tokens;
+			return true;
+		}
+		return false;
+	}
+	
+	public function _token($token) {
+		return (localize($this->phpdacTokens,getlocal()));
+	}
 	
 	//filter
 	public function _nformat($n=null) {

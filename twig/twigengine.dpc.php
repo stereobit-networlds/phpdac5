@@ -19,6 +19,8 @@ class twigengine extends Twig_Autoloader {
    var $twig;
    var $tmpl_path, $tmpl_name;
    
+   var $pdac;
+   
    function __construct($cache=false) {
    
         $this->prpath = paramload('SHELL','prpath');
@@ -40,7 +42,8 @@ class twigengine extends Twig_Autoloader {
 		$this->twig = new Twig_Environment($loader, $c);
 						   
 						   
-		$this->twig->addGlobal('phpdac', new phpdac());
+		$this->pdac = new phpdac();				   
+		$this->twig->addGlobal('phpdac', $this->pdac);
 		$this->twig->addFilter('nformat', new Twig_Filter_Function('phpdac::_nformat'));
 		//$this->twig->addFilter('sexplode', new Twig_Filter_Function('phpdac::_sexplode'));
 		$this->twig->addFilter('dacarray', new Twig_Filter_Function('phpdac::_dacarray'));
@@ -82,6 +85,9 @@ $twig->setLexer($syntaxe);
 						   
         $tokens = unserialize($mytokens);//explode('<twig|twig>', $mytokens);
 		//print_r($tokens);
+		
+		$this->pdac->addTokens($tokens);
+		
 		$ret = $this->twig->render($htmlpage, $tokens);   
 		
 		return ($ret);
